@@ -144,15 +144,33 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .csel-empty{padding:14px 16px;font-size:14px;color:var(--jw-slate)}
 
 /* resume upload flow */
-.up-spin{width:64px;height:64px;border-radius:50%;border:6px solid var(--jw-line);border-top-color:var(--jw-blue);animation:rot 1s linear infinite;margin:8px auto 24px}
-@keyframes rot{to{transform:rotate(360deg)}}
-.file-card{display:flex;align-items:center;gap:12px;background:var(--jw-cloud);border:1px solid var(--jw-line);border-radius:12px;padding:14px 16px;max-width:440px;margin:0 auto 8px;width:100%;text-align:left}
-.file-card .fic{width:40px;height:40px;flex:none}
+.up-card{background:var(--jw-tint);border:1.5px solid #7CB8F3;border-radius:var(--r-card);padding:26px 22px;max-width:440px;margin:14px auto 0;width:100%;text-align:center}
+.up-card .uic{width:64px;height:64px;border-radius:50%;background:var(--jw-blue);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 6px 14px rgba(0,122,255,.3)}
+.up-card .uic svg{width:30px;height:30px}
+.up-card h2{font-family:var(--pjs);font-weight:800;font-size:19px;line-height:1.3;margin-bottom:8px}
+.up-card p{font-size:14px;color:var(--jw-slate);line-height:1.5;margin-bottom:18px}
+.up-card .btn{box-shadow:0 4px 12px rgba(0,122,255,.25)}
+.li-input-row{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--jw-line);border-radius:12px;padding:0 14px;margin-bottom:12px}
+.li-input-row svg{width:16px;height:16px;color:var(--jw-slate);flex:none}
+.li-input-row input{border:none !important;box-shadow:none !important;padding:14px 0 !important;flex:1;min-width:0;background:transparent}
+.scan-card{background:var(--jw-tint);border:1.5px solid #7CB8F3;border-radius:var(--r-card);padding:20px 22px 0;max-width:400px;margin:18px auto 0;width:100%;text-align:center;overflow:hidden}
+.scan-card .sc-label{font-family:var(--pjs);font-weight:800;font-size:15.5px;margin-bottom:16px}
+.scan-doc{position:relative;background:#fff;border-radius:10px 10px 0 0;max-width:230px;margin:0 auto;padding:18px 18px 26px;text-align:left;box-shadow:0 -4px 18px rgba(2,17,45,.08)}
+.scan-doc .av{width:34px;height:34px;border-radius:50%;background:var(--jw-gold);float:left;margin:0 10px 10px 0}
+.scan-doc .ln{height:8px;border-radius:4px;background:var(--jw-line);margin-bottom:8px}
+.scan-bar{position:absolute;left:0;right:0;height:40px;background:linear-gradient(180deg,rgba(0,122,255,0),rgba(0,122,255,.22) 45%,rgba(0,122,255,.55) 50%,rgba(0,122,255,.22) 55%,rgba(0,122,255,0));animation:scan 2s ease-in-out infinite}
+@keyframes scan{0%{top:-10px}50%{top:calc(100% - 30px)}100%{top:-10px}}
+.file-card{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--jw-line);border-radius:12px;padding:14px 16px;max-width:440px;margin:0 auto 18px;width:100%;text-align:left;box-shadow:var(--shadow)}
+.file-card .fic{width:44px;height:44px;flex:none;border-radius:10px;background:var(--jw-tint);display:flex;align-items:center;justify-content:center}
+.file-card .fic svg{width:28px;height:28px}
 .file-card b{font-size:14.5px;display:block;word-break:break-all}
 .file-card span{font-size:12.5px;color:var(--jw-slate)}
-.li-row{display:flex;gap:10px;max-width:460px;margin:0 auto;width:100%}
-.li-row input{flex:1;min-width:0}
-.li-row .btn{width:auto;padding:14px 18px;flex:none}
+.done-list{max-width:440px;margin:0 auto;width:100%;text-align:left}
+.done-row{display:flex;justify-content:space-between;align-items:center;padding:13px 2px;border-bottom:1px solid var(--jw-line);font-weight:700;font-size:15px;opacity:0;transform:translateY(6px);transition:all .35s}
+.done-row.show{opacity:1;transform:none}
+.done-row:last-child{border-bottom:none}
+.done-row .gk{width:26px;height:26px;border-radius:50%;background:var(--jw-success);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.done-row .gk svg{width:13px;height:13px}
 
 /* ============ loader ============ */
 .loader-wrap{display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;text-align:center;max-width:480px;margin:0 auto;width:100%}
@@ -480,6 +498,9 @@ const S = [
  opts:[{i:'doccheck',t:['Up-to-date resume','CV al día']},{i:'pen',t:['Resume needs updates','El CV necesita cambios']},{i:'liD',t:['LinkedIn only','Solo LinkedIn']},{i:'docdash',t:['No resume yet','Aún no tengo CV']}]},
 {id:'P19',phase:4,type:'resume',title:['Get better job matches','Mejora tus matches de empleo'],
  sub:['Add your resume to improve your matches. Even a draft or outdated resume can significantly improve job recommendations for you.','Añade tu CV para mejorar tus matches. Incluso un borrador o un CV desactualizado puede mejorar mucho tus recomendaciones.']},
+{id:'P19L',phase:4,type:'linkedinAdd',cond:()=>!state.upload,
+ title:['Add your LinkedIn profile','Añade tu perfil de LinkedIn'],
+ sub:['This helps us recommend more relevant jobs for you','Esto nos ayuda a recomendarte empleos más relevantes para ti']},
 {id:'P19b',phase:4,type:'uploading',cond:()=>!!state.upload},
 {id:'P19c',phase:4,type:'uploaddone',cond:()=>!!state.upload},
 {id:'P20',phase:4,type:'multi',icons:false,title:['Which job search strategies have you tried before?','¿Qué estrategias de búsqueda has probado antes?'],
@@ -604,7 +625,7 @@ function render(){
   main.scrollTop=0; window.scrollTo(0,0);
   foot.innerHTML='';
   ({single:rSingle, multi:rMulti, salary:rSalary, country:rCountry, inter:rInter,
-    relate:rRelate, stat:rStat, resume:rResume, uploading:rUploading, uploaddone:rUploadDone,
+    relate:rRelate, stat:rStat, resume:rResume, linkedinAdd:rLinkedInAdd, uploading:rUploading, uploaddone:rUploadDone,
     compare:rCompare, chart:rChart, loader:rLoader,
     result:rResult, signup:rSignup, paywall:rPaywall, success:rSuccess})[s.type](s);
 }
@@ -804,24 +825,19 @@ function rRelate(s){
 }
 
 function rResume(s){
-  main.innerHTML = wrap(`<div class="inter">
-    <div class="illo">${ILLO.resume}</div>
-    <h1>${T(s.title)}</h1>
-    <p class="subtitle" style="margin-bottom:0">${T(s.sub)}</p>
-    <div id="liWrap" style="display:none;margin-top:18px">
-      <div class="li-row">
-        <input type="text" id="liUrl" placeholder="linkedin.com/in/your-profile" autocomplete="off">
-        <button class="btn btn-primary" id="liGo" style="letter-spacing:0">${T(['Import','Importar'])}</button>
-      </div>
-      <p class="footnote" id="liErr" style="color:var(--jw-terracotta);display:none">${T(['Enter a valid LinkedIn profile URL','Introduce una URL válida de perfil de LinkedIn'])}</p>
+  main.innerHTML = wrap(`
+    <h1 class="qtitle">${T(s.title)}</h1>
+    <div class="up-card">
+      <div class="uic">${ic('file-text')}</div>
+      <h2>${T(['Add your resume to improve your matches','Añade tu CV para mejorar tus coincidencias'])}</h2>
+      <p>${T(['Even a draft or outdated resume can significantly improve job recommendations for you','Incluso un borrador o un CV desactualizado puede mejorar mucho las recomendaciones de empleo para ti'])}</p>
+      <input type="file" id="cvFile" accept=".pdf,.doc,.docx,.rtf,.txt" style="display:none">
+      <button class="btn btn-primary" id="up">${T(['UPLOAD RESUME','Subir currículum'])}</button>
     </div>
-  </div>`);
-  foot.innerHTML = `<div class="finner" style="display:flex;flex-direction:column;gap:10px">
-    <input type="file" id="cvFile" accept=".pdf,.doc,.docx,.rtf,.txt" style="display:none">
-    <button class="btn btn-secondary" id="up">${T(['UPLOAD RESUME (PDF, DOCX...)','Subir CV (PDF, DOCX...)'])}</button>
-    <button class="btn btn-secondary" id="liBtn">${T(['IMPORT FROM LINKEDIN','Importar desde LinkedIn'])}</button>
-    <button class="btn btn-primary" id="cont">${T(['CONTINUE WITHOUT RESUME','Continuar sin CV'])}</button>
-    <p class="footnote" style="margin-top:0">${T(['You can add or create a resume later','Puedes añadir o crear un CV más tarde'])}</p>
+  `);
+  foot.innerHTML = `<div class="finner">
+    <button class="btn btn-secondary" id="cont">${T(['CONTINUE WITHOUT RESUME','Continuar sin CV'])}</button>
+    <p class="footnote">${T(['You can add or create a resume later','Puedes añadir o crear un CV más tarde'])}</p>
   </div>`;
   const fileInp=document.getElementById('cvFile');
   document.getElementById('up').addEventListener('click',()=>fileInp.click());
@@ -830,47 +846,81 @@ function rResume(s){
     state.upload={kind:'file', name:f.name, size:(f.size/1024).toFixed(0)+' KB'};
     state.answers.P19='uploaded'; next();
   });
-  document.getElementById('liBtn').addEventListener('click',()=>{
-    const w=document.getElementById('liWrap');
-    w.style.display = w.style.display==='none' ? 'block' : 'none';
-    if(w.style.display==='block') document.getElementById('liUrl').focus();
-  });
+  document.getElementById('cont').addEventListener('click',()=>{state.upload=null; state.answers.P19='skipped'; next();});
+}
+
+/* ---- LinkedIn profile screen (shown when no resume uploaded) ---- */
+function rLinkedInAdd(s){
+  main.innerHTML = wrap(`
+    <h1 class="qtitle">${T(s.title)}</h1>
+    <p class="subtitle qsub">${T(s.sub)}</p>
+    <div class="up-card" style="text-align:left;background:#fff;border-color:var(--jw-line)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="width:34px;height:34px;flex:none">${duo('liD')}</span>
+        <b style="font-family:var(--pjs);font-size:16px">${T(['Paste your profile URL','Pega la URL de tu perfil'])}</b>
+      </div>
+      <div class="li-input-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <input type="text" id="liUrl" placeholder="linkedin.com/in/username" autocomplete="off">
+      </div>
+      <p class="footnote" id="liErr" style="color:var(--jw-terracotta);display:none;text-align:left;margin:0 0 10px">${T(['Enter a valid LinkedIn profile URL','Introduce una URL válida de perfil de LinkedIn'])}</p>
+      <button class="btn btn-primary" id="liGo">${T(['ADD LINKEDIN PROFILE','Añadir perfil de LinkedIn'])}</button>
+    </div>
+  `);
+  foot.innerHTML = `<div class="finner">
+    <button class="btn btn-secondary" id="cont">${T(['CONTINUE WITHOUT LINKEDIN','Continuar sin LinkedIn'])}</button>
+  </div>`;
   document.getElementById('liGo').addEventListener('click',()=>{
     const u=document.getElementById('liUrl').value.trim();
     if(!/linkedin\.com\/in\/[A-Za-z0-9\-_%]+/.test(u)){ document.getElementById('liErr').style.display='block'; return; }
     state.upload={kind:'linkedin', name:u.replace(/^https?:\/\/(www\.)?/,'')};
     state.answers.P19='linkedin'; next();
   });
-  document.getElementById('cont').addEventListener('click',()=>{state.upload=null; state.answers.P19='skipped'; next();});
+  document.getElementById('cont').addEventListener('click',()=>{state.upload=null; next();});
 }
 
-/* ---- resume upload: loading + success ---- */
+/* ---- resume upload: scanning + success ---- */
 function rUploading(){
   const li = state.upload && state.upload.kind==='linkedin';
-  const steps = li
-    ? [['Connecting to LinkedIn','Conectando con LinkedIn'],['Reading your profile','Leyendo tu perfil'],['Extracting your experience','Extrayendo tu experiencia']]
-    : [['Uploading your file','Subiendo tu archivo'],['Reading each section','Leyendo cada sección'],['Extracting skills and experience','Extrayendo skills y experiencia']];
-  main.innerHTML = wrap(`<div class="inter">
-    <div class="up-spin"></div>
-    <h1 style="font-size:22px">${li?T(['Importing your LinkedIn profile...','Importando tu perfil de LinkedIn...']):T(['Analyzing your resume...','Analizando tu currículum...'])}</h1>
-    <div class="check-list" style="max-width:340px;margin:18px auto 0">
-      ${steps.map((st,k)=>`<div class="ci" id="up${k}"><span class="mk">${ic('check')}</span>${T(st)}</div>`).join('')}
+  main.innerHTML = wrap(`<div class="inter" style="justify-content:flex-start;padding-top:18px">
+    <h1>${li?T(['Your LinkedIn profile is importing','Tu perfil de LinkedIn se está importando']):T(['Your resume is uploading','Tu currículum se está subiendo'])}</h1>
+    <div class="scan-card">
+      <div class="sc-label">${li?T(['Reading your profile','Leyendo tu perfil']):T(['Scanning your resume','Escaneando tu currículum'])}</div>
+      <div class="scan-doc">
+        <div class="av"></div>
+        <div class="ln" style="width:70%"></div>
+        <div class="ln" style="width:45%"></div>
+        <div style="clear:both;padding-top:6px"></div>
+        <div class="ln"></div>
+        <div class="ln" style="width:88%"></div>
+        <div class="ln" style="width:94%"></div>
+        <div class="ln" style="width:60%"></div>
+        <div class="ln" style="width:82%"></div>
+        <div class="scan-bar"></div>
+      </div>
     </div>
   </div>`);
-  steps.forEach((_,k)=>setTimeout(()=>{const e=document.getElementById('up'+k); if(e) e.classList.add('done');},600+k*700));
-  loaderTimer=setTimeout(next, 600+steps.length*700+400);
+  loaderTimer=setTimeout(next, 3200);
 }
 function rUploadDone(){
   const u=state.upload||{}; const li=u.kind==='linkedin';
-  main.innerHTML = wrap(`<div class="inter">
-    <div class="illo" style="margin-bottom:14px"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="#F3F7EE"/><circle cx="60" cy="60" r="34" fill="#88AB75"/><path d="M45 60l10 10 20-22" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <h1>${li?T(['Profile imported!','¡Perfil importado!']):T(['Resume uploaded!','¡CV subido!'])}</h1>
-    <p class="subtitle">${T(['Your matches just got a lot more accurate.','Tus matches acaban de volverse mucho más precisos.'])}</p>
+  const d=new Date();
+  const dateStr = LANG==='en'
+    ? `${d.getDate()} ${d.toLocaleString('en-GB',{month:'long'})} ${d.getFullYear()}`
+    : d.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  const rows=[['Experience','Experiencia'],['Skills','Habilidades'],['Education','Educación']];
+  main.innerHTML = wrap(`<div class="inter" style="justify-content:flex-start;padding-top:18px">
+    <h1>${li?T(['Your LinkedIn profile has been added','Tu perfil de LinkedIn ha sido añadido']):T(['Your resume has been uploaded','Tu currículum ha sido subido'])}</h1>
+    <p class="subtitle"><b style="color:var(--jw-ink)">${T(['Your job matches will now be much more accurate.','Tus coincidencias de empleo serán ahora mucho más precisas.'])}</b></p>
     <div class="file-card">
       <span class="fic">${duo(li?'liD':'doccheck')}</span>
-      <div><b>${esc(u.name||'')}</b><span>${li?T(['LinkedIn profile · import simulated in this prototype','Perfil de LinkedIn · importación simulada en este prototipo']):esc(u.size||'')}</span></div>
+      <div><b>${esc(u.name||'')}</b><span>${T(['Date added:','Fecha de añadido:'])} ${dateStr}${li?' · '+T(['import simulated in this prototype','importación simulada en este prototipo']):''}</span></div>
+    </div>
+    <div class="done-list">
+      ${rows.map((r,k)=>`<div class="done-row" id="dr${k}">${T(r)}<span class="gk">${ic('check')}</span></div>`).join('')}
     </div>
   </div>`);
+  rows.forEach((_,k)=>setTimeout(()=>{const e=document.getElementById('dr'+k); if(e) e.classList.add('show');},350+k*350));
   footPrimary(BTN.cont, next, false);
 }
 
