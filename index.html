@@ -115,6 +115,45 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .microcopy{font-size:13px;color:var(--jw-slate);margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .microcopy svg{width:14px;height:14px;flex:none;color:var(--jw-blue)}
 
+/* salary histogram + slider */
+.sal-widget{max-width:460px;margin:4px auto 0;width:100%}
+.histo{display:flex;align-items:flex-end;gap:4px;height:110px;padding:0 2px;margin-bottom:2px}
+.histo i{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,#4DA3FF,var(--jw-blue));transition:background .15s}
+.histo i.off{background:var(--jw-line)}
+.rng{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--jw-line);outline:none;margin:6px 0 18px}
+.rng::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:2.5px solid var(--jw-blue);box-shadow:0 2px 8px rgba(2,17,45,.2);cursor:pointer}
+.rng::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:2.5px solid var(--jw-blue);box-shadow:0 2px 8px rgba(2,17,45,.2);cursor:pointer}
+.sal-label{font-size:13px;font-weight:700;color:var(--jw-ink);display:block;margin-bottom:8px}
+.cur-prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--jw-ink);font-weight:700}
+.sal-input{padding-left:34px !important}
+
+/* searchable country selector */
+.csel{position:relative;max-width:460px;margin:4px auto 14px;width:100%}
+.csel-box{display:flex;align-items:center;gap:10px;border:1.5px solid var(--jw-line);border-radius:12px;padding:4px 14px 4px 16px;background:#fff;transition:all .15s}
+.csel-box:focus-within{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.csel-box .cflag{font-size:20px;flex:none}
+.csel-box input{border:none !important;box-shadow:none !important;padding:12px 0 !important;flex:1;min-width:0}
+.csel-box .chev{flex:none;color:var(--jw-slate);transition:transform .15s}
+.csel.open .chev{transform:rotate(180deg)}
+.csel-list{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1.5px solid var(--jw-line);border-radius:12px;max-height:290px;overflow-y:auto;box-shadow:var(--shadow);z-index:25;display:none}
+.csel.open .csel-list{display:block}
+.crow{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border:none;background:none;font-family:var(--inter);font-size:15px;font-weight:600;color:var(--jw-ink);cursor:pointer;text-align:left}
+.crow:hover{background:var(--jw-tint)}
+.crow.active{background:var(--jw-blue);color:#fff}
+.crow .cf{font-size:18px;flex:none}
+.csel-empty{padding:14px 16px;font-size:14px;color:var(--jw-slate)}
+
+/* resume upload flow */
+.up-spin{width:64px;height:64px;border-radius:50%;border:6px solid var(--jw-line);border-top-color:var(--jw-blue);animation:rot 1s linear infinite;margin:8px auto 24px}
+@keyframes rot{to{transform:rotate(360deg)}}
+.file-card{display:flex;align-items:center;gap:12px;background:var(--jw-cloud);border:1px solid var(--jw-line);border-radius:12px;padding:14px 16px;max-width:440px;margin:0 auto 8px;width:100%;text-align:left}
+.file-card .fic{width:40px;height:40px;flex:none}
+.file-card b{font-size:14.5px;display:block;word-break:break-all}
+.file-card span{font-size:12.5px;color:var(--jw-slate)}
+.li-row{display:flex;gap:10px;max-width:460px;margin:0 auto;width:100%}
+.li-row input{flex:1;min-width:0}
+.li-row .btn{width:auto;padding:14px 18px;flex:none}
+
 /* ============ loader ============ */
 .loader-wrap{display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center;text-align:center;max-width:480px;margin:0 auto;width:100%}
 .ring-box{position:relative;width:150px;height:150px;margin:16px 0 24px}
@@ -230,6 +269,7 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
   h1{font-size:30px}
   .inter h1{font-size:32px}
   .subtitle{font-size:17px}
+  .options.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .quote-card{padding:38px 32px}
   .quote-card p{font-size:22px}
   .btn-row{max-width:440px;margin:0 auto;width:100%}
@@ -285,7 +325,9 @@ const PHASES = ['CURRENT STATUS','YOUR GOALS','AI EXPERIENCE','JOB PREFERENCES',
 const PHASE_ICONS = ['user','target','zap','sliders','file-text','heart','award'];
 
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
-const COUNTRIES = EU.concat(['United States','United Kingdom','Switzerland','Norway','Mexico','Argentina','Colombia','Chile','Peru','Uruguay','Ecuador','Venezuela','Brazil','Canada','Australia','New Zealand','Japan','India','Morocco','Turkey','United Arab Emirates','South Africa','Philippines','Other']).sort();
+const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
+const COUNTRIES = CDATA.map(c=>c[0]);
+const flagOf = n => (CDATA.find(c=>c[0]===n)||[,'🌍'])[1];
 
 /* ============ small UI stroke icons (chrome only) ============ */
 const P = {
@@ -351,7 +393,10 @@ bolt:`<path d="M27 5L12 27h9l-2 16 15-22h-9z" fill="${GOLD}"/>`,
 hourglass:`<path d="M13 6h22M13 42h22M16 6v6l8 8 8-8V6M16 42v-6l8-8 8 8v6" fill="none"/><path d="M19.5 9.5h9l-4.5 6.5z" fill="${BLUE}" stroke="none"/><path d="M24 34.5l4.5 5h-9z" fill="${BLUE}" stroke="none"/>`,
 meh:`<circle cx="24" cy="24" r="17" fill="${TINT}"/><path d="M17 30h14" fill="none"/><path d="M16.5 18.5h4M27.5 18.5h4" fill="none"/>`,
 doc:`<path d="M13 6.5A2.5 2.5 0 0 1 15.5 4H28l8 8v29.5a2.5 2.5 0 0 1-2.5 2.5h-18A2.5 2.5 0 0 1 13 41.5z" fill="#fff"/><path d="M28 4v8h8" fill="${TINT}"/><path d="M19 21h12M19 27h12M19 33h8" stroke="${BLUE}"/>`,
-boltcirc:`<circle cx="24" cy="24" r="17" fill="${BLUE}"/><path d="M27.5 12.5L17 26.5h6l-2 9L31.5 21h-6z" fill="#fff" stroke="none"/>`
+boltcirc:`<circle cx="24" cy="24" r="17" fill="${BLUE}"/><path d="M27.5 12.5L17 26.5h6l-2 9L31.5 21h-6z" fill="#fff" stroke="none"/>`,
+doccheck:`<path d="M11 6.5A2.5 2.5 0 0 1 13.5 4H26l8 8v29.5a2.5 2.5 0 0 1-2.5 2.5h-18A2.5 2.5 0 0 1 11 41.5z" fill="#fff"/><path d="M26 4v8h8" fill="${TINT}"/><path d="M17 21h12M17 27h12M17 33h8" stroke="${BLUE}"/><circle cx="37" cy="36" r="8.5" fill="${GREEN}" stroke="none"/><path d="M33.5 36l2.5 2.5 4.5-5" stroke="#fff" stroke-width="2.2" fill="none"/>`,
+docdash:`<path d="M13 6.5A2.5 2.5 0 0 1 15.5 4H28l8 8v29.5a2.5 2.5 0 0 1-2.5 2.5h-18A2.5 2.5 0 0 1 13 41.5z" fill="${TINT}" stroke-dasharray="4.5 4.5"/><path d="M24 18v12M18 24h12" stroke="${BLUE}" stroke-width="2.8"/>`,
+liD:`<rect x="8" y="8" width="32" height="32" rx="8" fill="${BLUE}"/><text x="24" y="31.5" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="17" fill="#fff" stroke="none">in</text>`
 };
 const duo = n => `<svg viewBox="0 0 48 48" fill="none" stroke="${NAVY}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${DUO[n]||DUO.yes}</svg>`;
 
@@ -419,7 +464,7 @@ const S = [
  title:["Don't worry",'No te preocupes'],
  body:()=>{const c=state.answers.P11||'';const zone=c==='United States'?['US','EE. UU.']:(EU.includes(c)?['EU','UE']:[c,c]);
    return LANG==='en'?`We've got plenty of jobs that don't require ${zone[0]} work authorization — we'll match you with the right ones.`:`Tenemos muchos empleos que no requieren autorización de trabajo en ${zone[1]}; te emparejaremos con los adecuados.`}},
-{id:'P13',phase:3,type:'multi',icons:false,title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?'],
+{id:'P13',phase:3,type:'multi',icons:false,grid2:true,title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?'],
  opts:[{t:["I'm open to any role",'Estoy abierto a cualquier puesto']},{t:['Data Entry / Typing Jobs','Entrada de datos / Mecanografía']},{t:['Customer Service','Atención al cliente']},{t:['Sales & Partnerships','Ventas y Partnerships']},{t:['Marketing & PR','Marketing y PR']},{t:['IT & Software','IT y Software']},{t:['Design (Graphic, UX, Product)','Diseño (gráfico, UX, producto)']},{t:['Content, Writing & Media','Contenido, Escritura y Medios']},{t:['Admin & Operations','Admin y Operaciones']},{t:['Data & Analytics','Datos y Analítica']},{t:['Finance','Finanzas']},{t:['HR & Recruitment','RR. HH. y Selección']},{t:['Legal','Legal']},{t:['Healthcare','Sanidad']},{t:['Education & Training','Educación y Formación']},{t:['Research','Investigación']}]},
 
 /* -------- PHASE 5 · YOUR BACKGROUND -------- */
@@ -431,10 +476,12 @@ const S = [
  opts:[{t:['Entry','Entry']},{t:['Junior (<2 years)','Junior (menos de 2 años)']},{t:['Middle (2-4 years)','Middle (2-4 años)']},{t:['Senior (5+ years)','Senior (5+ años)']},{t:['Lead / Manager','Lead / Manager']},{t:['Director','Director']},{t:['VP / C-level','VP / C-level']}]},
 {id:'P17',phase:4,type:'single',icons:false,title:['Are you open to lower-level roles?','¿Estás abierto a roles de menor nivel?'],
  opts:[{t:['Yes, if necessary','Sí, si es necesario']},{t:["Maybe, if it's a good fit",'Quizá, si encaja bien']},{t:['No, I only want my level or higher','No, solo mi nivel o superior']}]},
-{id:'P18',phase:4,type:'single',icons:false,title:['What best describes your resume right now?','¿Qué describe mejor tu CV ahora mismo?'],
- opts:[{t:['Up-to-date resume','CV al día']},{t:['Resume needs updates','El CV necesita cambios']},{t:['LinkedIn only','Solo LinkedIn']},{t:['No resume yet','Aún no tengo CV']}]},
+{id:'P18',phase:4,type:'single',title:['What best describes your resume right now?','¿Qué describe mejor tu CV ahora mismo?'],
+ opts:[{i:'doccheck',t:['Up-to-date resume','CV al día']},{i:'pen',t:['Resume needs updates','El CV necesita cambios']},{i:'liD',t:['LinkedIn only','Solo LinkedIn']},{i:'docdash',t:['No resume yet','Aún no tengo CV']}]},
 {id:'P19',phase:4,type:'resume',title:['Get better job matches','Mejora tus matches de empleo'],
  sub:['Add your resume to improve your matches. Even a draft or outdated resume can significantly improve job recommendations for you.','Añade tu CV para mejorar tus matches. Incluso un borrador o un CV desactualizado puede mejorar mucho tus recomendaciones.']},
+{id:'P19b',phase:4,type:'uploading',cond:()=>!!state.upload},
+{id:'P19c',phase:4,type:'uploaddone',cond:()=>!!state.upload},
 {id:'P20',phase:4,type:'multi',icons:false,title:['Which job search strategies have you tried before?','¿Qué estrategias de búsqueda has probado antes?'],
  opts:[{t:['Job boards / direct applications (LinkedIn, Indeed, etc.)','Portales de empleo / candidaturas directas (LinkedIn, Indeed, etc.)']},{t:['Employee referral (friend or colleague)','Referidos de empleados (amigo o colega)']},{t:['Recruitment agencies','Agencias de reclutamiento']},{t:['Networking (events, communities)','Networking (eventos, comunidades)']},{t:['Personal blog / social media','Blog personal / redes sociales']},{t:['Other','Otra']}]},
 {id:'P21',phase:4,type:'inter',illo:'brutal',title:['The job market got brutal','El mercado se ha vuelto brutal'],
@@ -512,7 +559,7 @@ function next(){ go(nextIndex(currentI)); }
 function back(){
   if(!state.history.length) return;
   let prev = state.history.pop();
-  if(S[prev] && S[prev].type==='loader'){ prev = state.history.pop(); }
+  while(S[prev] && ['loader','uploading'].includes(S[prev].type) && state.history.length){ prev = state.history.pop(); }
   currentI = prev; render();
 }
 
@@ -557,7 +604,8 @@ function render(){
   main.scrollTop=0; window.scrollTo(0,0);
   foot.innerHTML='';
   ({single:rSingle, multi:rMulti, salary:rSalary, country:rCountry, inter:rInter,
-    relate:rRelate, stat:rStat, resume:rResume, compare:rCompare, chart:rChart, loader:rLoader,
+    relate:rRelate, stat:rStat, resume:rResume, uploading:rUploading, uploaddone:rUploadDone,
+    compare:rCompare, chart:rChart, loader:rLoader,
     result:rResult, signup:rSignup, paywall:rPaywall, success:rSuccess})[s.type](s);
 }
 function wrap(html){ return `<div class="wrap"><div class="screen">${html}</div></div>`; }
@@ -608,7 +656,7 @@ function rMulti(s){
   const contLabel = ()=>{ const n=state.answers[s.id].length; return T(BTN.cont)+(n?` (${n})`:''); };
   main.innerHTML = wrap(`
     <h1 class="qtitle">${T(s.title)}</h1><p class="subtitle qsub">${T(['Select all that apply.','Elige todas las que apliquen.'])}</p>
-    <div class="options">${s.opts.map((o,k)=>optBtn(s,o,k,'checkbox',state.answers[s.id].includes(o))).join('')}</div>
+    <div class="options${s.grid2?' grid2':''}">${s.opts.map((o,k)=>optBtn(s,o,k,'checkbox',state.answers[s.id].includes(o))).join('')}</div>
   `);
   footPrimary(contLabel(), ()=>{ if(state.answers[s.id].length) next(); }, !state.answers[s.id].length);
   main.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
@@ -623,43 +671,96 @@ function rMulti(s){
 
 function rSalary(s){
   const periods=[['Hourly','Por hora'],['Monthly','Mensual'],['Yearly','Anual']];
+  const CFG=[ /* min, max, step, default, unit */
+    {min:5,max:80,step:1,def:15,unit:['$/hour','$/hora']},
+    {min:500,max:10000,step:100,def:2500,unit:['$/month','$/mes']},
+    {min:10000,max:150000,step:1000,def:30000,unit:['$/year','$/año']}
+  ];
+  const BARS=[6,10,16,26,42,58,72,64,52,42,34,28,23,19,16,13,11,9,8,7];
+  const fmt=n=>Number(n).toLocaleString('en-US');
+  let cfg=CFG[state.salaryPeriod];
+  let val=state.answers.P8_amount && state.answers.P8_period===state.salaryPeriod ? +state.answers.P8_amount : cfg.def;
   main.innerHTML = wrap(`
-    <h1>${T(s.title)}</h1><p class="subtitle">${T(s.sub)}</p>
-    <div class="toggle">${periods.map((p,k)=>`<button data-p="${k}" class="${state.salaryPeriod===k?'on':''}">${T(p)}</button>`).join('')}</div>
-    <div class="input-wrap">
-      <input type="number" id="sal" min="0" inputmode="numeric" placeholder="${T(['e.g. 1800','p. ej. 1800'])}" value="${state.answers.P8_amount||''}">
-      <span class="currency">EUR</span>
+    <h1 class="qtitle">${T(s.title)}</h1><p class="subtitle qsub">${T(s.sub)}</p>
+    <div class="sal-widget">
+      <div class="toggle">${periods.map((p,k)=>`<button data-p="${k}" class="${state.salaryPeriod===k?'on':''}">${T(p)}</button>`).join('')}</div>
+      <div class="histo" id="histo">${BARS.map(h=>`<i style="height:${h}%"></i>`).join('')}</div>
+      <input type="range" class="rng" id="rng" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${val}">
+      <label class="sal-label">${T(['Minimum salary','Salario mínimo'])}, <span id="unitLbl">${T(cfg.unit)}</span></label>
+      <div class="input-wrap">
+        <span class="cur-prefix">$</span>
+        <input type="text" id="sal" class="sal-input" inputmode="numeric" value="${fmt(val)}">
+        <span class="currency" id="unitSuf">${T(cfg.unit)}</span>
+      </div>
     </div>
   `);
-  footPrimary(BTN.cont, ()=>{
-    const inp=document.getElementById('sal');
-    if(!inp.value) return;
-    state.answers.P8={amount:inp.value, period:periods[state.salaryPeriod]}; next();
-  }, !state.answers.P8_amount);
+  const bars=[...document.querySelectorAll('#histo i')];
+  const rng=document.getElementById('rng'), inp=document.getElementById('sal');
+  const paint=()=>{
+    const cut=Math.round((val-cfg.min)/(cfg.max-cfg.min)*(bars.length-1));
+    bars.forEach((b,i)=>b.classList.toggle('off', i<cut));
+  };
+  const save=()=>{ state.answers.P8_amount=val; state.answers.P8_period=state.salaryPeriod;
+    state.answers.P8={amount:fmt(val), period:periods[state.salaryPeriod]}; };
+  const sync=(from)=>{
+    if(from==='rng'){ val=+rng.value; inp.value=fmt(val); }
+    else{ const n=parseInt(String(inp.value).replace(/[^0-9]/g,''),10);
+      if(!isNaN(n)){ val=Math.min(cfg.max,Math.max(cfg.min,n)); rng.value=val; } }
+    paint(); save();
+  };
+  rng.addEventListener('input',()=>sync('rng'));
+  inp.addEventListener('change',()=>{ sync('inp'); inp.value=fmt(val); });
   main.querySelectorAll('.toggle button').forEach(b=>b.addEventListener('click',()=>{
-    state.salaryPeriod=+b.dataset.p;
+    state.salaryPeriod=+b.dataset.p; cfg=CFG[state.salaryPeriod]; val=cfg.def;
     main.querySelectorAll('.toggle button').forEach(x=>x.classList.toggle('on',x===b));
+    rng.min=cfg.min; rng.max=cfg.max; rng.step=cfg.step; rng.value=val;
+    inp.value=fmt(val);
+    document.getElementById('unitLbl').textContent=T(cfg.unit);
+    document.getElementById('unitSuf').textContent=T(cfg.unit);
+    paint(); save();
   }));
-  const inp=document.getElementById('sal');
-  inp.addEventListener('input',()=>{ state.answers.P8_amount=inp.value; document.getElementById('cont').disabled=!inp.value; });
+  paint(); save();
+  footPrimary(BTN.cont, ()=>{ save(); next(); }, false);
 }
 
 function rCountry(s){
+  const sel=state.answers.P11;
   main.innerHTML = wrap(`
-    <h1>${T(s.title)}</h1>
-    <div class="input-wrap">
-      <input type="text" id="country" list="clist" placeholder="${T(['Start typing...','Empieza a escribir...'])}" value="${state.answers.P11||''}" autocomplete="off">
-      <datalist id="clist">${COUNTRIES.map(c=>`<option value="${c}">`).join('')}</datalist>
+    <h1 class="qtitle">${T(s.title)}</h1>
+    <div class="csel" id="csel">
+      <div class="csel-box">
+        <span class="cflag" id="cflag">${sel?flagOf(sel):'🌍'}</span>
+        <input type="text" id="cinput" placeholder="${T(['Search your country...','Busca tu país...'])}" value="${sel||''}" autocomplete="off">
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="csel-list" id="clist"></div>
     </div>
-    <p class="microcopy">${ic('mappin')} ${T(s.micro)}</p>
+    <p class="microcopy" style="justify-content:center">${ic('mappin')} ${T(s.micro)}</p>
   `);
-  footPrimary(BTN.cont, ()=>{
-    const inp=document.getElementById('country');
-    if(!COUNTRIES.includes(inp.value)) return;
-    state.answers.P11=inp.value; next();
-  }, !COUNTRIES.includes(state.answers.P11));
-  const inp=document.getElementById('country');
-  inp.addEventListener('input',()=>{ document.getElementById('cont').disabled=!COUNTRIES.includes(inp.value); });
+  const wrapEl=document.getElementById('csel'), inp=document.getElementById('cinput'), list=document.getElementById('clist');
+  let advancing=false;
+  const strip=t=>t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const build=(q)=>{
+    const rows=CDATA.filter(c=>!q || strip(c[0]).includes(strip(q)));
+    list.innerHTML = rows.length
+      ? rows.map(c=>`<button class="crow${c[0]===state.answers.P11?' active':''}" data-n="${c[0]}"><span class="cf">${c[1]}</span>${c[0]}</button>`).join('')
+      : `<div class="csel-empty">${T(['No matches','Sin resultados'])}</div>`;
+    list.querySelectorAll('.crow').forEach(b=>b.addEventListener('click',()=>{
+      if(advancing) return; advancing=true;
+      state.answers.P11=b.dataset.n;
+      inp.value=b.dataset.n;
+      document.getElementById('cflag').textContent=flagOf(b.dataset.n);
+      wrapEl.classList.remove('open');
+      setTimeout(next,250);
+    }));
+  };
+  inp.addEventListener('focus',()=>{ wrapEl.classList.add('open'); build(inp.value===state.answers.P11?'':inp.value); });
+  inp.addEventListener('input',()=>{ wrapEl.classList.add('open'); build(inp.value); });
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ const first=list.querySelector('.crow'); if(first) first.click(); }
+  });
+  document.addEventListener('click',e=>{ if(!wrapEl.contains(e.target)) wrapEl.classList.remove('open'); },{once:false});
+  build('');
 }
 
 function rInter(s){
@@ -707,18 +808,70 @@ function rResume(s){
     <div class="illo">${ILLO.resume}</div>
     <h1>${T(s.title)}</h1>
     <p class="subtitle" style="margin-bottom:0">${T(s.sub)}</p>
+    <div id="liWrap" style="display:none;margin-top:18px">
+      <div class="li-row">
+        <input type="text" id="liUrl" placeholder="linkedin.com/in/your-profile" autocomplete="off">
+        <button class="btn btn-primary" id="liGo" style="letter-spacing:0">${T(['Import','Importar'])}</button>
+      </div>
+      <p class="footnote" id="liErr" style="color:var(--jw-terracotta);display:none">${T(['Enter a valid LinkedIn profile URL','Introduce una URL válida de perfil de LinkedIn'])}</p>
+    </div>
   </div>`);
   foot.innerHTML = `<div class="finner" style="display:flex;flex-direction:column;gap:10px">
-    <button class="btn btn-secondary" id="up">${T(['UPLOAD RESUME','Subir CV'])}</button>
+    <input type="file" id="cvFile" accept=".pdf,.doc,.docx,.rtf,.txt" style="display:none">
+    <button class="btn btn-secondary" id="up">${T(['UPLOAD RESUME (PDF, DOCX...)','Subir CV (PDF, DOCX...)'])}</button>
+    <button class="btn btn-secondary" id="liBtn">${T(['IMPORT FROM LINKEDIN','Importar desde LinkedIn'])}</button>
     <button class="btn btn-primary" id="cont">${T(['CONTINUE WITHOUT RESUME','Continuar sin CV'])}</button>
     <p class="footnote" style="margin-top:0">${T(['You can add or create a resume later','Puedes añadir o crear un CV más tarde'])}</p>
   </div>`;
-  document.getElementById('up').addEventListener('click',()=>{
-    state.answers.P19='uploaded';
-    document.getElementById('up').textContent=T(['✓ Resume added (mock)','✓ CV añadido (maqueta)']);
-    setTimeout(next,500);
+  const fileInp=document.getElementById('cvFile');
+  document.getElementById('up').addEventListener('click',()=>fileInp.click());
+  fileInp.addEventListener('change',()=>{
+    const f=fileInp.files[0]; if(!f) return;
+    state.upload={kind:'file', name:f.name, size:(f.size/1024).toFixed(0)+' KB'};
+    state.answers.P19='uploaded'; next();
   });
-  document.getElementById('cont').addEventListener('click',()=>{state.answers.P19='skipped'; next();});
+  document.getElementById('liBtn').addEventListener('click',()=>{
+    const w=document.getElementById('liWrap');
+    w.style.display = w.style.display==='none' ? 'block' : 'none';
+    if(w.style.display==='block') document.getElementById('liUrl').focus();
+  });
+  document.getElementById('liGo').addEventListener('click',()=>{
+    const u=document.getElementById('liUrl').value.trim();
+    if(!/linkedin\.com\/in\/[A-Za-z0-9\-_%]+/.test(u)){ document.getElementById('liErr').style.display='block'; return; }
+    state.upload={kind:'linkedin', name:u.replace(/^https?:\/\/(www\.)?/,'')};
+    state.answers.P19='linkedin'; next();
+  });
+  document.getElementById('cont').addEventListener('click',()=>{state.upload=null; state.answers.P19='skipped'; next();});
+}
+
+/* ---- resume upload: loading + success ---- */
+function rUploading(){
+  const li = state.upload && state.upload.kind==='linkedin';
+  const steps = li
+    ? [['Connecting to LinkedIn','Conectando con LinkedIn'],['Reading your profile','Leyendo tu perfil'],['Extracting your experience','Extrayendo tu experiencia']]
+    : [['Uploading your file','Subiendo tu archivo'],['Reading each section','Leyendo cada sección'],['Extracting skills and experience','Extrayendo skills y experiencia']];
+  main.innerHTML = wrap(`<div class="inter">
+    <div class="up-spin"></div>
+    <h1 style="font-size:22px">${li?T(['Importing your LinkedIn profile...','Importando tu perfil de LinkedIn...']):T(['Analyzing your resume...','Analizando tu currículum...'])}</h1>
+    <div class="check-list" style="max-width:340px;margin:18px auto 0">
+      ${steps.map((st,k)=>`<div class="ci" id="up${k}"><span class="mk">${ic('check')}</span>${T(st)}</div>`).join('')}
+    </div>
+  </div>`);
+  steps.forEach((_,k)=>setTimeout(()=>{const e=document.getElementById('up'+k); if(e) e.classList.add('done');},600+k*700));
+  loaderTimer=setTimeout(next, 600+steps.length*700+400);
+}
+function rUploadDone(){
+  const u=state.upload||{}; const li=u.kind==='linkedin';
+  main.innerHTML = wrap(`<div class="inter">
+    <div class="illo" style="margin-bottom:14px"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="#F3F7EE"/><circle cx="60" cy="60" r="34" fill="#88AB75"/><path d="M45 60l10 10 20-22" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1>${li?T(['Profile imported!','¡Perfil importado!']):T(['Resume uploaded!','¡CV subido!'])}</h1>
+    <p class="subtitle">${T(['Your matches just got a lot more accurate.','Tus matches acaban de volverse mucho más precisos.'])}</p>
+    <div class="file-card">
+      <span class="fic">${duo(li?'liD':'doccheck')}</span>
+      <div><b>${esc(u.name||'')}</b><span>${li?T(['LinkedIn profile · import simulated in this prototype','Perfil de LinkedIn · importación simulada en este prototipo']):esc(u.size||'')}</span></div>
+    </div>
+  </div>`);
+  footPrimary(BTN.cont, next, false);
 }
 
 /* ============ members-vs-average chart screen ============ */
@@ -839,7 +992,7 @@ function rResult(){
   const val = o => o ? (Array.isArray(o) ? esc(o.slice(0,2).map(x=>T(x.t)).join(', ')) : esc(T(o.t))) : '—';
   const roles=(a.P13||[]).slice(0,3).map(o=>T(o.t)).join(', ')||'—';
   const prefs=[a.P9,a.P31,a.P7].filter(Boolean).flatMap(o=>Array.isArray(o)?o.slice(0,2):[o]).map(o=>T(o.t)).join(' · ')||'—';
-  const salary=a.P8?`${a.P8.amount} EUR (${T(a.P8.period).toLowerCase()})`:'—';
+  const salary=a.P8?`$${a.P8.amount} (${T(a.P8.period).toLowerCase()})`:'—';
   main.innerHTML = wrap(`
     <div class="result-hero">
       <div class="illo" style="margin:2px 0 10px">${ILLO.trophy}</div>
@@ -985,7 +1138,7 @@ function rSuccess(){
     <div class="mock-note">${T(['Prototype: simulated payment — no real charge was made.','Prototipo: pago simulado, no se ha realizado ningún cargo real.'])}</div>
   </div>`);
   document.getElementById('restart').addEventListener('click',()=>{
-    state.answers={}; state.history=[]; state.selectedPlan=1; state.salaryPeriod=1;
+    state.answers={}; state.history=[]; state.selectedPlan=1; state.salaryPeriod=1; state.upload=null;
     secondsLeft=9*60+57; currentI=0; render();
   });
 }
