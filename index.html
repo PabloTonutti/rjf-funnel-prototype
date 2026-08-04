@@ -93,8 +93,8 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 .inter h1{font-size:26px}
 .icon-list{display:flex;flex-direction:column;gap:10px;margin:18px 0;text-align:left}
 .icon-list .row{display:flex;gap:12px;align-items:center;background:var(--jw-cloud);border:1px solid var(--jw-line);border-radius:12px;padding:12px 14px}
-.icon-list .row .ic{width:34px;height:34px;border-radius:10px;background:#fff;border:1px solid var(--jw-line);color:var(--jw-terracotta);display:flex;align-items:center;justify-content:center;flex:none}
-.icon-list .row .ic svg{width:17px;height:17px}
+.icon-list .row .ic{width:38px;height:38px;border-radius:10px;background:#fff;border:1px solid var(--jw-line);color:var(--jw-blue);display:flex;align-items:center;justify-content:center;flex:none}
+.icon-list .row .ic svg{width:22px;height:22px}
 .icon-list .row p{font-size:14.5px;line-height:1.45;font-weight:600}
 
 /* ============ relate ============ */
@@ -349,7 +349,9 @@ users2:`<circle cx="17" cy="16" r="6" fill="${BLUE}"/><path d="M7 37c0-6 4.5-10 
 user1:`<circle cx="24" cy="16" r="7" fill="${BLUE}"/><path d="M11 40c0-8 6-12.5 13-12.5S37 32 37 40" fill="${TINT}"/>${spark(37,10,3.4)}`,
 bolt:`<path d="M27 5L12 27h9l-2 16 15-22h-9z" fill="${GOLD}"/>`,
 hourglass:`<path d="M13 6h22M13 42h22M16 6v6l8 8 8-8V6M16 42v-6l8-8 8 8v6" fill="none"/><path d="M19.5 9.5h9l-4.5 6.5z" fill="${BLUE}" stroke="none"/><path d="M24 34.5l4.5 5h-9z" fill="${BLUE}" stroke="none"/>`,
-meh:`<circle cx="24" cy="24" r="17" fill="${TINT}"/><path d="M17 30h14" fill="none"/><path d="M16.5 18.5h4M27.5 18.5h4" fill="none"/>`
+meh:`<circle cx="24" cy="24" r="17" fill="${TINT}"/><path d="M17 30h14" fill="none"/><path d="M16.5 18.5h4M27.5 18.5h4" fill="none"/>`,
+doc:`<path d="M13 6.5A2.5 2.5 0 0 1 15.5 4H28l8 8v29.5a2.5 2.5 0 0 1-2.5 2.5h-18A2.5 2.5 0 0 1 13 41.5z" fill="#fff"/><path d="M28 4v8h8" fill="${TINT}"/><path d="M19 21h12M19 27h12M19 33h8" stroke="${BLUE}"/>`,
+boltcirc:`<circle cx="24" cy="24" r="17" fill="${BLUE}"/><path d="M27.5 12.5L17 26.5h6l-2 9L31.5 21h-6z" fill="#fff" stroke="none"/>`
 };
 const duo = n => `<svg viewBox="0 0 48 48" fill="none" stroke="${NAVY}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${DUO[n]||DUO.yes}</svg>`;
 
@@ -398,7 +400,7 @@ const S = [
  opts:[{i:'yes',t:['Yes','Sí']},{i:'notsure',t:['Not sure','No estoy seguro']},{i:'no',t:['No','No']}]},
 {id:'P6b',phase:2,type:'inter',illo:'launch',
  title:['AI can make your job search easier — and faster','La IA puede hacer tu búsqueda de empleo más fácil, y más rápida'],
- list:[{i:'search',t:["Discover hidden jobs you'd never see on popular job sites",'Descubre empleos ocultos que nunca verías en los portales populares']},{i:'file-text',t:['Turn your resume into the perfect match for every role','Convierte tu currículum en el match perfecto para cada puesto']},{i:'zap',t:['Skip the repetitive forms — we prepare every application for you','Olvídate de los formularios repetitivos: preparamos cada solicitud por ti']},{i:'award',t:['Get hired in weeks, not months','Consigue empleo en semanas, no en meses']}]},
+ list:[{i:'search',t:["Discover hidden jobs you'd never see on popular job sites",'Descubre empleos ocultos que nunca verías en los portales populares']},{i:'doc',t:['Turn your resume into the perfect match for every role','Convierte tu currículum en el match perfecto para cada puesto']},{i:'boltcirc',t:['Skip the repetitive forms — we prepare every application for you','Olvídate de los formularios repetitivos: preparamos cada solicitud por ti']},{i:'clockfull',t:['Get hired in weeks, not months','Consigue empleo en semanas, no en meses']}]},
 
 /* -------- PHASE 4 · JOB PREFERENCES -------- */
 {id:'P7',phase:3,type:'multi',title:['What type of work are you open to?','¿A qué tipo de trabajo estás abierto?'],
@@ -667,7 +669,7 @@ function rInter(s){
     ${s.eyebrow?`<div class="eyebrow">${T(s.eyebrow)}</div>`:''}
     <h1>${T(s.title)}</h1>
     ${body?`<p class="subtitle" style="margin-bottom:0">${esc(body)}</p>`:''}
-    ${s.list?`<div class="icon-list">${s.list.map(r=>`<div class="row"><span class="ic">${ic(r.i)}</span><p>${esc(T(r.t))}</p></div>`).join('')}</div>`:''}
+    ${s.list?`<div class="icon-list">${s.list.map(r=>`<div class="row"><span class="ic">${DUO[r.i]?duo(r.i):ic(r.i)}</span><p>${esc(T(r.t))}</p></div>`).join('')}</div>`:''}
   </div>`);
   footPrimary(BTN.cont, next, false);
 }
