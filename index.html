@@ -32,10 +32,8 @@ header{padding:12px 20px 0;position:sticky;top:0;background:rgba(255,255,255,.94
 #langBtn{flex:none;border:1px solid var(--jw-line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--inter);font-weight:700;font-size:12px;color:var(--jw-slate);cursor:pointer;transition:all .15s}
 #langBtn:hover{border-color:var(--jw-blue);color:var(--jw-blue)}
 #langBtn b{color:var(--jw-blue)}
-#progWrap{padding:10px 0 12px}
-.prog-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;min-height:22px}
-#phasePill{display:inline-flex;align-items:center;gap:6px;background:var(--jw-tint);color:var(--jw-blue);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:20px;padding:4px 10px}
-#phasePill svg{width:12px;height:12px}
+#progWrap{padding:12px 0 8px}
+#phaseLabel{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9AA5B5;text-align:center;margin-top:8px}
 #progress{display:flex;gap:5px}
 #progress .seg{flex:1;height:6px;border-radius:3px;background:var(--jw-line);overflow:hidden}
 #progress .seg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--jw-blue),#4DA3FF);border-radius:3px;transition:width .4s cubic-bezier(.4,0,.2,1)}
@@ -50,6 +48,9 @@ footer .finner{width:100%;max-width:600px;margin:0 auto}
 footer:empty{display:none}
 h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter-spacing:-.02em;margin-bottom:6px}
 .subtitle{color:var(--jw-slate);font-size:15.5px;line-height:1.55;margin-bottom:18px}
+.qtitle{text-align:center}
+.qsub{text-align:center}
+.options{margin-top:14px !important}
 .eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--jw-blue);margin-bottom:10px}
 .illo{display:flex;justify-content:center;margin:10px 0 22px}
 .illo svg{max-width:100%;height:auto}
@@ -262,11 +263,8 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
       <button id="langBtn"></button>
     </div>
     <div id="progWrap">
-      <div class="prog-meta">
-        <span id="phasePill"></span>
-        <span></span>
-      </div>
       <div id="progress"></div>
+      <div id="phaseLabel"></div>
     </div>
   </header>
   <main id="main"></main>
@@ -382,9 +380,13 @@ const S = [
  opts:[{i:'search',t:['Actively searching','Buscando activamente']},{i:'eye',t:['Open to opportunities','Abierto a oportunidades']},{i:'compass',t:['Just exploring','Solo explorando']}]},
 {id:'P3',phase:0,type:'single',icons:false,title:['How long have you been job hunting?','¿Cuánto tiempo llevas buscando empleo?'],
  opts:[{t:['Just started (<1 month)','Acabo de empezar (menos de 1 mes)']},{t:['1–3 months','1-3 meses']},{t:['3–6 months','3-6 meses']},{t:['6+ months','Más de 6 meses']},{t:["I'm not actively looking right now",'No estoy buscando activamente ahora']}]},
+{id:'P3b',phase:0,type:'chart',
+ title:['65% of our members find a job within the 1st month','El 65% de nuestros miembros encuentra empleo en el primer mes'],
+ sub:["We'll help you get there too",'Te ayudaremos a conseguirlo también'],
+ note:['Based on JobWinner users who track their job search on our platform','Basado en usuarios de JobWinner que registran su búsqueda de empleo en la plataforma']},
 
 /* -------- PHASE 2 · YOUR GOALS -------- */
-{id:'P4',phase:1,type:'single',title:['What are you looking for?','¿Qué estás buscando?'],
+{id:'P4',phase:1,type:'multi',title:['What are you looking for?','¿Qué estás buscando?'],
  opts:[{i:'growth',t:['To move up in my career','Ascender en mi carrera']},{i:'swap',t:['Career switch to something new','Cambiar de carrera a algo nuevo']},{i:'rocket',t:['First full-time job for career start','Mi primer empleo a tiempo completo']},{i:'shieldcheck',t:['Secure, long-term job in my field','Un empleo estable y a largo plazo en mi campo']},{i:'scale',t:['Better work-life balance','Mejor equilibrio vida-trabajo']},{i:'urgent',t:['Urgent income for my basic needs','Ingreso urgente para mis necesidades básicas']},{i:'coins',t:['Extra source of income','Ingreso extra']}]},
 {id:'P5',phase:1,type:'inter',illo:'target',title:['Thanks for sharing your goals!','¡Gracias por compartir tus objetivos!'],
  body:['Now, answer a few quick questions and our AI will pick perfect jobs for you.','Ahora responde unas preguntas rápidas y nuestra IA elegirá los empleos perfectos para ti.']},
@@ -394,11 +396,11 @@ const S = [
  opts:[{i:'yes',t:['Yes','Sí']},{i:'notsure',t:['Not sure','No estoy seguro']},{i:'no',t:['No','No']}]},
 
 /* -------- PHASE 4 · JOB PREFERENCES -------- */
-{id:'P7',phase:3,type:'single',title:['What type of work are you open to?','¿A qué tipo de trabajo estás abierto?'],
+{id:'P7',phase:3,type:'multi',title:['What type of work are you open to?','¿A qué tipo de trabajo estás abierto?'],
  opts:[{i:'clockfull',t:['Full-time','Full-time']},{i:'clockhalf',t:['Part-time','Part-time']},{i:'pen',t:['Freelance / Contract','Freelance / Contrato']},{i:'book',t:['Internship','Prácticas']}]},
 {id:'P8',phase:3,type:'salary',title:["What's your desired minimum salary?",'¿Cuál es tu salario mínimo deseado?'],
  sub:["We'll only show you jobs that meet your minimum.",'Solo te mostraremos empleos que cumplan tu mínimo.']},
-{id:'P9',phase:3,type:'single',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
+{id:'P9',phase:3,type:'multi',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
  opts:[{i:'house',t:['Fully remote','100% remoto']},{i:'hybrid',t:['Hybrid','Híbrido']},{i:'towers',t:['In-office','Presencial']}]},
 {id:'P10',phase:3,type:'multi',title:['What do you like most about working remotely?','¿Qué es lo que más te gusta de trabajar en remoto?'],
  opts:[{i:'car',t:['No commuting time','Sin tiempo de desplazamiento']},{i:'family',t:['Family or personal needs','Necesidades familiares o personales']},{i:'globe',t:['Access to more job opportunities','Acceso a más oportunidades']},{i:'pin',t:['Freedom to work from anywhere','Libertad de trabajar desde cualquier sitio']},{i:'sun',t:['Flexible schedule','Horario flexible']}]},
@@ -455,7 +457,7 @@ const S = [
  opts:[{i:'sun',t:['Flexible hours','Horario flexible']},{i:'clockfull',t:['9 to 5 fixed schedule','Horario fijo de 9 a 5']}]},
 {id:'P32',phase:5,type:'single',title:['What team size do you prefer?','¿Qué tamaño de equipo prefieres?'],
  opts:[{i:'users3',t:['Big teams','Equipos grandes']},{i:'users2',t:['Small teams','Equipos pequeños']},{i:'user1',t:['Independent','Independiente']}]},
-{id:'P33',phase:5,type:'single',title:['What company size do you prefer?','¿Qué tamaño de empresa prefieres?'],
+{id:'P33',phase:5,type:'multi',title:['What company size do you prefer?','¿Qué tamaño de empresa prefieres?'],
  opts:[{i:'rocket',t:['Startup','Startup']},{i:'building',t:['Mid-sized','Mediana']},{i:'towers',t:['Corporation','Corporación']}]},
 {id:'P34',phase:5,type:'multi',icons:false,title:['What benefits matter most to you?','¿Qué beneficios te importan más?'],
  opts:[{t:['Flexible PTO','PTO flexible']},{t:['Health insurance','Seguro médico']},{t:['Home office budget','Presupuesto para oficina en casa']},{t:['Equipment provided','Equipo proporcionado']},{t:['Parental leave','Baja parental']},{t:['Learning budget','Presupuesto de formación']},{t:['Career advancement','Desarrollo de carrera']},{t:['Mental health support','Apoyo a salud mental']},{t:['Conference expenses','Gastos de conferencias']},{t:['International opportunities','Oportunidades internacionales']},{t:['Wellness programs','Programas de bienestar']}]},
@@ -528,7 +530,7 @@ function renderHeader(){
   langBtn.innerHTML = LANG==='en' ? '<b>EN</b> · ES' : 'EN · <b>ES</b>';
   document.getElementById('progWrap').style.display = hide||s.type==='paywall' ? 'none':'block';
   if(!hide && s.type!=='paywall'){
-    document.getElementById('phasePill').innerHTML = ic(PHASE_ICONS[s.phase]) + PHASES[s.phase];
+    document.getElementById('phaseLabel').textContent = PHASES[s.phase];
     const inPhase = S.filter(x=>x.phase===s.phase);
     const pos = inPhase.findIndex(x=>x.id===s.id);
     document.getElementById('progress').innerHTML = PHASES.map((_,p)=>{
@@ -548,7 +550,7 @@ function render(){
   main.scrollTop=0; window.scrollTo(0,0);
   foot.innerHTML='';
   ({single:rSingle, multi:rMulti, salary:rSalary, country:rCountry, inter:rInter,
-    relate:rRelate, stat:rStat, resume:rResume, compare:rCompare, loader:rLoader,
+    relate:rRelate, stat:rStat, resume:rResume, compare:rCompare, chart:rChart, loader:rLoader,
     result:rResult, signup:rSignup, paywall:rPaywall, success:rSuccess})[s.type](s);
 }
 function wrap(html){ return `<div class="wrap"><div class="screen">${html}</div></div>`; }
@@ -579,25 +581,26 @@ function optBtn(s,o,k,kind,selected){
 function rSingle(s){
   const {t,sub,optional}=titleOf(s);
   main.innerHTML = wrap(`
-    <h1>${t}</h1>${sub?`<p class="subtitle">${sub}</p>`:''}
+    <h1 class="qtitle">${t}</h1>${sub?`<p class="subtitle qsub">${sub}</p>`:''}
     <div class="options">${s.opts.map((o,k)=>optBtn(s,o,k,'radio',state.answers[s.id]===o)).join('')}</div>
     ${optional?`<button class="skiplink" id="skip">${T(['Prefer not to answer','Prefiero no responder'])}</button>`:''}
   `);
-  footPrimary(BTN.cont, ()=>{ if(state.answers[s.id]) next(); }, !state.answers[s.id]);
+  let advancing=false; /* single choice: select = auto-advance, no Continue */
   main.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    if(advancing) return; advancing=true;
     state.answers[s.id]=s.opts[+b.dataset.k];
     main.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel');
-    document.getElementById('cont').disabled=false;
+    setTimeout(next,280);
   }));
-  const sk=document.getElementById('skip'); if(sk) sk.addEventListener('click',()=>{state.answers[s.id]=null; next();});
+  const sk=document.getElementById('skip'); if(sk) sk.addEventListener('click',()=>{ if(advancing) return; advancing=true; state.answers[s.id]=null; next();});
 }
 
 function rMulti(s){
   state.answers[s.id]=state.answers[s.id]||[];
   const contLabel = ()=>{ const n=state.answers[s.id].length; return T(BTN.cont)+(n?` (${n})`:''); };
   main.innerHTML = wrap(`
-    <h1>${T(s.title)}</h1><p class="subtitle">${T(['Select all that apply.','Elige todas las que apliquen.'])}</p>
+    <h1 class="qtitle">${T(s.title)}</h1><p class="subtitle qsub">${T(['Select all that apply.','Elige todas las que apliquen.'])}</p>
     <div class="options">${s.opts.map((o,k)=>optBtn(s,o,k,'checkbox',state.answers[s.id].includes(o))).join('')}</div>
   `);
   footPrimary(contLabel(), ()=>{ if(state.answers[s.id].length) next(); }, !state.answers[s.id].length);
@@ -711,6 +714,40 @@ function rResume(s){
   document.getElementById('cont').addEventListener('click',()=>{state.answers.P19='skipped'; next();});
 }
 
+/* ============ members-vs-average chart screen ============ */
+function chartSVG(){
+  const M=[10,30,49,64,70,80,89], A=[2,5,7,10,20,25,27];
+  const X=i=>52+i*44, Y=p=>198-p*1.7;
+  const line=(d,c)=>`<polyline points="${d.map((p,i)=>X(i)+','+Y(p)).join(' ')}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+  const dots=(d,c)=>d.map((p,i)=>`<circle cx="${X(i)}" cy="${Y(p)}" r="3.5" fill="${c}" stroke="#fff" stroke-width="1.5"/>`).join('');
+  let grid='',ylab='';
+  for(let p=0;p<=100;p+=10){
+    grid+=`<line x1="48" y1="${Y(p)}" x2="${X(6)+8}" y2="${Y(p)}" stroke="#EDF1F7" stroke-width="1"/>`;
+    ylab+=`<text x="41" y="${Y(p)+3.5}" text-anchor="end" font-size="9.5" fill="#9AA5B5" font-family="Inter,sans-serif">${p}%</text>`;
+  }
+  const w = LANG==='en'?'w':'s';
+  const xlab = M.map((_,i)=>`<text x="${X(i)}" y="216" text-anchor="middle" font-size="10" fill="#9AA5B5" font-family="Inter,sans-serif">${i+1}${w}</text>`).join('');
+  const membersLbl = T(['JobWinner members','Miembros JobWinner']);
+  const avgLbl = T(['Average candidate','Candidato medio']);
+  return `<svg viewBox="0 0 360 226" style="width:100%;max-width:430px">
+    ${grid}${ylab}${xlab}
+    <line x1="48" y1="${Y(90)}" x2="${X(6)+8}" y2="${Y(90)}" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3 4" opacity=".45"/>
+    ${line(A,'#DE8F6E')}${dots(A,'#DE8F6E')}
+    ${line(M,'#007AFF')}${dots(M,'#007AFF')}
+    <g><rect x="196" y="16" width="152" height="26" rx="13" fill="#007AFF"/><text x="272" y="33" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" font-family="Inter,sans-serif">${membersLbl}</text></g>
+    <g><rect x="204" y="118" width="144" height="26" rx="13" fill="#fff" stroke="#DE8F6E" stroke-width="1.5"/><text x="276" y="135" text-anchor="middle" font-size="11.5" font-weight="700" fill="#C06B45" font-family="Inter,sans-serif">${avgLbl}</text></g>
+  </svg>`;
+}
+function rChart(s){
+  main.innerHTML = wrap(`<div class="inter">
+    <h1>${T(s.title)}</h1>
+    <p class="subtitle" style="font-weight:600;color:var(--jw-ink)">${T(s.sub)}</p>
+    <div style="background:#fff;border:1px solid var(--jw-line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:18px 14px 10px;display:flex;justify-content:center">${chartSVG()}</div>
+    <p class="footnote" style="margin-top:12px">${T(s.note)}</p>
+  </div>`);
+  footPrimary(BTN.cont, next, false);
+}
+
 function rCompare(s){
   const trad=[62,83,30,71,27], jw=[100,98,100,97,100];
   main.innerHTML = wrap(`<div class="inter" style="justify-content:flex-start;padding-top:6px">
@@ -792,9 +829,9 @@ function rLoader(s){
 /* ============ result ============ */
 function rResult(){
   const a=state.answers;
-  const val = o => o ? esc(T(o.t)) : '—';
+  const val = o => o ? (Array.isArray(o) ? esc(o.slice(0,2).map(x=>T(x.t)).join(', ')) : esc(T(o.t))) : '—';
   const roles=(a.P13||[]).slice(0,3).map(o=>T(o.t)).join(', ')||'—';
-  const prefs=[a.P9,a.P31,a.P7].filter(Boolean).map(o=>T(o.t)).join(' · ')||'—';
+  const prefs=[a.P9,a.P31,a.P7].filter(Boolean).flatMap(o=>Array.isArray(o)?o.slice(0,2):[o]).map(o=>T(o.t)).join(' · ')||'—';
   const salary=a.P8?`${a.P8.amount} EUR (${T(a.P8.period).toLowerCase()})`:'—';
   main.innerHTML = wrap(`
     <div class="result-hero">
