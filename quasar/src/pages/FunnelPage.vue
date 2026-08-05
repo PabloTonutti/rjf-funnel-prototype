@@ -17,6 +17,7 @@ import ResumeScreen from 'components/screens/ResumeScreen.vue'
 import LinkedInAddScreen from 'components/screens/LinkedInAddScreen.vue'
 import UploadingScreen from 'components/screens/UploadingScreen.vue'
 import UploadDoneScreen from 'components/screens/UploadDoneScreen.vue'
+import JobTitlesScreen from 'components/screens/JobTitlesScreen.vue'
 import CompareScreen from 'components/screens/CompareScreen.vue'
 import ChartScreen from 'components/screens/ChartScreen.vue'
 import LoaderScreen from 'components/screens/LoaderScreen.vue'
@@ -42,6 +43,7 @@ const MAP = {
   linkedinAdd: LinkedInAddScreen,
   uploading: UploadingScreen,
   uploaddone: UploadDoneScreen,
+  titles: JobTitlesScreen,
   compare: CompareScreen,
   chart: ChartScreen,
   loader: LoaderScreen,

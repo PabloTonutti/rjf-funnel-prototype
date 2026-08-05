@@ -41,6 +41,7 @@ function add () {
   // the API key must never ship in client code.
   f.upload = { kind: 'linkedin', name: u.replace(/^https?:\/\/(www\.)?/, '') }
   f.answers.P19 = 'linkedin'
+  f.analyzeResume()
   f.next()
 }
 function skip () { f.upload = null; f.next() }

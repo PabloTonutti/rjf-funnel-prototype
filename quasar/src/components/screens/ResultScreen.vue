@@ -38,7 +38,10 @@ defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 
 const val = o => o ? (Array.isArray(o) ? o.slice(0, 2).map(x => f.T(x.t)).join(', ') : f.T(o.t)) : '—'
-const roles = computed(() => (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t)).join(', ') || '—')
+const roles = computed(() => {
+  if (f.answers.P19T && f.answers.P19T.length) return f.answers.P19T.slice(0, 3).join(', ')
+  return (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t)).join(', ') || '—'
+})
 const prefs = computed(() =>
   [f.answers.P9, f.answers.P31, f.answers.P7].filter(Boolean)
     .flatMap(o => Array.isArray(o) ? o.slice(0, 2) : [o])

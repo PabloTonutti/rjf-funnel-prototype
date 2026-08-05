@@ -1,7 +1,7 @@
 /* eslint-env node */
 const { configure } = require('quasar/wrappers')
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     boot: ['i18n'],
 
@@ -14,7 +14,9 @@ module.exports = configure(function (/* ctx */) {
         browser: ['es2020', 'firefox115', 'chrome115', 'safari14'],
         node: 'node18'
       },
-      vueRouterMode: 'hash'
+      vueRouterMode: 'hash',
+      // GitHub Pages project site serves under /rjf-funnel-prototype/
+      publicPath: ctx.dev ? '/' : '/rjf-funnel-prototype/'
     },
 
     devServer: {

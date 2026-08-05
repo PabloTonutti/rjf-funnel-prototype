@@ -1,5 +1,31 @@
 import { defineStore } from 'pinia'
 import { SCREENS } from 'src/data/screens'
+import { extractText } from 'src/utils/extractText'
+
+// Titles suggested when no OpenAI key is set or the resume can't be read —
+// derived from the user's selected job categories so the screen stays honest.
+const CATEGORY_TITLES = {
+  'IT & Software': ['Software Engineer', 'Frontend Developer'],
+  'Customer Service': ['Customer Support Specialist', 'Customer Success Manager'],
+  'Marketing & PR': ['Digital Marketing Specialist', 'Content Marketing Manager'],
+  'Sales & Partnerships': ['Sales Development Representative', 'Account Executive'],
+  'Design (Graphic, UX, Product)': ['Product Designer', 'UX/UI Designer'],
+  'Data & Analytics': ['Data Analyst', 'Business Intelligence Analyst'],
+  Finance: ['Financial Analyst', 'Accountant'],
+  'HR & Recruitment': ['Technical Recruiter', 'HR Generalist'],
+  'Content, Writing & Media': ['Content Writer', 'Copywriter'],
+  'Admin & Operations': ['Operations Coordinator', 'Executive Assistant'],
+  'Education & Training': ['Online Tutor', 'Instructional Designer'],
+  'Data Entry / Typing Jobs': ['Data Entry Specialist', 'Virtual Assistant'],
+  Legal: ['Legal Assistant', 'Contract Specialist'],
+  Healthcare: ['Medical Coder', 'Telehealth Coordinator'],
+  Research: ['Research Analyst', 'UX Researcher']
+}
+
+const AI_PROMPT = `You are a career assistant helping match a candidate to jobs. Below is the raw text of their resume. Based on their MOST RECENT work experience, suggest up to 8 closely related job titles (short, standard, market-recognizable titles in English). Reply with ONLY a JSON array of strings, no other text.
+
+RESUME:
+`
 
 // Funnel engine — same navigation/branch logic as the HTML prototype.
 // State lives in memory only (no localStorage), as specced.
@@ -12,7 +38,12 @@ export const useFunnel = defineStore('funnel', {
     upload: null,
     salaryPeriod: 1,
     selectedPlan: 1,
-    secondsLeft: 9 * 60 + 57
+    secondsLeft: 9 * 60 + 57,
+    // AI resume review
+    aiTitles: [],
+    aiStatus: 'idle', // idle | running | done | fallback
+    aiPromise: null,
+    openaiKey: (typeof localStorage !== 'undefined' && localStorage.getItem('jw_openai_key')) || ''
   }),
 
   getters: {
@@ -43,6 +74,65 @@ export const useFunnel = defineStore('funnel', {
       window.scrollTo(0, 0)
     },
     toggleLang () { this.lang = this.lang === 'en' ? 'es' : 'en' },
+
+    setOpenAIKey (k) {
+      this.openaiKey = (k || '').trim()
+      try { localStorage.setItem('jw_openai_key', this.openaiKey) } catch (e) {}
+    },
+
+    fallbackTitles () {
+      const picked = (this.answers.P13 || []).map(o => o.t[0])
+      const titles = []
+      for (const cat of picked) {
+        for (const t of (CATEGORY_TITLES[cat] || [])) {
+          if (!titles.includes(t)) titles.push(t)
+        }
+      }
+      if (!titles.length) titles.push('Customer Support Specialist', 'Virtual Assistant', 'Project Coordinator', 'Marketing Assistant')
+      return titles.slice(0, 8)
+    },
+
+    // Kicked off right after the resume is uploaded; the "AI is reviewing"
+    // screen awaits this promise. With an OpenAI key set it reads the CV text
+    // (PDF/DOCX/TXT, in-browser) and asks the API for related titles;
+    // otherwise it falls back to category-based suggestions.
+    // NOTE for production: move the OpenAI call behind your backend.
+    analyzeResume () {
+      this.aiStatus = 'running'
+      this.aiTitles = []
+      this.aiPromise = (async () => {
+        try {
+          let text = ''
+          if (this.upload && this.upload.kind === 'file' && this.upload.file) {
+            text = await extractText(this.upload.file)
+          }
+          if (text && text.trim().length > 200 && this.openaiKey) {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + this.openaiKey },
+              body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                temperature: 0.4,
+                messages: [{ role: 'user', content: AI_PROMPT + text.slice(0, 7000) }]
+              })
+            })
+            const j = await res.json()
+            const raw = (j.choices && j.choices[0] && j.choices[0].message.content) || '[]'
+            const arr = JSON.parse((raw.match(/\[[\s\S]*\]/) || ['[]'])[0])
+            if (Array.isArray(arr) && arr.length) {
+              this.aiTitles = arr.slice(0, 8).map(String)
+              this.aiStatus = 'done'
+              return
+            }
+          }
+          throw new Error('fallback')
+        } catch (e) {
+          this.aiTitles = this.fallbackTitles()
+          this.aiStatus = 'fallback'
+        }
+      })()
+      return this.aiPromise
+    },
     restart () {
       this.$patch({
         answers: {}, history: [], selectedPlan: 1, salaryPeriod: 1,

@@ -29,8 +29,9 @@ const fileEl = ref(null)
 function onFile (e) {
   const file = e.target.files[0]
   if (!file) return
-  f.upload = { kind: 'file', name: file.name, size: (file.size / 1024).toFixed(0) + ' KB' }
+  f.upload = { kind: 'file', name: file.name, size: (file.size / 1024).toFixed(0) + ' KB', file }
   f.answers.P19 = 'uploaded'
+  f.analyzeResume()
   f.next()
 }
 function skip () { f.upload = null; f.answers.P19 = 'skipped'; f.next() }
