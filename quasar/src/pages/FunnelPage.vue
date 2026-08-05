@@ -18,6 +18,12 @@ import LinkedInAddScreen from 'components/screens/LinkedInAddScreen.vue'
 import UploadingScreen from 'components/screens/UploadingScreen.vue'
 import UploadDoneScreen from 'components/screens/UploadDoneScreen.vue'
 import JobTitlesScreen from 'components/screens/JobTitlesScreen.vue'
+import BenefitScreen from 'components/screens/BenefitScreen.vue'
+import ScoreScreen from 'components/screens/ScoreScreen.vue'
+import SpeedScreen from 'components/screens/SpeedScreen.vue'
+import ThreeXScreen from 'components/screens/ThreeXScreen.vue'
+import CityScreen from 'components/screens/CityScreen.vue'
+import CategoryChipsScreen from 'components/screens/CategoryChipsScreen.vue'
 import CompareScreen from 'components/screens/CompareScreen.vue'
 import ChartScreen from 'components/screens/ChartScreen.vue'
 import LoaderScreen from 'components/screens/LoaderScreen.vue'
@@ -40,7 +46,13 @@ const MAP = {
   stat: StatScreen,
   relate: RelateScreen,
   resume: ResumeScreen,
-  linkedinAdd: LinkedInAddScreen,
+  liHandle: LinkedInAddScreen,
+  benefit: BenefitScreen,
+  score: ScoreScreen,
+  speed: SpeedScreen,
+  x3: ThreeXScreen,
+  city: CityScreen,
+  catchips: CategoryChipsScreen,
   uploading: UploadingScreen,
   uploaddone: UploadDoneScreen,
   titles: JobTitlesScreen,

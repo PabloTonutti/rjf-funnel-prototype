@@ -2,14 +2,18 @@
   <div class="wrap"><div class="screen">
     <h1 class="qtitle">{{ f.T(screen.title) }}</h1>
     <div class="titles-box">
-      <div class="input-wrap" style="margin-bottom:0">
+      <div class="input-wrap" style="margin-bottom:0;position:relative">
         <input
           type="text" v-model="draft"
           :placeholder="f.T(['Add up to 8 job titles', 'Añade hasta 8 puestos'])"
           :disabled="titles.length >= 8"
           @keydown.enter.prevent.stop="add"
           @keydown="onComma"
+          @focus="openSug = true" @input="openSug = true"
         >
+        <div v-if="openSug && draft.trim().length >= 2 && suggestions.length" class="sug-list">
+          <button v-for="s in suggestions" :key="s" class="sug-row" @mousedown.prevent="pickSuggestion(s)">{{ s }}</button>
+        </div>
       </div>
       <div class="chips" v-if="titles.length">
         <span v-for="(t, k) in titles" :key="t + k" class="chip-t">
@@ -41,6 +45,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
+import { TITLE_SUGGESTIONS } from 'src/data/screens'
 import FootContinue from './FootContinue.vue'
 
 defineProps({ screen: { type: Object, required: true } })
@@ -54,6 +59,23 @@ const prefilled = ref(f.aiTitles.length > 0 && titles.value.length > 0)
 const draft = ref('')
 const showKey = ref(false)
 const keyDraft = ref(f.openaiKey)
+const openSug = ref(false)
+
+// Autocomplete: suggest standard titles while the user types
+const suggestions = computed(() => {
+  const q = draft.value.trim().toLowerCase()
+  if (q.length < 2) return []
+  return TITLE_SUGGESTIONS
+    .filter(t => t.toLowerCase().includes(q))
+    .filter(t => !titles.value.some(x => x.toLowerCase() === t.toLowerCase()))
+    .slice(0, 6)
+})
+function pickSuggestion (s) {
+  if (titles.value.length >= 8) return
+  titles.value.push(s)
+  draft.value = ''
+  openSug.value = false
+}
 
 function add () {
   const t = draft.value.trim().replace(/,$/, '')

@@ -16,7 +16,8 @@ module.exports = configure(function (ctx) {
       },
       vueRouterMode: 'hash',
       // GitHub Pages project site serves under /rjf-funnel-prototype/
-      publicPath: ctx.dev ? '/' : '/rjf-funnel-prototype/'
+      // (PUBLIC_PATH env override is used to build the /old snapshot)
+      publicPath: ctx.dev ? '/' : (process.env.PUBLIC_PATH || '/rjf-funnel-prototype/')
     },
 
     devServer: {

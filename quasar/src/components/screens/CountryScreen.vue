@@ -21,13 +21,15 @@
     </div>
     <p class="microcopy" style="justify-content:center"><span v-html="ic('mappin')" style="display:contents" /> {{ f.T(screen.micro) }}</p>
   </div></div>
+  <FootContinue v-if="f.answers.P11" :label="f.T(['CONTINUE', 'Continuar'])" @go="f.next()" />
 </template>
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
-import { CDATA, flagOf } from 'src/data/screens'
+import { CDATA, COUNTRIES, flagOf } from 'src/data/screens'
 import { ic } from 'assets/graphics'
+import FootContinue from './FootContinue.vue'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
@@ -59,4 +61,23 @@ function onDocClick (e) {
 }
 onMounted(() => document.addEventListener('click', onDocClick))
 onUnmounted(() => document.removeEventListener('click', onDocClick))
+
+// IP-based country prefill (no permission prompt). User just confirms or changes it.
+const detected = ref(false)
+onMounted(async () => {
+  if (f.answers.P11) { detected.value = true; return }
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 3500)
+    const r = await fetch('https://ipapi.co/json/', { signal: ctrl.signal })
+    clearTimeout(t)
+    const j = await r.json()
+    const name = COUNTRIES.includes(j.country_name) ? j.country_name : null
+    if (name && !f.answers.P11) {
+      f.answers.P11 = name
+      q.value = name
+      detected.value = true
+    }
+  } catch (e) { /* no prefill — user picks manually */ }
+})
 </script>

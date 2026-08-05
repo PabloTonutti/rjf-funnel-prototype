@@ -1,6 +1,6 @@
 <template>
   <div class="wrap"><div class="screen"><div class="inter" style="justify-content:flex-start;padding-top:18px">
-    <h1>{{ li ? f.T(['Your LinkedIn profile has been added', 'Tu perfil de LinkedIn ha sido añadido']) : f.T(['Your resume has been uploaded', 'Tu currículum ha sido subido']) }}</h1>
+    <h1>{{ li ? f.T(['We have imported your LinkedIn data to create a resume', 'Hemos importado tus datos de LinkedIn para crear un currículum']) : f.T(['Your resume has been uploaded', 'Tu currículum ha sido subido']) }}</h1>
     <p class="subtitle">
       <b style="color:var(--jw-ink)">{{ f.T(['Your job matches will now be much more accurate.', 'Tus coincidencias de empleo serán ahora mucho más precisas.']) }}</b>
     </p>

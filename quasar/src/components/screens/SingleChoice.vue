@@ -9,7 +9,7 @@
         @click="pick(o)"
       >
         <span v-if="screen.icons !== false && o.i" class="duo" v-html="duo(o.i)" />
-        <span class="lbl">{{ f.T(o.t) }}</span>
+        <span class="lbl">{{ f.T(o.t) }}<small v-if="o.sub" class="opt-sub">{{ f.T(o.sub) }}</small></span>
         <span class="mark" v-html="ic('check')" />
       </button>
     </div>
