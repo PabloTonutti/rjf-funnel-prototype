@@ -19,7 +19,7 @@
         <div v-if="!rows.length" class="csel-empty">{{ $t('noMatches') }}</div>
       </div>
     </div>
-    <p class="microcopy" style="justify-content:center"><span v-html="ic('mappin')" style="display:contents" /> {{ f.T(screen.micro) }}</p>
+    <p class="microcopy microcopy-lg" style="justify-content:center"><span v-html="ic('mappin')" style="display:contents" /> {{ f.T(screen.micro) }}</p>
   </div></div>
   <FootContinue v-if="f.answers.P11" :label="f.T(['CONTINUE', 'Continuar'])" @go="f.next()" />
 </template>

@@ -17,11 +17,13 @@
       </div>
       <div class="card" style="background:var(--jw-cloud);box-shadow:none">
         <h3><span v-html="ic('user')" style="display:contents" /> {{ f.T(['Your profile', 'Tu perfil']) }}</h3>
-        <div class="pc-row"><span class="k">{{ f.T(['Goal', 'Objetivo']) }}</span><span class="v">{{ val(f.answers.P4) }}</span></div>
         <div class="pc-row"><span class="k">{{ f.T(['Preferred roles', 'Roles preferidos']) }}</span><span class="v">{{ roles }}</span></div>
-        <div class="pc-row"><span class="k">{{ f.T(['Experience', 'Experiencia']) }}</span><span class="v">{{ val(f.answers.P16) }}</span></div>
+        <div class="pc-row"><span class="k">{{ f.T(['Type of work', 'Tipo de trabajo']) }}</span><span class="v">{{ val(f.answers.P7) }}</span></div>
+        <div class="pc-row"><span class="k">{{ f.T(['Preferred industries', 'Industrias preferidas']) }}</span><span class="v">{{ industries }}</span></div>
+        <div class="pc-row"><span class="k">{{ f.T(['Career level', 'Nivel profesional']) }}</span><span class="v">{{ val(f.answers.P16) }}</span></div>
         <div class="pc-row"><span class="k">{{ f.T(['Minimum salary', 'Salario mínimo']) }}</span><span class="v">{{ salary }}</span></div>
-        <div class="pc-row"><span class="k">{{ f.T(['Preferences', 'Preferencias']) }}</span><span class="v">{{ prefs }}</span></div>
+        <div class="pc-row"><span class="k">{{ f.T(['Location', 'Ubicación']) }}</span><span class="v">{{ location }}</span></div>
+        <div class="pc-row"><span class="k">{{ f.T(['Work mode', 'Modalidad']) }}</span><span class="v">{{ val(f.answers.P9) }}</span></div>
       </div>
     </div>
   </div></div>
@@ -48,4 +50,13 @@ const prefs = computed(() =>
     .map(o => f.T(o.t)).join(' · ') || '—'
 )
 const salary = computed(() => f.answers.P8 ? `$${f.answers.P8.amount} (${f.T(f.answers.P8.period).toLowerCase()})` : '—')
+const industries = computed(() => {
+  const cats = (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t))
+  const extra = (f.answers.P13 || []).length - 3
+  return cats.length ? cats.join(', ') + (extra > 0 ? ` +${extra}` : '') : '—'
+})
+const location = computed(() => {
+  const parts = [f.answers.PCITY, f.answers.P11].filter(Boolean)
+  return parts.length ? parts.join(', ') : '—'
+})
 </script>

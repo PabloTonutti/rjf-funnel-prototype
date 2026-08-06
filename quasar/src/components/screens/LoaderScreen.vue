@@ -11,9 +11,10 @@
       </svg>
       <div class="ring-pct">{{ p }}%</div>
     </div>
-    <div class="check-list">
-      <div v-for="(c, k) in checks" :key="k" class="ci" :class="{ done: p >= (k + 1) * 19 }">
-        <span class="mk" v-html="ic('check')" />{{ f.T(c) }}
+    <div class="load-card">
+      <div v-for="(c, k) in checks" :key="k" class="load-row" :class="{ done: p >= (k + 1) * 19 }">
+        <span class="mk" v-html="ic('check')" /><span>{{ f.T(c) }}</span>
+        <span class="load-dot" />
       </div>
     </div>
     <div class="review-rot">

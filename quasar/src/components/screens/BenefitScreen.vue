@@ -1,50 +1,57 @@
 <template>
   <div class="wrap"><div class="screen"><div class="inter">
-    <h1>{{ f.T(screen.title) }}</h1>
+    <h1 class="bf-title">{{ f.T(screen.title) }}</h1>
 
-    <!-- matches: fresh top-matches card -->
-    <div v-if="screen.variant === 'matches'" class="bf-card">
+    <!-- matches: animated fresh-matches card -->
+    <div v-if="screen.variant === 'matches'" class="bf-card bf-anim">
+      <div class="bf-shimmer" />
       <div class="bf-head">
         <span class="dots"><i style="background:#DE8F6E"/><i style="background:#F2C037"/><i style="background:#88AB75"/></span>
-        <b>{{ f.T(['3 fresh top matches for you', '3 matches nuevos para ti']) }}</b>
+        <b>{{ f.T(['Fresh top matches for you', 'Matches nuevos para ti']) }}</b>
         <span class="bf-pill">✓ {{ f.T(['Updated today', 'Actualizado hoy']) }}</span>
       </div>
-      <div v-for="(j, k) in jobs" :key="k" class="bf-row">
+      <div v-for="(j, k) in jobs" :key="k" class="bf-row bf-row-loop" :style="{ animationDelay: (k * 0.35) + 's' }">
         <span class="bf-logo" :style="{ background: j.c }">{{ j.co[0] }}</span>
         <span class="bf-job"><b>{{ j.role }}</b><small>{{ j.co }} · {{ f.T(j.meta) }}</small></span>
         <span class="bf-match">{{ j.m }}%<small>match</small></span>
       </div>
+      <div class="bf-scanline">{{ f.T(['Scanning 5M+ open jobs…', 'Escaneando 5M+ empleos…']) }}</div>
     </div>
 
-    <!-- ats: before/after resume score -->
-    <div v-else-if="screen.variant === 'ats'" class="bf-card bf-ats">
-      <div class="bf-score before"><small>{{ f.T(['BEFORE', 'ANTES']) }}</small><b>62</b><span>{{ f.T(['Resume score', 'Nota del CV']) }}</span></div>
+    <!-- ats: before/after resume, mobile-first -->
+    <div v-else-if="screen.variant === 'ats'" class="bf-card">
+      <div class="bf-scores-row">
+        <div class="bf-score before"><small>{{ f.T(['BEFORE', 'ANTES']) }}</small><b>62</b><span>{{ f.T(['Resume score', 'Nota del CV']) }}</span></div>
+        <span class="bf-arrow" v-html="ic('arrowright')" />
+        <div class="bf-score after"><small>{{ f.T(['AFTER', 'DESPUÉS']) }}</small><b>94</b><span>{{ f.T(['Resume score', 'Nota del CV']) }}</span></div>
+      </div>
       <div class="bf-mini-cv">
-        <div class="bf-cv-head"><span class="bf-av">AR</span><span><b>Alex Richter</b><small>Senior Product Manager</small></span></div>
+        <div class="bf-cv-head"><span class="bf-av">AR</span><span><b>Alex Richter</b><small>Senior Product Manager</small></span><span class="bf-pill" style="margin-left:auto">ATS ✓</span></div>
         <div class="bf-strike">{{ f.T(['Responsible for team', 'Responsable del equipo']) }}</div>
         <div class="bf-fixed">{{ f.T(['Scaled team of 8 engineers…', 'Escaló un equipo de 8 ingenieros…']) }}</div>
         <ul>
           <li>{{ f.T(['Replaced 3 weak verbs', '3 verbos débiles reemplazados']) }}</li>
           <li>{{ f.T(['Quantified 7 metrics', '7 métricas cuantificadas']) }}</li>
-          <li>{{ f.T(['Added ATS keywords', 'Keywords ATS añadidas']) }}</li>
+          <li>{{ f.T(['Tailored to each job description', 'Adaptado a cada oferta']) }}</li>
         </ul>
       </div>
-      <div class="bf-score after"><small>{{ f.T(['AFTER', 'DESPUÉS']) }}</small><b>94</b><span>{{ f.T(['Resume score', 'Nota del CV']) }}</span></div>
     </div>
 
-    <!-- speed: others vs jobwinner time -->
-    <div v-else-if="screen.variant === 'speed'" class="bf-card bf-speed">
-      <div class="bf-time">
-        <small>{{ f.T(['OTHERS', 'OTROS']) }}</small>
-        <span class="ring gray"><b>~45</b></span>
-        <span class="bf-tlabel">~45 min</span>
+    <!-- speed: others vs jobwinner -->
+    <div v-else-if="screen.variant === 'speed'" class="bf-card">
+      <div class="bf-speed-grid">
+        <div class="bf-time">
+          <small>{{ f.T(['OTHERS', 'OTROS']) }}</small>
+          <span class="ring gray" v-html="ringSvg(92, '#C6CFDC', '~45')" />
+          <span class="bf-tlabel">{{ f.T(['~45 min / application', '~45 min / solicitud']) }}</span>
+        </div>
+        <div class="bf-time">
+          <small style="color:var(--jw-blue)">JOBWINNER</small>
+          <span class="ring blue" v-html="ringSvg(11, '#007AFF', '5')" />
+          <span class="bf-tlabel" style="color:var(--jw-blue);font-weight:700">{{ f.T(['5 min / application', '5 min / solicitud']) }}</span>
+        </div>
       </div>
-      <div class="bf-time">
-        <small>JOBWINNER</small>
-        <span class="ring blue"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-        <span class="bf-tlabel" style="color:var(--jw-blue);font-weight:700">5 min</span>
-      </div>
-      <div class="bf-saved">{{ f.T(['40 min saved per application', '40 min ahorrados por solicitud']) }}</div>
+      <div class="bf-saved-wrap"><span class="bf-saved">⚡ {{ f.T(['40 min saved on every application', '40 min ahorrados en cada solicitud']) }}</span></div>
     </div>
 
     <!-- prep: AI mock interview -->
@@ -77,4 +84,16 @@ const jobs = [
   { role: 'Product Manager, Growth', co: 'Peoplr', meta: ['Remote · 75–95k €', 'Remoto · 75-95k €'], m: 93, c: '#007AFF' },
   { role: 'Lead Product Manager', co: 'Deliveo', meta: ['Berlin · 95–125k €', 'Berlín · 95-125k €'], m: 91, c: '#DE8F6E' }
 ]
+
+// The matches card loops via pure CSS keyframes (see .bf-row-loop)
+
+function ringSvg (pct, color, label) {
+  const C = 2 * Math.PI * 30, off = C * (1 - pct / 100)
+  return `<svg width="76" height="76" viewBox="0 0 76 76">
+    <circle cx="38" cy="38" r="30" fill="none" stroke="#EDF1F7" stroke-width="8"/>
+    <circle cx="38" cy="38" r="30" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 38 38)" style="transition:stroke-dashoffset 1s ease"/>
+    <text x="38" y="43" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="19" fill="#02112D">${label}</text>
+    <text x="38" y="56" text-anchor="middle" font-size="9" fill="#9AA5B5" font-family="Inter,sans-serif">min</text>
+  </svg>`
+}
 </script>

@@ -37,8 +37,18 @@ function onKey (e) {
   const b = document.getElementById('cont')
   if (b && !b.disabled && document.activeElement.tagName !== 'BUTTON') b.click()
 }
-onMounted(() => document.addEventListener('keydown', onKey))
-onUnmounted(() => document.removeEventListener('keydown', onKey))
+function onPop (e) {
+  f.browserJump(e.state && typeof e.state.funnelI === 'number' ? e.state.funnelI : 0)
+}
+onMounted(() => {
+  document.addEventListener('keydown', onKey)
+  try { window.history.replaceState({ funnelI: f.currentI }, '') } catch (e) {}
+  window.addEventListener('popstate', onPop)
+})
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKey)
+  window.removeEventListener('popstate', onPop)
+})
 
 const hidden = computed(() => ['loader', 'success'].includes(f.screen.type))
 const showProg = computed(() => !hidden.value && f.screen.type !== 'paywall')

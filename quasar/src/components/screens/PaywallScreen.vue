@@ -1,12 +1,12 @@
 <template>
-  <div class="screen" style="margin:-20px -24px 0;padding:0">
+  <div class="screen pw-screen">
     <div class="pw-banner"><div class="pw-inner">
-      <span class="t">{{ f.T(['50% discount reserved for you:', '50% de descuento reservado para ti:']) }} <b>{{ countdown }}</b></span>
+      <span class="t">{{ f.T(['50% discount reserved for you', '50% de descuento reservado para ti']) }} <b>{{ countdown }}</b></span>
       <button @click="scrollToPlans">{{ f.T(['GET ACCESS', 'OBTENER ACCESO']) }}</button>
     </div></div>
     <div class="pw-body">
-      <h1>{{ f.T(['Your personalized job search plan is ready', 'Tu plan personalizado de búsqueda de empleo está listo']) }}</h1>
-      <p class="subtitle">{{ f.T(['Choose your plan. All plans include full access.', 'Elige tu plan. Todos incluyen acceso completo.']) }}</p>
+      <h1 class="pw-h1">{{ f.T(['Your personalized job search plan is ready', 'Tu plan personalizado de búsqueda de empleo está listo']) }}</h1>
+      <p class="subtitle" style="text-align:center">{{ f.T(['Choose your plan. All plans include full access.', 'Elige tu plan. Todos incluyen acceso completo.']) }}</p>
 
       <div class="plans" ref="plansEl">
         <div
@@ -24,20 +24,19 @@
         </div>
       </div>
 
-      <div class="billing-note">{{ f.T(PLANS[f.selectedPlan].bill) }}</div>
-      <button class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button ref="buyEl" class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
       <div class="stripe-badge">
         <span v-html="ic('lock', 13)" style="display:contents" /> {{ f.T(['Secure checkout with', 'Pago seguro con']) }}
         <span class="sb">stripe</span> <em style="font-size:11px">{{ f.T(['(mock, no charge)', '(maqueta, sin cobro)']) }}</em>
       </div>
 
       <div class="pw-cols">
-        <div class="pw-section">
-          <h3>{{ f.T(['What you unlock', 'Lo que desbloqueas']) }}</h3>
+        <div class="pw-feat-card">
+          <div class="pw-feat-head"><span class="pw-feat-ic" v-html="duo('search')" /><h3>{{ f.T(['What you unlock', 'Lo que desbloqueas']) }}</h3></div>
           <div v-for="(x, k) in unlock" :key="k" class="feat"><span class="ck" v-html="ic('check')" /> {{ f.T(x) }}</div>
         </div>
-        <div class="pw-section">
-          <h3>{{ f.T(["What's included", 'Lo que incluye']) }}</h3>
+        <div class="pw-feat-card">
+          <div class="pw-feat-head"><span class="pw-feat-ic" v-html="duo('doccheck')" /><h3>{{ f.T(["What's included", 'Lo que incluye']) }}</h3></div>
           <div v-for="(x, k) in included" :key="k" class="feat"><span class="ck" v-html="ic('check')" /> {{ f.T(x) }}</div>
         </div>
       </div>
@@ -56,8 +55,13 @@
         </div>
       </div>
 
-      <button class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button ref="buy2El" class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
       <p class="footnote" style="margin:12px 0 20px">{{ f.T(['No commitment. Cancel anytime from your account.', 'Sin permanencia. Cancela cuando quieras desde tu cuenta.']) }}</p>
+    </div>
+
+    <!-- Mobile: fixed CTA when the main button is out of view -->
+    <div class="pw-sticky" :class="{ show: showSticky }">
+      <button class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
     </div>
   </div>
 </template>
@@ -66,11 +70,14 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { PLANS } from 'src/data/screens'
-import { ic } from 'assets/graphics'
+import { ic, duo } from 'assets/graphics'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 const plansEl = ref(null)
+const buyEl = ref(null)
+const buy2El = ref(null)
+const showSticky = ref(false)
 
 const unlock = [
   ['300–450 jobs matching your profile, updated daily', '300-450 empleos compatibles con tu perfil, actualizados a diario'],
@@ -79,7 +86,7 @@ const unlock = [
   ['Only verified listings that actually hire', 'Solo ofertas verificadas que contratan de verdad']
 ]
 const included = [
-  ['1M+ jobs aggregated from 1,000+ sources', '1M+ empleos agregados de 1.000+ fuentes'],
+  ['5M+ jobs aggregated from 1,000+ sources', '5M+ empleos agregados de 1.000+ fuentes'],
   ['AI Resume Builder and cover letters', 'AI Resume Builder y cartas de presentación'],
   ['Job Match with compatibility score', 'Job Match con puntuación de compatibilidad'],
   ['Job Tracker to organize your applications', 'Job Tracker para organizar tus candidaturas'],
@@ -98,7 +105,27 @@ function scrollToPlans () {
   if (plansEl.value) plansEl.value.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
+function checkSticky () {
+  const visible = el => {
+    if (!el) return false
+    const r = el.getBoundingClientRect()
+    return r.bottom > 0 && r.top < window.innerHeight
+  }
+  // show the fixed CTA only when neither in-page CTA is on screen
+  showSticky.value = !visible(buyEl.value) && !visible(buy2El.value)
+}
 let timer = null
-onMounted(() => { timer = setInterval(() => { if (f.secondsLeft > 0) f.secondsLeft-- }, 1000) })
-onUnmounted(() => clearInterval(timer))
+onMounted(() => {
+  timer = setInterval(() => { if (f.secondsLeft > 0) f.secondsLeft-- }, 1000)
+  window.addEventListener('scroll', checkSticky, { passive: true })
+  const m = document.getElementById('main')
+  if (m) m.addEventListener('scroll', checkSticky, { passive: true })
+  checkSticky()
+})
+onUnmounted(() => {
+  clearInterval(timer)
+  window.removeEventListener('scroll', checkSticky)
+  const m = document.getElementById('main')
+  if (m) m.removeEventListener('scroll', checkSticky)
+})
 </script>

@@ -61,6 +61,21 @@ export const useFunnel = defineStore('funnel', {
     go (i) {
       this.history.push(this.currentI)
       this.currentI = i
+      // Browser back/forward mirrors funnel steps. Auto screens (loader,
+      // uploading) don't create history entries, so Back never replays them.
+      const t = SCREENS[i] && SCREENS[i].type
+      if (!['loader', 'uploading'].includes(t)) {
+        try { window.history.pushState({ funnelI: i }, '') } catch (e) {}
+      }
+      window.scrollTo(0, 0)
+    },
+
+    // Called from the popstate listener (browser Back/Forward buttons)
+    browserJump (i) {
+      if (typeof i !== 'number' || !SCREENS[i]) return
+      if (this.history[this.history.length - 1] === i) this.history.pop()
+      else this.history.push(this.currentI)
+      this.currentI = i
       window.scrollTo(0, 0)
     },
     next () { this.go(this.nextIndex(this.currentI)) },

@@ -11,6 +11,9 @@
           @keydown="onComma"
           @focus="openSug = true" @input="openSug = true"
         >
+        <button class="add-inline" :disabled="!draft.trim() || titles.length >= 8" @click="add">
+          ＋ {{ f.T(['Add', 'Añadir']) }}
+        </button>
         <div v-if="openSug && draft.trim().length >= 2 && suggestions.length" class="sug-list">
           <button v-for="s in suggestions" :key="s" class="sug-row" @mousedown.prevent="pickSuggestion(s)">{{ s }}</button>
         </div>

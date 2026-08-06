@@ -8,6 +8,8 @@ const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
 const flagOf = n => (CDATA.find(c=>c[0]===n)||[,'🌍'])[1];
+// ISO-3166 alpha-2 codes (used to filter city autocomplete results)
+const CCODE = {Spain:'ES',France:'FR',Germany:'DE',Italy:'IT',Portugal:'PT',Netherlands:'NL',Belgium:'BE',Austria:'AT',Ireland:'IE',Sweden:'SE',Denmark:'DK',Finland:'FI',Poland:'PL',Czechia:'CZ',Romania:'RO',Hungary:'HU',Greece:'GR',Bulgaria:'BG',Croatia:'HR',Slovakia:'SK',Slovenia:'SI',Lithuania:'LT',Latvia:'LV',Estonia:'EE',Luxembourg:'LU',Malta:'MT',Cyprus:'CY','United States':'US','United Kingdom':'GB',Switzerland:'CH',Norway:'NO',Mexico:'MX',Argentina:'AR',Colombia:'CO',Chile:'CL',Peru:'PE',Uruguay:'UY',Ecuador:'EC',Venezuela:'VE',Brazil:'BR',Canada:'CA',Australia:'AU','New Zealand':'NZ',Japan:'JP',India:'IN',Morocco:'MA',Turkey:'TR','United Arab Emirates':'AE','South Africa':'ZA',Philippines:'PH','Dominican Republic':'DO'};
 
 // Job categories (used by the categories chips screen)
 const CATEGORIES = [
@@ -45,7 +47,7 @@ const S = [
 {id:'P3',phase:0,type:'single',icons:false,title:['How long have you been job hunting?','¿Cuánto tiempo llevas buscando empleo?'],
  opts:[{t:['Just started (<1 month)','Acabo de empezar (menos de 1 mes)']},{t:['1–3 months','1-3 meses']},{t:['3–6 months','3-6 meses']},{t:['6+ months','Más de 6 meses']},{t:["I'm not actively looking right now",'No estoy buscando activamente ahora']}]},
 {id:'P3b',phase:0,type:'chart',
- title:['65% of our members find a job within the 1st month','El 65% de nuestros miembros encuentra empleo en el primer mes'],
+ title:['55% of our members find a job within the 1st month','El 55% de nuestros miembros encuentra empleo en el primer mes'],
  sub:["We'll help you get there too",'Te ayudaremos a conseguirlo también'],
  note:['Based on JobWinner users who track their job search on our platform','Basado en usuarios de JobWinner que registran su búsqueda de empleo en la plataforma']},
 
@@ -60,9 +62,9 @@ const S = [
   {i:'mic',k:'prep',t:['Prepare for interviews','Prepararme las entrevistas']}
  ]},
 {id:'PB1',phase:1,type:'benefit',variant:'matches',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='matches'),
- title:['JobWinner searches 1M+ open jobs for you!','¡JobWinner busca entre más de 1M de empleos por ti!']},
+ title:['JobWinner searches 5M+ open jobs for you and finds the ones that match your profile','JobWinner busca entre más de 5M de empleos y encuentra los que encajan con tu perfil']},
 {id:'PB2',phase:1,type:'benefit',variant:'ats',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='interviews'),
- title:['JobWinner brings up to 3× more interview invitations thanks to an ATS-ready resume','JobWinner consigue hasta 3× más invitaciones a entrevista gracias a un CV listo para ATS']},
+ title:['JobWinner gets you up to 3× more interviews thanks to ATS-ready resumes & Resume Tailoring','JobWinner te consigue hasta 3× más entrevistas gracias a CVs listos para ATS y Resume Tailoring']},
 {id:'PB3',phase:1,type:'benefit',variant:'speed',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='speed'),
  title:['With JobWinner every application takes just ~5 minutes','Con JobWinner cada solicitud lleva solo ~5 minutos']},
 {id:'PB4',phase:1,type:'benefit',variant:'prep',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='prep'),
@@ -87,7 +89,7 @@ const S = [
 
 /* ---------------- PHASE 3 · YOUR GOALS ---------------- */
 {id:'PSPEED',phase:3,type:'speed',title:['How fast do you want to find a job?','¿Cómo de rápido quieres encontrar empleo?']},
-{id:'P3X',phase:3,type:'x3',title:['With JobWinner, 3× more replies are realistic.','Con JobWinner, 3× más respuestas es realista.']},
+{id:'P3X',phase:3,type:'x3',title:['With JobWinner, landing 3× more interviews is realistic.','Con JobWinner, conseguir 3× más entrevistas es realista.']},
 
 /* ---------------- PHASE 4 · JOB PREFERENCES ---------------- */
 {id:'P9',phase:4,type:'multi',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
@@ -113,7 +115,7 @@ const S = [
  body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.']},
 
 /* ---------------- PHASE 5 · RESULTS ---------------- */
-{id:'P48',phase:5,type:'loader',title:['Matching you with remote jobs based on your profile','Emparejándote con empleos remotos según tu perfil']},
+{id:'P48',phase:5,type:'loader',title:['Matching you with jobs based on your profile','Emparejándote con empleos según tu perfil']},
 {id:'P49',phase:5,type:'result'},
 {id:'P50',phase:5,type:'signup'},
 {id:'P51',phase:5,type:'paywall'},
@@ -125,4 +127,4 @@ const PLANS=[
   {name:['1 month','1 mes'], old:'49.99 €', day:'0.67', bill:['Billed 19.99 €/month, cancel anytime.','Se factura 19,99 €/mes, cancela cuando quieras.'], price:'19.99 €', popular:true},
   {name:['3 months','3 meses'], old:'99.99 €', day:'0.44', bill:['Billed 39.99 € every 3 months, cancel anytime.','Se factura 39,99 € cada 3 meses, cancela cuando quieras.'], price:'39.99 €'}
 ];
-export { PHASES, PHASE_ICONS, EU, CDATA, COUNTRIES, flagOf, S as SCREENS, PLANS, CATEGORIES, TITLE_SUGGESTIONS }
+export { PHASES, PHASE_ICONS, EU, CDATA, COUNTRIES, CCODE, flagOf, S as SCREENS, PLANS, CATEGORIES, TITLE_SUGGESTIONS }
