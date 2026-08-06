@@ -54,21 +54,24 @@ const S = [
 /* ---------------- PHASE 1 · AI EXPERIENCE ---------------- */
 {id:'P6',phase:1,type:'single',title:['Have you ever tried smart tools like AI to make your job search easier?','¿Has probado herramientas inteligentes como la IA para facilitar tu búsqueda de empleo?'],
  opts:[{i:'yes',t:['Yes','Sí']},{i:'notsure',t:['Not sure','No estoy seguro']},{i:'no',t:['No','No']}]},
-{id:'PH1',phase:1,type:'multi',title:['How can JobWinner help you?','¿Cómo puede ayudarte JobWinner?'],
+{id:'PH1',phase:1,type:'single',title:['Where can JobWinner help you the most?','¿Dónde puede ayudarte más JobWinner?'],
  opts:[
   {i:'search',k:'matches',t:['Find jobs that match my profile','Encontrar empleos que encajen con mi perfil']},
   {i:'users2',k:'interviews',t:['Get more interviews','Conseguir más entrevistas']},
   {i:'boltcirc',k:'speed',t:['Apply to jobs faster and save time','Aplicar más rápido y ahorrar tiempo']},
-  {i:'mic',k:'prep',t:['Prepare for interviews','Prepararme las entrevistas']}
+  {i:'mic',k:'prep',t:['Prepare for interviews','Prepararme las entrevistas']},
+  {i:'grid',k:'all',t:['All of the above','Todo lo anterior']}
  ]},
-{id:'PB1',phase:1,type:'benefit',variant:'matches',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='matches'),
+{id:'PB1',phase:1,type:'benefit',variant:'matches',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='matches',
  title:['JobWinner searches 5M+ open jobs for you and finds the ones that match your profile','JobWinner busca entre más de 5M de empleos y encuentra los que encajan con tu perfil']},
-{id:'PB2',phase:1,type:'benefit',variant:'ats',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='interviews'),
+{id:'PB2',phase:1,type:'benefit',variant:'ats',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='interviews',
  title:['JobWinner gets you up to 3× more interviews thanks to ATS-ready resumes & Resume Tailoring','JobWinner te consigue hasta 3× más entrevistas gracias a CVs listos para ATS y Resume Tailoring']},
-{id:'PB3',phase:1,type:'benefit',variant:'speed',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='speed'),
+{id:'PB3',phase:1,type:'benefit',variant:'speed',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='speed',
  title:['With JobWinner every application takes just ~5 minutes','Con JobWinner cada solicitud lleva solo ~5 minutos']},
-{id:'PB4',phase:1,type:'benefit',variant:'prep',cond:(st)=>(st.answers.PH1||[]).some(o=>o.k==='prep'),
+{id:'PB4',phase:1,type:'benefit',variant:'prep',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='prep',
  title:['Practice interviews with AI before the real one','Practica entrevistas con IA antes de la de verdad']},
+{id:'PBALL',phase:1,type:'benefit',variant:'all',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='all',
+ title:['You are in the right place, we can help you from start to finish.','Estás en el lugar adecuado: te ayudamos de principio a fin.']},
 
 /* ---------------- PHASE 2 · YOUR RESUME ---------------- */
 {id:'P18',phase:2,type:'single',title:['What best describes your resume right now?','¿Qué describe mejor tu CV ahora mismo?'],

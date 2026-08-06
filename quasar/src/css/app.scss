@@ -231,6 +231,12 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .bf-mini-cv li{font-size:12px;color:var(--jw-slate);padding-left:14px;position:relative;margin-bottom:4px}
 .bf-mini-cv li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--jw-blue);position:absolute;left:0;top:5px}
 .bf-title{max-width:560px;margin-left:auto;margin-right:auto}
+/* "all of the above" stacked benefit rows */
+.ball-row{display:flex;align-items:center;gap:13px;background:#fff;border:1.5px solid var(--jw-line);border-radius:16px;padding:15px 16px;margin-bottom:12px;box-shadow:var(--shadow);opacity:0;animation:bfin .5s cubic-bezier(.2,.8,.3,1) forwards}
+.ball-row b{display:block;font-family:var(--pjs);font-size:15.5px}
+.ball-row small{display:block;font-size:12.5px;color:var(--jw-slate);margin-top:1px}
+.ball-ic{width:40px;height:40px;flex:none}
+.ball-chev{color:var(--jw-slate);font-size:20px;flex:none}
 .bf-anim{position:relative;overflow:hidden}
 .bf-shimmer{position:absolute;inset:0;background:linear-gradient(100deg,transparent 40%,rgba(0,122,255,.07) 50%,transparent 60%);animation:bfshimmer 2.4s ease-in-out infinite;pointer-events:none}
 @keyframes bfshimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}

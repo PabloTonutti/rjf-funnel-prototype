@@ -54,6 +54,15 @@
       <div class="bf-saved-wrap"><span class="bf-saved">⚡ {{ f.T(['40 min saved on every application', '40 min ahorrados en cada solicitud']) }}</span></div>
     </div>
 
+    <!-- all: stacked list of every benefit (start to finish) -->
+    <div v-else-if="screen.variant === 'all'" style="max-width:480px;margin:14px auto 0;width:100%">
+      <div v-for="(b, k) in allRows" :key="k" class="ball-row" :style="{ animationDelay: (0.15 + k * 0.15) + 's' }">
+        <span class="ball-ic" v-html="duo(b.ic)" />
+        <span style="flex:1;text-align:left"><b>{{ f.T(b.t) }}</b><small>{{ f.T(b.s) }}</small></span>
+        <span class="ball-chev">›</span>
+      </div>
+    </div>
+
     <!-- prep: AI mock interview -->
     <div v-else class="bf-card" style="text-align:left">
       <div class="bf-head" style="border-bottom:none;padding-bottom:0;margin-bottom:12px">
@@ -78,6 +87,13 @@ import FootContinue from './FootContinue.vue'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
+
+const allRows = [
+  { ic: 'search', t: ['Find jobs that match your profile', 'Encuentra empleos que encajan con tu perfil'], s: ['5M+ open jobs scanned daily', '5M+ empleos escaneados a diario'] },
+  { ic: 'doccheck', t: ['Get 3× more interviews', 'Consigue 3× más entrevistas'], s: ['ATS-ready resumes & tailoring', 'CVs listos para ATS y tailoring'] },
+  { ic: 'boltcirc', t: ['Apply in ~5 minutes', 'Aplica en ~5 minutos'], s: ['40 min saved per application', '40 min ahorrados por solicitud'] },
+  { ic: 'mic', t: ['Practice interviews with AI', 'Practica entrevistas con IA'], s: ['Voice mocks + instant feedback', 'Simulacros por voz + feedback instantáneo'] }
+]
 
 const jobs = [
   { role: 'Senior Product Manager', co: 'Nordia', meta: ['Hybrid · 85–110k €', 'Híbrido · 85-110k €'], m: 96, c: '#02112D' },
