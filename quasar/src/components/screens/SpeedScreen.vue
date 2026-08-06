@@ -3,18 +3,23 @@
     <h1 class="qtitle">{{ f.T(screen.title) }}</h1>
     <div class="speed-widget">
       <div class="speed-big">{{ f.T(options[val].label) }}</div>
-      <div class="speed-cards">
-        <button
+      <div class="speed-icons">
+        <span
           v-for="(o, k) in options" :key="k"
-          class="speed-card" :class="{ on: val === k }"
+          class="speed-ic" :class="{ on: val === k }"
+          v-html="duo(o.icon)"
           @click="val = k"
-        >
-          <span class="speed-ic" v-html="duo(o.icon)" />
-          <b>{{ f.T(o.label) }}</b>
-          <small v-if="k === 1" class="speed-tag">{{ f.T(['Recommended', 'Recomendado']) }}</small>
-        </button>
+        />
       </div>
-      <input type="range" class="rng speed-rng" min="0" max="2" step="1" :value="val" @input="val = +$event.target.value">
+      <input
+        type="range" class="rng speed-rng" min="0" max="2" step="1"
+        :value="val" @input="val = +$event.target.value"
+        :aria-label="f.T(['How fast', 'Cómo de rápido'])"
+      >
+      <div class="speed-labels">
+        <span v-for="(o, k) in options" :key="k" :class="{ on: val === k }" @click="val = k">{{ f.T(o.label) }}</span>
+      </div>
+      <div v-if="val === 1" class="speed-reco">{{ f.T(['Recommended', 'Recomendado']) }}</div>
     </div>
   </div></div>
   <FootContinue :label="f.T(['CONTINUE', 'Continuar'])" @go="go" />
