@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap"><div class="screen"><div class="inter">
+  <div class="wrap"><div class="screen"><div class="inter" style="justify-content:flex-start">
     <h1 class="bf-title">{{ f.T(screen.title) }}</h1>
 
     <!-- matches: animated fresh-matches card -->

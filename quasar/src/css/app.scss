@@ -448,6 +448,12 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .col.jw .bar-row .pct{color:var(--jw-blue)}
 
 /* ============ responsive: small phones ============ */
+/* Benefit titles: same 32px as every interstitial; on wide screens the block
+   widens beyond the 600px wrap so long titles break into 2 lines, centered */
+@media (min-width:900px){
+  .inter h1.bf-title{width:760px;max-width:none;margin-left:calc((100% - 760px)/2)}
+}
+
 @media (max-width:380px){
   h1{font-size:22px}
   .inter h1{font-size:23px}
@@ -489,6 +495,5 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
   .compare{gap:16px}
   .compare h4{font-size:13.5px}
   .loader-wrap h1{font-size:24px}
-  .inter h1.bf-title{font-size:25px}
   .bf-card{max-width:520px}
 }
