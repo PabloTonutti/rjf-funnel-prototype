@@ -25,6 +25,10 @@
         <span class="bf-arrow" v-html="ic('arrowright')" />
         <div class="bf-score after"><small>{{ f.T(['AFTER', 'DESPUÉS']) }}</small><b>94</b><span>{{ f.T(['Resume score', 'Nota del CV']) }}</span></div>
       </div>
+      <div class="bf-badges">
+        <span class="bf-badge">📄 {{ f.T(['Tailored resume', 'CV a medida']) }}</span>
+        <span class="bf-badge">✉️ {{ f.T(['Cover letter', 'Carta de presentación']) }}</span>
+      </div>
       <div class="bf-mini-cv">
         <div class="bf-cv-head"><span class="bf-av">AR</span><span><b>Alex Richter</b><small>Senior Product Manager</small></span><span class="bf-pill" style="margin-left:auto">ATS ✓</span></div>
         <div class="bf-strike">{{ f.T(['Responsible for team', 'Responsable del equipo']) }}</div>
@@ -76,17 +80,40 @@
       <div class="feat"><span class="ck" v-html="ic('check')" /> {{ f.T(['Practice until you walk in confident', 'Practica hasta entrar con confianza']) }}</div>
     </div>
 
+    <div v-if="screen.variant !== 'all'" class="also-row">
+      <small>{{ f.T(['Also included:', 'También incluye:']) }}</small>
+      <span v-for="(lbl, k) in alsoChips" :key="k" class="also-chip">{{ f.T(lbl) }}</span>
+    </div>
+
   </div></div></div>
   <FootContinue :label="f.T(['CONTINUE', 'Continuar'])" @go="f.next()" />
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { duo, ic } from 'assets/graphics'
 import FootContinue from './FootContinue.vue'
 
-defineProps({ screen: { type: Object, required: true } })
+const props = defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
+
+const alsoChips = computed(() =>
+  Object.entries(OTHERS).filter(([k]) => k !== props.screen.variant).map(([, lbl]) => lbl)
+)
+
+// Pool of sample jobs — 3 are drawn at random on every visit/refresh
+const JOB_POOL = [
+  { role: 'Senior Product Manager', co: 'Nordia', meta: ['Hybrid · 85–110k €', 'Híbrido · 85-110k €'], c: '#02112D' },
+  { role: 'Product Manager, Growth', co: 'Peoplr', meta: ['Remote · 75–95k €', 'Remoto · 75-95k €'], c: '#007AFF' },
+  { role: 'Lead Product Manager', co: 'Deliveo', meta: ['Berlin · 95–125k €', 'Berlín · 95-125k €'], c: '#DE8F6E' },
+  { role: 'UX Researcher', co: 'Loomly', meta: ['Remote · 55–70k €', 'Remoto · 55-70k €'], c: '#88AB75' },
+  { role: 'Data Analyst', co: 'Finwio', meta: ['Hybrid · 45–60k €', 'Híbrido · 45-60k €'], c: '#02112D' },
+  { role: 'Marketing Manager', co: 'Brandr', meta: ['Remote · 50–65k €', 'Remoto · 50-65k €'], c: '#F2C037' },
+  { role: 'Frontend Developer', co: 'Stackly', meta: ['Remote · 60–80k €', 'Remoto · 60-80k €'], c: '#007AFF' },
+  { role: 'Customer Success Manager', co: 'Helpdeskr', meta: ['Hybrid · 40–55k €', 'Híbrido · 40-55k €'], c: '#DE8F6E' },
+  { role: 'Operations Lead', co: 'Logistiq', meta: ['Berlin · 65–85k €', 'Berlín · 65-85k €'], c: '#88AB75' }
+]
 
 const allRows = [
   { ic: 'search', t: ['Find jobs that match your profile', 'Encuentra empleos que encajan con tu perfil'], s: ['5M+ open jobs scanned daily', '5M+ empleos escaneados a diario'] },
@@ -95,11 +122,20 @@ const allRows = [
   { ic: 'mic', t: ['Practice interviews with AI', 'Practica entrevistas con IA'], s: ['Voice mocks + instant feedback', 'Simulacros por voz + feedback instantáneo'] }
 ]
 
-const jobs = [
-  { role: 'Senior Product Manager', co: 'Nordia', meta: ['Hybrid · 85–110k €', 'Híbrido · 85-110k €'], m: 96, c: '#02112D' },
-  { role: 'Product Manager, Growth', co: 'Peoplr', meta: ['Remote · 75–95k €', 'Remoto · 75-95k €'], m: 93, c: '#007AFF' },
-  { role: 'Lead Product Manager', co: 'Deliveo', meta: ['Berlin · 95–125k €', 'Berlín · 95-125k €'], m: 91, c: '#DE8F6E' }
-]
+// Draw 3 random jobs with fresh match percentages each time
+const jobs = (() => {
+  const pool = [...JOB_POOL].sort(() => Math.random() - 0.5).slice(0, 3)
+  let m = 97 - Math.floor(Math.random() * 2)
+  return pool.map(j => { const job = { ...j, m }; m -= 2 + Math.floor(Math.random() * 3); return job })
+})()
+
+// Cross-sell chips: what else the user gets (hidden on "All of the above")
+const OTHERS = {
+  matches: ['Best-matching jobs', 'Empleos que encajan'],
+  ats: ['Job-specific applications', 'Solicitudes a medida'],
+  speed: ['5-min job applications', 'Solicitudes en 5 min'],
+  prep: ['Interview prep tools', 'Preparación de entrevistas']
+}
 
 // The matches card loops via pure CSS keyframes (see .bf-row-loop)
 

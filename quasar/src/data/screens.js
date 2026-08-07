@@ -63,9 +63,9 @@ const S = [
   {i:'grid',k:'all',t:['All of the above','Todo lo anterior']}
  ]},
 {id:'PB1',phase:1,type:'benefit',variant:'matches',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='matches',
- title:['JobWinner searches 5M+ open jobs for you and finds the ones that match your profile','JobWinner busca entre más de 5M de empleos y encuentra los que encajan con tu perfil']},
+ title:['JobWinner finds the best matching jobs for you across 5M+ open jobs','JobWinner encuentra los empleos que mejor encajan contigo entre más de 5M de ofertas']},
 {id:'PB2',phase:1,type:'benefit',variant:'ats',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='interviews',
- title:['JobWinner gets you up to 3× more interviews thanks to ATS-ready resumes & Resume Tailoring','JobWinner te consigue hasta 3× más entrevistas gracias a CVs listos para ATS y Resume Tailoring']},
+ title:['JobWinner gets you up to 3× more interviews with tailored job applications','JobWinner te consigue hasta 3× más entrevistas con solicitudes hechas a medida']},
 {id:'PB3',phase:1,type:'benefit',variant:'speed',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='speed',
  title:['With JobWinner every application takes just ~5 minutes','Con JobWinner cada solicitud lleva solo ~5 minutos']},
 {id:'PB4',phase:1,type:'benefit',variant:'prep',cond:(st)=>st.answers.PH1 && st.answers.PH1.k==='prep',
