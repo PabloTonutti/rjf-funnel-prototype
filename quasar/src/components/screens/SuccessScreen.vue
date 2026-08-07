@@ -1,13 +1,13 @@
 <template>
   <div class="wrap"><div class="screen"><div class="success-wrap">
     <div class="illo" v-html="ILLO.trophy" />
-    <h1>{{ f.T(['Subscription activated!', '¡Suscripción activada!']) }}</h1>
+    <h1>{{ f.T(['Your account is ready!', '¡Tu cuenta está lista!']) }}</h1>
     <p class="subtitle">
-      {{ f.T(['Plan', 'Plan']) }} <b>{{ f.T(plan.name) }}</b> · {{ plan.price }} {{ f.T(['with 60% off.', 'con 60% de descuento.']) }}<br>
+      <template v-if="who">{{ f.T(['Welcome,', 'Bienvenido,']) }} <b>{{ who }}</b> 👋<br></template>
       {{ f.T(['Your 300–450 matching jobs are waiting inside.', 'Tus 300-450 empleos compatibles te esperan.']) }}
     </p>
     <button class="btn btn-primary" style="max-width:280px" @click="f.restart()">{{ f.T(['START OVER', 'Volver a empezar']) }}</button>
-    <div class="mock-note">{{ f.T(['Prototype: simulated payment — no real charge was made.', 'Prototipo: pago simulado, no se ha realizado ningún cargo real.']) }}</div>
+    <div class="mock-note">{{ f.T(['Prototype: simulated signup — no account was created.', 'Prototipo: registro simulado, no se ha creado ninguna cuenta.']) }}</div>
   </div></div></div>
 </template>
 
@@ -15,9 +15,8 @@
 import { computed } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { ILLO } from 'assets/graphics'
-import { PLANS } from 'src/data/screens'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
-const plan = computed(() => PLANS[f.selectedPlan])
+const who = computed(() => (f.answers.P50 && f.answers.P50.name) || '')
 </script>

@@ -121,7 +121,6 @@ const S = [
 {id:'P48',phase:5,type:'loader',title:['Matching you with jobs based on your profile','Emparejándote con empleos según tu perfil']},
 {id:'P49',phase:5,type:'result'},
 {id:'P50',phase:5,type:'signup'},
-{id:'P51',phase:5,type:'paywall'},
 {id:'P52',phase:5,type:'success'}
 ];
 
