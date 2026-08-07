@@ -27,6 +27,12 @@ const AI_PROMPT = `You are a career assistant helping match a candidate to jobs.
 RESUME:
 `
 
+// Backend AI proxy (Cloudflare Worker in /worker) — the OpenAI key lives there
+// as a secret. Set the deployed worker URL here (or override via localStorage
+// 'jw_ai_endpoint' for testing). Empty string = disabled.
+const AI_ENDPOINT =
+  (typeof localStorage !== 'undefined' && localStorage.getItem('jw_ai_endpoint')) || ''
+
 // Funnel engine — same navigation/branch logic as the HTML prototype.
 // State lives in memory only (no localStorage), as specced.
 export const useFunnel = defineStore('funnel', {
@@ -121,6 +127,23 @@ export const useFunnel = defineStore('funnel', {
           if (this.upload && this.upload.kind === 'file' && this.upload.file) {
             text = await extractText(this.upload.file)
           }
+          // 1st choice: backend proxy (key never touches the client)
+          if (text && text.trim().length > 200 && AI_ENDPOINT) {
+            try {
+              const res = await fetch(AI_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text.slice(0, 7000) })
+              })
+              const j = await res.json()
+              if (Array.isArray(j.titles) && j.titles.length) {
+                this.aiTitles = j.titles.slice(0, 8).map(String)
+                this.aiStatus = 'done'
+                return
+              }
+            } catch (e) { /* fall through to direct key / categories */ }
+          }
+          // 2nd choice: user-provided key stored in this browser (AI settings)
           if (text && text.trim().length > 200 && this.openaiKey) {
             const res = await fetch('https://api.openai.com/v1/chat/completions', {
               method: 'POST',
