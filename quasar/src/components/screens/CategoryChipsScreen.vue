@@ -9,6 +9,9 @@
           @keydown.enter.prevent.stop="addDraft"
           @focus="openSug = true" @input="openSug = true"
         >
+        <button class="add-inline" :disabled="!draft.trim()" @click="addDraft">
+          ＋ {{ f.T(['Add', 'Añadir']) }}
+        </button>
         <div v-if="openSug && suggestions.length" class="sug-list">
           <button v-for="s in suggestions" :key="s[0]" class="sug-row" @mousedown.prevent="addCat(s)">{{ f.T(s) }}</button>
         </div>
@@ -56,6 +59,7 @@ const KEYS = [
   [/research/i, 'Research'],
   [/medical|health|nurse|telehealth/i, 'Healthcare']
 ]
+// Preselect the categories that apply the MOST to the resume-derived titles (max 3)
 function inferCategories () {
   const titles = f.answers.P19T || []
   const found = []
@@ -64,7 +68,7 @@ function inferCategories () {
       if (re.test(t) && !found.includes(cat)) found.push(cat)
     }
   }
-  return found.map(name => ({ t: CATEGORIES.find(c => c[0] === name) })).filter(x => x.t)
+  return found.slice(0, 3).map(name => ({ t: CATEGORIES.find(c => c[0] === name) })).filter(x => x.t)
 }
 
 if (!f.answers.P13) f.answers.P13 = inferCategories()
@@ -73,12 +77,14 @@ const prefilled = ref(picked.value.length > 0)
 
 const draft = ref('')
 const openSug = ref(false)
+// Main dropdown = the 15 real categories ("open to any role" is covered by Select all)
+const MAIN_CATEGORIES = CATEGORIES.filter(c => c[0] !== "I'm open to any role")
 const suggestions = computed(() => {
   const q = draft.value.trim().toLowerCase()
-  return CATEGORIES
+  return MAIN_CATEGORIES
     .filter(c => !picked.value.some(p => p.t[0] === c[0]))
     .filter(c => !q || c[0].toLowerCase().includes(q) || c[1].toLowerCase().includes(q))
-    .slice(0, 6)
+    .slice(0, q ? 6 : 15)
 })
 
 function addCat (c) {

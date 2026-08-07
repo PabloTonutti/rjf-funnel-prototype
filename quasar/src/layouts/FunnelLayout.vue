@@ -2,7 +2,7 @@
   <div id="shell">
     <header id="hdr">
       <div class="hdr-row">
-        <button id="backBtn" :class="{ hidden: hideBack }" aria-label="Back" @click="f.back()">
+        <button id="backBtn" :class="{ ghost: hideBack }" aria-label="Back" @click="f.back()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </button>
         <div class="logo-wrap"><img :src="logo" alt="JobWinner"></div>
@@ -18,7 +18,7 @@
         <div id="phaseLabel">{{ phaseLabel }}<template v-if="stepLabel"> · {{ stepLabel }}</template></div>
       </div>
     </header>
-    <main id="main"><router-view /></main>
+    <main id="main" :class="{ pwmode: f.screen.type === 'paywall' }"><router-view /></main>
     <footer id="foot"></footer>
   </div>
 </template>
