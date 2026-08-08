@@ -7,14 +7,20 @@ const PROMPT = `You are a career assistant helping match a candidate to jobs. Be
 RESUME:
 `
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*', // tighten to https://pablotonutti.github.io in prod
+// Browser access limited to the funnel (and localhost for development)
+const ALLOWED = origin =>
+  origin === 'https://pablotonutti.github.io' ||
+  /^http:\/\/localhost(:\d+)?$/.test(origin || '')
+
+const corsFor = origin => ({
+  'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://pablotonutti.github.io',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
-}
+})
 
 export default {
   async fetch (req, env) {
+    const CORS = corsFor(req.headers.get('Origin'))
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
     if (req.method !== 'POST') return new Response('POST only', { status: 405, headers: CORS })
     try {
