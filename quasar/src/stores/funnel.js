@@ -31,7 +31,8 @@ RESUME:
 // as a secret. Set the deployed worker URL here (or override via localStorage
 // 'jw_ai_endpoint' for testing). Empty string = disabled.
 const AI_ENDPOINT =
-  (typeof localStorage !== 'undefined' && localStorage.getItem('jw_ai_endpoint')) || ''
+  (typeof localStorage !== 'undefined' && localStorage.getItem('jw_ai_endpoint')) ||
+  'https://jobwinner-ai.jobwinner.workers.dev'
 
 // Funnel engine — same navigation/branch logic as the HTML prototype.
 // State lives in memory only (no localStorage), as specced.
