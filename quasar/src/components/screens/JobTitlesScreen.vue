@@ -18,7 +18,7 @@
           <button v-for="s in suggestions" :key="s" class="sug-row" @mousedown.prevent="pickSuggestion(s)">{{ s }}</button>
         </div>
       </div>
-      <div class="chips" v-if="titles.length">
+      <div class="chips chips-big" v-if="titles.length">
         <span v-for="(t, k) in titles" :key="t + k" class="chip-t">
           {{ t }}
           <button :aria-label="'remove ' + t" @click="remove(k)">
@@ -54,8 +54,8 @@ import FootContinue from './FootContinue.vue'
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 
-// Prefill once from the AI suggestions (or fallback), then the user owns the list
-if (!f.answers.P19T) f.answers.P19T = [...f.aiTitles]
+// Prefill once with the top 5 AI suggestions, then the user owns the list
+if (!f.answers.P19T) f.answers.P19T = f.aiTitles.slice(0, 5)
 const titles = computed(() => f.answers.P19T)
 const prefilled = ref(f.aiTitles.length > 0 && titles.value.length > 0)
 

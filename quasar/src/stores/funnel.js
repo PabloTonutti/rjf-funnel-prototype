@@ -48,6 +48,7 @@ export const useFunnel = defineStore('funnel', {
     secondsLeft: 9 * 60 + 57,
     // AI resume review
     aiTitles: [],
+    aiScore: null, // real resume score from the AI review (null → static fallback)
     aiStatus: 'idle', // idle | running | done | fallback
     aiPromise: null,
     openaiKey: (typeof localStorage !== 'undefined' && localStorage.getItem('jw_openai_key')) || ''
@@ -122,6 +123,7 @@ export const useFunnel = defineStore('funnel', {
     analyzeResume () {
       this.aiStatus = 'running'
       this.aiTitles = []
+      this.aiScore = null
       this.aiPromise = (async () => {
         try {
           let text = ''
@@ -139,6 +141,7 @@ export const useFunnel = defineStore('funnel', {
               const j = await res.json()
               if (Array.isArray(j.titles) && j.titles.length) {
                 this.aiTitles = j.titles.slice(0, 8).map(String)
+                if (j.score && j.score.overall) this.aiScore = j.score
                 this.aiStatus = 'done'
                 return
               }
@@ -175,7 +178,8 @@ export const useFunnel = defineStore('funnel', {
     restart () {
       this.$patch({
         answers: {}, history: [], selectedPlan: 1, salaryPeriod: 1,
-        upload: null, secondsLeft: 9 * 60 + 57, currentI: 0
+        upload: null, secondsLeft: 9 * 60 + 57, currentI: 0,
+        aiTitles: [], aiScore: null, aiStatus: 'idle'
       })
     }
   }

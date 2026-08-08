@@ -23,14 +23,16 @@ import FootContinue from './FootContinue.vue'
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 
-const SCORE = 84
+// Real score from the AI review when available; static fallback otherwise
+const ai = f.aiScore
+const SCORE = ai ? ai.overall : 84
 const rows = [
-  { label: ['Structure', 'Estructura'], v: 90 },
-  { label: ['Details', 'Detalles'], v: 90 },
-  { label: ['Summary', 'Resumen'], v: 90 },
-  { label: ['Employment', 'Experiencia'], v: 79 },
-  { label: ['Education', 'Formación'], v: 87 },
-  { label: ['Skills', 'Habilidades'], v: 90 }
+  { label: ['Structure', 'Estructura'], v: ai ? ai.structure : 90 },
+  { label: ['Details', 'Detalles'], v: ai ? ai.details : 90 },
+  { label: ['Summary', 'Resumen'], v: ai ? ai.summary : 90 },
+  { label: ['Employment', 'Experiencia'], v: ai ? ai.employment : 79 },
+  { label: ['Education', 'Formación'], v: ai ? ai.education : 87 },
+  { label: ['Skills', 'Habilidades'], v: ai ? ai.skills : 90 }
 ]
 
 const donut = computed(() => {

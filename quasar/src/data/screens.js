@@ -118,7 +118,7 @@ const S = [
  body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.']},
 
 /* ---------------- PHASE 5 · RESULTS ---------------- */
-{id:'P48',phase:5,type:'loader',title:['Matching you with jobs based on your profile','Emparejándote con empleos según tu perfil']},
+{id:'P48',phase:5,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
 {id:'P49',phase:5,type:'result'},
 {id:'P50',phase:5,type:'signup'},
 {id:'P52',phase:5,type:'success'}

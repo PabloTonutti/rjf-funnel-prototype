@@ -48,7 +48,7 @@ const C = 2 * Math.PI * 66
 const checks = [
   ['Categories & Salary', 'Categorías y Salario'], ['Experience', 'Experiencia'],
   ['Work Preferences', 'Preferencias de trabajo'], ['Location & Remote', 'Ubicación y Remoto'],
-  ['Personal Goals', 'Objetivos personales']
+  ['Target roles & timeline', 'Puestos objetivo y plazo']
 ]
 const reviews = [
   ['Michael', ['Using AI to automate job applications has saved me countless hours and landed me 12 interviews in three weeks!', 'Usar IA para automatizar candidaturas me ha ahorrado horas incontables y me consiguió 12 entrevistas en tres semanas.']],

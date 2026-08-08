@@ -311,6 +311,10 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .chip-t button{border:none;background:none;cursor:pointer;color:var(--jw-slate);display:flex;padding:0}
 .chip-t button:hover{color:var(--jw-terracotta)}
 .ai-note{background:var(--jw-tint);border-radius:12px;padding:14px 16px;font-size:14.5px;margin-top:22px;line-height:1.5}
+/* titles as full-width cards (same visual weight as option cards) */
+.chips-big{flex-direction:column;gap:10px}
+.chips-big .chip-t{width:100%;justify-content:space-between;background:#fff;border-radius:14px;padding:15px 16px;font-size:15.5px;box-shadow:var(--shadow)}
+.chips-big .chip-t button svg{width:20px;height:20px}
 
 /* resume upload flow */
 .up-card{background:var(--jw-tint);border:1.5px solid #7CB8F3;border-radius:var(--r-card);padding:26px 22px;max-width:440px;margin:14px auto 0;width:100%;text-align:center}

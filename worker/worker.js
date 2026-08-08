@@ -2,7 +2,11 @@
 // Holds the OpenAI key as a secret; the public funnel never sees it.
 // Deploy: npx wrangler deploy   ·   Secret: npx wrangler secret put OPENAI_API_KEY
 
-const PROMPT = `You are a career assistant helping match a candidate to jobs. Below is the raw text of their resume. Based on their MOST RECENT work experience, suggest up to 8 closely related job titles (short, standard, market-recognizable titles in English). Reply with ONLY a JSON array of strings, no other text.
+const PROMPT = `You are a career assistant and expert ATS resume reviewer. Below is the raw text of a candidate's resume. Reply with ONLY a JSON object, no other text, with this exact shape:
+{"titles": [...], "score": {"overall": n, "structure": n, "details": n, "summary": n, "employment": n, "education": n, "skills": n}}
+
+- "titles": up to 8 closely related job titles based on their MOST RECENT work experience (short, standard, market-recognizable titles in English).
+- "score": integers 0-100 rating the resume's quality for ATS systems and recruiters. Be realistic and slightly strict: most decent resumes score 55-85 overall. Score each dimension on structure/formatting, quantified details, professional summary, employment history, education section, and skills section.
 
 RESUME:
 `
@@ -41,9 +45,17 @@ export default {
         })
       })
       const j = await r.json()
-      const raw = (j.choices && j.choices[0] && j.choices[0].message.content) || '[]'
-      const titles = JSON.parse((raw.match(/\[[\s\S]*\]/) || ['[]'])[0]).slice(0, 8).map(String)
-      return Response.json({ titles }, { headers: CORS })
+      const raw = (j.choices && j.choices[0] && j.choices[0].message.content) || '{}'
+      const obj = JSON.parse((raw.match(/\{[\s\S]*\}/) || ['{}'])[0])
+      const titles = Array.isArray(obj.titles) ? obj.titles.slice(0, 8).map(String) : []
+      const clamp = n => Math.max(0, Math.min(100, Math.round(Number(n) || 0)))
+      const s = obj.score || {}
+      const score = {
+        overall: clamp(s.overall), structure: clamp(s.structure), details: clamp(s.details),
+        summary: clamp(s.summary), employment: clamp(s.employment),
+        education: clamp(s.education), skills: clamp(s.skills)
+      }
+      return Response.json({ titles, score: score.overall ? score : null }, { headers: CORS })
     } catch (e) {
       return Response.json({ error: 'analysis failed' }, { status: 500, headers: CORS })
     }
