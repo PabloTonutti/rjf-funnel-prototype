@@ -370,6 +370,17 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .result-hero{text-align:center;margin-bottom:20px}
 .result-hero .big{font-family:var(--pjs);font-weight:800;font-size:44px;color:var(--jw-blue);line-height:1.05}
 .result-cols{display:flex;flex-direction:column;gap:0}
+/* Tarjetas de paso del plan (una por paso, apiladas) */
+.step-card{display:flex;gap:14px;align-items:flex-start}
+.step-ic{width:48px;height:48px;border-radius:14px;background:var(--jw-tint);flex:none;display:flex;align-items:center;justify-content:center;color:var(--jw-blue)}
+.step-ic svg{width:24px;height:24px}
+.step-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--jw-slate)}
+.step-tx{min-width:0}
+.step-tx b{display:block;font-family:var(--pjs);font-weight:800;font-size:17px;margin:2px 0 3px}
+.step-tx > span{color:var(--jw-slate);font-size:14.5px;line-height:1.5}
+.found-badge{display:flex;align-items:center;gap:8px;margin-top:10px;background:#e9f8ef;color:#15803d;font-weight:600;font-size:13.5px;border-radius:10px;padding:9px 12px;line-height:1.35}
+.found-badge .fb-ic{display:flex;flex:none}
+.found-badge .fb-ic svg{width:16px;height:16px}
 .card{border:1px solid var(--jw-line);border-radius:var(--r-card);padding:18px 20px;margin-bottom:16px;background:#fff;box-shadow:var(--shadow)}
 .card h3{font-family:var(--pjs);font-weight:800;font-size:16.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .card h3 svg{width:18px;height:18px;color:var(--jw-blue)}
@@ -495,8 +506,8 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
   .relate-foot{display:flex;justify-content:center}
   .micro-card{border-radius:20px;margin-bottom:10vh}
   .micro-q{align-items:center}
-  .result-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-  .result-cols .card{margin-bottom:0}
+  /* Resultado: UNA sola columna (tarjetas apiladas), centrada */
+  .result-cols{max-width:560px;margin:0 auto;width:100%}
   .pw-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;align-items:start}
   .pw-sticky{display:none}
   .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -508,6 +519,5 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
   .rev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .compare{gap:16px}
   .compare h4{font-size:13.5px}
-  .loader-wrap h1{font-size:24px}
   .bf-card{max-width:520px}
 }

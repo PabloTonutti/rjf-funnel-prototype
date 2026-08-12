@@ -32,7 +32,7 @@
           'Lo hemos rellenado según tu puesto más reciente. Edita o añade más puestos si quieres.'
         ]) }}
       </div>
-      <button class="skiplink" style="margin-top:18px" @click="showKey = !showKey">⚙️ {{ f.T(['AI settings', 'Ajustes de IA']) }}</button>
+      <!-- Ajustes de IA ocultos del funnel (la API key ya vive en el worker; sin utilidad para el usuario final) -->
       <div v-if="showKey" style="max-width:460px;margin:10px auto 0;width:100%">
         <p class="footnote" style="text-align:left;margin:0 0 8px">{{ f.T(['Optional: paste an OpenAI API key to enable real AI suggestions from the uploaded resume. Stored only in this browser. In production this call moves to the backend.', 'Opcional: pega una API key de OpenAI para sugerencias reales de IA a partir del CV subido. Se guarda solo en este navegador. En producción esta llamada va al backend.']) }}</p>
         <div style="display:flex;gap:8px">

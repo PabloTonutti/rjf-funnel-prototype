@@ -114,8 +114,9 @@ const S = [
 {id:'P7',phase:4,type:'multi',title:['What type of work are you open to?','¿A qué tipo de trabajo estás abierto?'],
  opts:[{i:'clockfull',t:['Full-time','Full-time']},{i:'clockhalf',t:['Part-time','Part-time']},{i:'pen',t:['Freelance / Contract','Freelance / Contrato']},{i:'book',t:['Internship','Prácticas']}]},
 {id:'PTHANKS',phase:4,type:'inter',illo:'target',
- title:['Thanks for taking the time to answer everything!','¡Gracias por tomarte el tiempo de responder!'],
- body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.']},
+ title:['Time to create a personalized plan for you!','¡Hora de crear un plan personalizado para ti!'],
+ body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
+ cta:['CREATE PLAN','Crear plan']},
 
 /* ---------------- PHASE 5 · RESULTS ---------------- */
 {id:'P48',phase:5,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},

@@ -6,7 +6,7 @@
       <div class="csel-box">
         <span class="cflag" style="display:flex" v-html="ic('mappin')" />
         <input
-          type="text" v-model="q" :placeholder="f.T(['e.g. Dublin', 'p. ej. Dublín'])"
+          type="text" v-model="q" :placeholder="cityPlaceholder"
           autocomplete="off"
           @input="onType" @focus="open = true"
           @keydown.enter.stop.prevent="go"
@@ -45,6 +45,12 @@ const rootEl = ref(null)
 const title = computed(() => {
   const c = f.answers.P11 || (f.lang === 'en' ? 'your country' : 'tu país')
   return f.lang === 'en' ? `Where exactly in ${c}?` : `¿En qué parte de ${c} exactamente?`
+})
+
+// Placeholder según el país elegido (su capital); si no lo conocemos, sin placeholder.
+const cityPlaceholder = computed(() => {
+  const cap = capitalOf()
+  return cap ? f.T([`e.g. ${cap}`, `p. ej. ${cap}`]) : ''
 })
 
 // Free typeahead geocoding (photon.komoot.io, CORS-friendly), filtered to the chosen country

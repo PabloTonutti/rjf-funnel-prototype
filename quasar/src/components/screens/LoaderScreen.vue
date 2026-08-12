@@ -1,6 +1,6 @@
 <template>
   <div class="wrap"><div class="screen"><div class="loader-wrap">
-    <h1 style="font-size:20px;text-align:center">{{ f.T(screen.title) }}</h1>
+    <h1 style="text-align:center">{{ f.T(screen.title) }}</h1>
     <div class="ring-box">
       <svg width="150" height="150">
         <circle cx="75" cy="75" r="66" fill="none" stroke="var(--jw-line)" stroke-width="10"/>

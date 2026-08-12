@@ -2,21 +2,26 @@
   <div class="wrap"><div class="screen">
     <div class="result-hero">
       <div class="illo" style="margin:2px 0 10px" v-html="ILLO.trophy" />
-      <div class="eyebrow">{{ f.T(['Success!', '¡Listo!']) }}</div>
-      <div class="big">300–450</div>
-      <h1 style="font-size:22px">{{ f.T(['remote jobs match your profile', 'empleos remotos encajan con tu perfil']) }}</h1>
-      <p class="subtitle" style="margin-bottom:0">{{ f.T(['Estimated range based on your answers — updated daily with new verified listings.', 'Rango estimado según tus respuestas; se actualiza a diario con nuevas ofertas verificadas.']) }}</p>
+      <h1 style="font-size:26px">{{ f.T(['Your personalized plan is ready', 'Tu plan personalizado está listo']) }}</h1>
+      <p class="subtitle" style="margin-bottom:0">{{ f.T(['We got you covered for all your job hunt.', 'Te cubrimos en toda tu búsqueda de empleo.']) }}</p>
     </div>
     <div class="result-cols">
-      <div class="card">
-        <h3><span v-html="ic('calendar')" style="display:contents" /> {{ f.T(['Get hired in 4–6 weeks', 'Consigue empleo en 4-6 semanas']) }}</h3>
-        <div class="tl-item"><div class="tl-dot" v-html="ic('check')" /><div class="tl-txt"><b>{{ f.T(['Today', 'Hoy']) }}</b><span>{{ f.T(['300–450 jobs matching your profile', '300-450 empleos compatibles con tu perfil']) }}</span></div></div>
-        <div class="tl-item"><div class="tl-dot">2</div><div class="tl-txt"><b>{{ f.T(['Week 2', 'Semana 2']) }}</b><span>{{ f.T(['300–600 tailored applications sent', '300-600 candidaturas personalizadas enviadas']) }}</span></div></div>
-        <div class="tl-item"><div class="tl-dot">4</div><div class="tl-txt"><b>{{ f.T(['Week 4', 'Semana 4']) }}</b><span>{{ f.T(['5–10 interviews', '5-10 entrevistas']) }}</span></div></div>
-        <div class="tl-item gold"><div class="tl-dot" v-html="ic('award')" /><div class="tl-txt"><b>{{ f.T(['Week 6', 'Semana 6']) }}</b><span>{{ f.T(['1–2 offers', '1-2 ofertas']) }}</span></div></div>
+      <!-- Plan: un paso por tarjeta, una sola columna -->
+      <div v-for="(s, k) in steps" :key="k" class="card step-card">
+        <div class="step-ic" v-html="iconFor(s.i)" />
+        <div class="step-tx">
+          <div class="step-eyebrow">{{ f.T(['STEP', 'PASO']) }} {{ k + 1 }}</div>
+          <b>{{ f.T(s.t) }}</b>
+          <span>{{ f.T(s.sub) }}</span>
+          <div v-if="s.badge" class="found-badge">
+            <span class="fb-ic" v-html="ic('check')" />
+            <span>{{ f.T(s.badge) }}</span>
+          </div>
+        </div>
       </div>
+      <!-- Resumen del perfil -->
       <div class="card" style="background:var(--jw-cloud);box-shadow:none">
-        <h3><span v-html="ic('user')" style="display:contents" /> {{ f.T(['Your profile', 'Tu perfil']) }}</h3>
+        <h3><span v-html="ic('user')" style="display:contents" /> {{ f.T(['Plan adapted to you', 'Plan adaptado a ti']) }}</h3>
         <div class="pc-row"><span class="k">{{ f.T(['Preferred roles', 'Roles preferidos']) }}</span><span class="v">{{ roles }}</span></div>
         <div class="pc-row"><span class="k">{{ f.T(['Type of work', 'Tipo de trabajo']) }}</span><span class="v">{{ val(f.answers.P7) }}</span></div>
         <div class="pc-row"><span class="k">{{ f.T(['Preferred industries', 'Industrias preferidas']) }}</span><span class="v">{{ industries }}</span></div>
@@ -33,22 +38,30 @@
 <script setup>
 import { computed } from 'vue'
 import { useFunnel } from 'stores/funnel'
-import { ILLO, ic } from 'assets/graphics'
+import { ILLO, DUO, duo, ic } from 'assets/graphics'
 import FootContinue from './FootContinue.vue'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
+const iconFor = n => (DUO[n] ? duo(n) : ic(n))
+
+const steps = [
+  { i: 'resume', t: ['Polish your resume', 'Mejora tu CV'], sub: ['We help you polish your current resume.', 'Te ayudamos a pulir tu currículum actual.'] },
+  {
+    i: 'search',
+    t: ['Find matching jobs', 'Encuentra trabajos a tu medida'],
+    sub: ['Jobs that match your profile = more interviews.', 'Empleos que encajan con tu perfil = más entrevistas.'],
+    badge: ['We already found 300+ jobs matching your profile', 'Ya hemos encontrado más de 300 empleos que encajan con tu perfil']
+  },
+  { i: 'doccheck', t: ['Tailor your job applications', 'Adapta tus candidaturas'], sub: ['We help you tailor your resume and cover letter in seconds.', 'Te ayudamos a adaptar tu CV y carta de presentación en segundos.'] },
+  { i: 'mic', t: ['Practice for interviews', 'Practica entrevistas'], sub: ['Mock interview practice & Q&A lists.', 'Simulacros de entrevista y listas de preguntas y respuestas.'] }
+]
 
 const val = o => o ? (Array.isArray(o) ? o.slice(0, 2).map(x => f.T(x.t)).join(', ') : f.T(o.t)) : '—'
 const roles = computed(() => {
   if (f.answers.P19T && f.answers.P19T.length) return f.answers.P19T.slice(0, 3).join(', ')
   return (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t)).join(', ') || '—'
 })
-const prefs = computed(() =>
-  [f.answers.P9, f.answers.P31, f.answers.P7].filter(Boolean)
-    .flatMap(o => Array.isArray(o) ? o.slice(0, 2) : [o])
-    .map(o => f.T(o.t)).join(' · ') || '—'
-)
 const salary = computed(() => f.answers.P8 ? `$${f.answers.P8.amount} (${f.T(f.answers.P8.period).toLowerCase()})` : '—')
 const industries = computed(() => {
   const cats = (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t))

@@ -11,7 +11,7 @@
       </div>
     </div>
   </div></div></div>
-  <FootContinue :label="f.T(['CONTINUE', 'Continuar'])" @go="f.next()" />
+  <FootContinue :label="screen.cta ? f.T(screen.cta) : f.T(['CONTINUE', 'Continuar'])" @go="f.next()" />
 </template>
 
 <script setup>
