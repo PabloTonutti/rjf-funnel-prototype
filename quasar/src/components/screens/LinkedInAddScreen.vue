@@ -34,13 +34,12 @@ const f = useFunnel()
 const handle = ref('')
 const err = ref(false)
 
-// Prototype: the handle is captured but not fetched — the real import goes
-// through a backend (Renidly) in production.
+// El perfil se lee de verdad vía el worker (/li-profile → Renidly) dentro de analyzeResume.
 function add () {
   const u = handle.value.trim()
   if (u.length < 3) { err.value = true; return }
-  const clean = u.replace(/^https?:\/\/(www\.)?/, '').replace(/^linkedin\.com\/in\//, '@').replace(/^@?/, '@').replace(/\/$/, '')
-  f.upload = { kind: 'linkedin', name: clean }
+  const clean = u.replace(/^https?:\/\/(www\.)?/, '').replace(/^linkedin\.com\/in\//, '@').replace(/^@?/, '@').replace(/\/?(\?.*)?$/, '')
+  f.upload = { kind: 'linkedin', name: clean, handle: clean.slice(1) }
   f.answers.P19 = 'linkedin'
   f.analyzeResume()
   f.next()

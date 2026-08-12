@@ -33,7 +33,7 @@ header{padding:12px 20px 0;position:sticky;top:0;background:rgba(255,255,255,.94
 #langBtn:hover{border-color:var(--jw-blue);color:var(--jw-blue)}
 #langBtn b{color:var(--jw-blue)}
 #progWrap{padding:12px 0 8px}
-#phaseLabel{font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9AA5B5;text-align:center;margin-top:8px}
+#phaseLabel{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9AA5B5;text-align:center;margin-top:8px}
 #progress{display:flex;gap:5px}
 #progress .seg{flex:1;height:6px;border-radius:3px;background:var(--jw-line);overflow:hidden}
 #progress .seg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--jw-blue),#4DA3FF);border-radius:3px;transition:width .4s cubic-bezier(.4,0,.2,1)}

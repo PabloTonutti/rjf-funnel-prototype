@@ -18,14 +18,50 @@ const ALLOWED = origin =>
 
 const corsFor = origin => ({
   'Access-Control-Allow-Origin': ALLOWED(origin) ? origin : 'https://pablotonutti.github.io',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type'
 })
+
+// GET /li-profile?handle=<handle> — lee el perfil de LinkedIn vía Renidly y devuelve el JSON.
+// La API key vive como secreto del worker (npx wrangler secret put RENIDLY_API_KEY); nunca en el cliente.
+async function liProfile (req, env, CORS) {
+  const handle = (new URL(req.url).searchParams.get('handle') || '').replace(/^@/, '').trim()
+  if (!handle || handle.length < 2) return Response.json({ error: 'missing handle' }, { status: 400, headers: CORS })
+  const r = await fetch(`https://renidly.com/api/v2/person/enrich?handle=${encodeURIComponent(handle)}`, {
+    headers: { 'X-renidly-apikey': env.RENIDLY_API_KEY }
+  })
+  const j = await r.json().catch(() => null)
+  if (!j || !j.success || !j.data) return Response.json({ error: 'profile not found' }, { status: 404, headers: CORS })
+  const d = j.data
+  // Solo los campos que usa el funnel (el payload completo trae fotos, patentes, etc.)
+  const slim = {
+    handle: d.handle,
+    firstName: d.firstName,
+    lastName: d.lastName,
+    headline: d.headline,
+    summary: d.summary,
+    industry: d.industry,
+    geo: d.geo,
+    positions: (d.fullPositions || d.position || []).slice(0, 8).map(p => ({
+      title: p.title, company: p.companyName || p.company || '', description: (p.description || '').slice(0, 400),
+      start: p.start, end: p.end
+    })),
+    skills: (d.skills || []).slice(0, 25).map(s => (typeof s === 'string' ? s : s.name)).filter(Boolean),
+    education: (d.education || []).slice(0, 4).map(e => ({ school: e.schoolName || e.school || '', degree: e.degree || '', field: e.fieldOfStudy || '' })),
+    profilePicture: d.profilePicture || null
+  }
+  return Response.json({ profile: slim }, { headers: CORS })
+}
 
 export default {
   async fetch (req, env) {
     const CORS = corsFor(req.headers.get('Origin'))
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
+    const path = new URL(req.url).pathname
+    if (path === '/li-profile') {
+      if (req.method !== 'GET') return new Response('GET only', { status: 405, headers: CORS })
+      try { return await liProfile(req, env, CORS) } catch (e) { return Response.json({ error: 'profile fetch failed' }, { status: 500, headers: CORS }) }
+    }
     if (req.method !== 'POST') return new Response('POST only', { status: 405, headers: CORS })
     try {
       const { text } = await req.json()

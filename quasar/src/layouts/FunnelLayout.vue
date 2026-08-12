@@ -15,7 +15,7 @@
         <div id="progress">
           <div v-for="(w, p) in segWidths" :key="p" class="seg"><i :style="{ width: w + '%' }" /></div>
         </div>
-        <div id="phaseLabel">{{ phaseLabel }}<template v-if="stepLabel"> · {{ stepLabel }}</template></div>
+        <div id="phaseLabel">{{ phaseLabel }}</div>
       </div>
     </header>
     <main id="main" :class="{ pwmode: f.screen.type === 'paywall' }"><router-view /></main>
@@ -55,16 +55,7 @@ const showProg = computed(() => !hidden.value && f.screen.type !== 'paywall')
 const hideBack = computed(() => f.currentI === 0 || hidden.value || f.screen.type === 'paywall')
 const phaseLabel = computed(() => PHASES[f.screen.phase])
 
-// Visible step number — counts every screen the user actually steps through
-const countable = SCREENS.filter(x => !['loader', 'uploading', 'success'].includes(x.type))
-const stepLabel = computed(() => {
-  const i = countable.findIndex(x => x.id === f.screen.id)
-  if (i < 0) return ''
-  return f.lang === 'en'
-    ? `Step ${i + 1} of ${countable.length}`
-    : `Paso ${i + 1} de ${countable.length}`
-})
-
+// El contador "Step X of Y" se oculta a propósito: el usuario no debe ver los pasos.
 const segWidths = computed(() => {
   const s = f.screen
   const inPhase = SCREENS.filter(x => x.phase === s.phase)

@@ -34,6 +34,28 @@ const AI_ENDPOINT =
   (typeof localStorage !== 'undefined' && localStorage.getItem('jw_ai_endpoint')) ||
   'https://jobwinner-ai.jobwinner.workers.dev'
 
+// Convierte el JSON del perfil de LinkedIn (Renidly, vía worker) en texto tipo CV
+// para reutilizar el mismo análisis de IA (títulos + score).
+function liProfileToText (p) {
+  const lines = []
+  lines.push(`${p.firstName || ''} ${p.lastName || ''}`.trim())
+  if (p.headline) lines.push(p.headline)
+  if (p.summary) lines.push('\nSUMMARY\n' + p.summary)
+  if (p.positions && p.positions.length) {
+    lines.push('\nEXPERIENCE')
+    for (const x of p.positions) {
+      lines.push(`- ${x.title || ''}${x.company ? ' at ' + x.company : ''}`)
+      if (x.description) lines.push('  ' + x.description)
+    }
+  }
+  if (p.skills && p.skills.length) lines.push('\nSKILLS\n' + p.skills.join(', '))
+  if (p.education && p.education.length) {
+    lines.push('\nEDUCATION')
+    for (const e of p.education) lines.push(`- ${[e.degree, e.field, e.school].filter(Boolean).join(' · ')}`)
+  }
+  return lines.join('\n')
+}
+
 // Funnel engine — same navigation/branch logic as the HTML prototype.
 // State lives in memory only (no localStorage), as specced.
 export const useFunnel = defineStore('funnel', {
@@ -48,6 +70,7 @@ export const useFunnel = defineStore('funnel', {
     secondsLeft: 9 * 60 + 57,
     // AI resume review
     aiTitles: [],
+    liProfile: null, // perfil de LinkedIn leído vía Renidly (worker /li-profile)
     aiScore: null, // real resume score from the AI review (null → static fallback)
     aiStatus: 'idle', // idle | running | done | fallback
     aiPromise: null,
@@ -129,6 +152,17 @@ export const useFunnel = defineStore('funnel', {
           let text = ''
           if (this.upload && this.upload.kind === 'file' && this.upload.file) {
             text = await extractText(this.upload.file)
+          }
+          // LinkedIn: leer el perfil REAL vía el worker (Renidly) y convertirlo a texto de CV
+          if (this.upload && this.upload.kind === 'linkedin' && this.upload.handle && AI_ENDPOINT) {
+            try {
+              const r = await fetch(`${AI_ENDPOINT}/li-profile?handle=${encodeURIComponent(this.upload.handle)}`)
+              const j = await r.json()
+              if (j.profile) {
+                this.liProfile = j.profile
+                text = liProfileToText(j.profile)
+              }
+            } catch (e) { /* sin perfil → sigue el fallback por categorías */ }
           }
           // 1st choice: backend proxy (key never touches the client)
           if (text && text.trim().length > 200 && AI_ENDPOINT) {
