@@ -22,7 +22,7 @@ const CATEGORY_TITLES = {
   Research: ['Research Analyst', 'UX Researcher']
 }
 
-const AI_PROMPT = `You are a career assistant helping match a candidate to jobs. Below is the raw text of their resume. Based on their MOST RECENT work experience, suggest up to 8 closely related job titles (short, standard, market-recognizable titles in English). Reply with ONLY a JSON array of strings, no other text.
+const AI_PROMPT = `You are a career assistant helping match a candidate to jobs. Below is the raw text of their resume. Suggest up to 8 job titles to search for: base them ONLY on the current and most recent experience (at most the last 2 roles), do NOT copy the resume's own titles verbatim — use generic, standard, market-recognizable titles recruiters actually post — and include closely related titles that make sense for the profile. Short titles in English. Reply with ONLY a JSON array of strings, no other text.
 
 RESUME:
 `
@@ -70,6 +70,7 @@ export const useFunnel = defineStore('funnel', {
     secondsLeft: 9 * 60 + 57,
     // AI resume review
     aiTitles: [],
+    aiIndustries: [], // categorías sugeridas por la IA (del CV o del perfil de LinkedIn)
     liProfile: null, // perfil de LinkedIn leído vía Renidly (worker /li-profile)
     aiScore: null, // real resume score from the AI review (null → static fallback)
     aiStatus: 'idle', // idle | running | done | fallback
@@ -146,6 +147,7 @@ export const useFunnel = defineStore('funnel', {
     analyzeResume () {
       this.aiStatus = 'running'
       this.aiTitles = []
+      this.aiIndustries = []
       this.aiScore = null
       this.aiPromise = (async () => {
         try {
@@ -175,6 +177,7 @@ export const useFunnel = defineStore('funnel', {
               const j = await res.json()
               if (Array.isArray(j.titles) && j.titles.length) {
                 this.aiTitles = j.titles.slice(0, 8).map(String)
+                if (Array.isArray(j.industries)) this.aiIndustries = j.industries.map(String)
                 if (j.score && j.score.overall) this.aiScore = j.score
                 this.aiStatus = 'done'
                 return

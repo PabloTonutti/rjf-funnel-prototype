@@ -59,8 +59,14 @@ const KEYS = [
   [/research/i, 'Research'],
   [/medical|health|nurse|telehealth/i, 'Healthcare']
 ]
-// Preselect the categories that apply the MOST to the resume-derived titles (max 3)
+// Preselect categories: 1º las que sugiere la IA (del CV o del perfil de LinkedIn);
+// si no hay, fallback por keywords sobre los títulos elegidos (max 3).
 function inferCategories () {
+  const ai = (f.aiIndustries || [])
+    .map(name => ({ t: CATEGORIES.find(c => c[0] === name) }))
+    .filter(x => x.t)
+    .slice(0, 3)
+  if (ai.length) return ai
   const titles = f.answers.P19T || []
   const found = []
   for (const t of titles) {

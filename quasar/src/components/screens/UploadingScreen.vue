@@ -43,7 +43,9 @@ onMounted(async () => {
   const sleep = ms => new Promise(r => setTimeout(r, ms))
   for (let k = 1; k <= 4; k++) timers.push(setTimeout(() => { if (!cancelled) stage.value = k }, k * 1100))
   const minTime = sleep(4600)
-  await Promise.race([f.aiPromise || Promise.resolve(), sleep(9000)])
+  // LinkedIn tarda más (Renidly + IA encadenados): más margen antes de rendirse
+  const cap = f.upload && f.upload.kind === 'linkedin' ? 16000 : 9000
+  await Promise.race([f.aiPromise || Promise.resolve(), sleep(cap)])
   await minTime
   if (!cancelled) f.next()
 })

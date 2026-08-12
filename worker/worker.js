@@ -3,9 +3,15 @@
 // Deploy: npx wrangler deploy   ·   Secret: npx wrangler secret put OPENAI_API_KEY
 
 const PROMPT = `You are a career assistant and expert ATS resume reviewer. Below is the raw text of a candidate's resume. Reply with ONLY a JSON object, no other text, with this exact shape:
-{"titles": [...], "score": {"overall": n, "structure": n, "details": n, "summary": n, "employment": n, "education": n, "skills": n}}
+{"titles": [...], "industries": [...], "score": {"overall": n, "structure": n, "details": n, "summary": n, "employment": n, "education": n, "skills": n}}
 
-- "titles": up to 8 closely related job titles based on their MOST RECENT work experience (short, standard, market-recognizable titles in English).
+- "titles": up to 8 job titles the candidate should search for. RULES:
+  * Base them ONLY on the CURRENT and MOST RECENT experience (at most the last 2 roles). Ignore older experience.
+  * Do NOT copy the resume's own job titles verbatim. Translate them into GENERIC, standard, market-recognizable titles recruiters actually post (e.g. an internal title like "Apps Growth Guru" becomes "Growth Marketing Manager").
+  * Also include closely RELATED standard titles that genuinely make sense for this profile (adjacent roles, same seniority).
+  * Avoid non-searchable titles like "Founder", "CEO", "Owner" or "Freelancer" — translate entrepreneurial or internal roles into the closest employable market titles instead.
+  * Short titles, in English.
+- "industries": 1 to 3 categories that best fit the candidate, chosen ONLY from this exact list (copy the strings verbatim): "Data Entry / Typing Jobs", "Customer Service", "Sales & Partnerships", "Marketing & PR", "IT & Software", "Design (Graphic, UX, Product)", "Content, Writing & Media", "Admin & Operations", "Data & Analytics", "Finance", "HR & Recruitment", "Legal", "Healthcare", "Education & Training", "Research".
 - "score": integers 0-100 rating the resume's quality for ATS systems and recruiters. Be realistic and slightly strict: most decent resumes score 55-85 overall. Score each dimension on structure/formatting, quantified details, professional summary, employment history, education section, and skills section.
 
 RESUME:
@@ -83,7 +89,10 @@ export default {
       const j = await r.json()
       const raw = (j.choices && j.choices[0] && j.choices[0].message.content) || '{}'
       const obj = JSON.parse((raw.match(/\{[\s\S]*\}/) || ['{}'])[0])
-      const titles = Array.isArray(obj.titles) ? obj.titles.slice(0, 8).map(String) : []
+      // Filtro duro de títulos no buscables (el modelo a veces los cuela igualmente)
+      const NON_SEARCHABLE = /^(co-?)?(founder|ceo|owner|entrepreneur|freelancer?|self-?employed)\b/i
+      const titles = (Array.isArray(obj.titles) ? obj.titles.map(String) : []).filter(t => !NON_SEARCHABLE.test(t.trim())).slice(0, 8)
+      const industries = Array.isArray(obj.industries) ? obj.industries.slice(0, 3).map(String) : []
       const clamp = n => Math.max(0, Math.min(100, Math.round(Number(n) || 0)))
       const s = obj.score || {}
       const score = {
@@ -91,7 +100,7 @@ export default {
         summary: clamp(s.summary), employment: clamp(s.employment),
         education: clamp(s.education), skills: clamp(s.skills)
       }
-      return Response.json({ titles, score: score.overall ? score : null }, { headers: CORS })
+      return Response.json({ titles, industries, score: score.overall ? score : null }, { headers: CORS })
     } catch (e) {
       return Response.json({ error: 'analysis failed' }, { status: 500, headers: CORS })
     }
