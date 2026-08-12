@@ -11,7 +11,7 @@ const PROMPT = `You are a career assistant and expert ATS resume reviewer. Below
   * Also include closely RELATED standard titles that genuinely make sense for this profile (adjacent roles, same seniority).
   * Avoid non-searchable titles like "Founder", "CEO", "Owner" or "Freelancer" — translate entrepreneurial or internal roles into the closest employable market titles instead.
   * Short titles, in English.
-- "industries": 1 to 3 categories that best fit the candidate, chosen ONLY from this exact list (copy the strings verbatim): "Data Entry / Typing Jobs", "Customer Service", "Sales & Partnerships", "Marketing & PR", "IT & Software", "Design (Graphic, UX, Product)", "Content, Writing & Media", "Admin & Operations", "Data & Analytics", "Finance", "HR & Recruitment", "Legal", "Healthcare", "Education & Training", "Research".
+- "industries": ONLY the categories that clearly fit the candidate — often just 1 or 2, maximum 3. Do NOT pad the list to reach 3. Chosen ONLY from this exact list (copy the strings verbatim): "Data Entry / Typing Jobs", "Customer Service", "Sales & Partnerships", "Marketing & PR", "IT & Software", "Design (Graphic, UX, Product)", "Content, Writing & Media", "Admin & Operations", "Data & Analytics", "Finance", "HR & Recruitment", "Legal", "Healthcare", "Education & Training", "Research".
 - "score": integers 0-100 rating the resume's quality for ATS systems and recruiters. Be realistic and slightly strict: most decent resumes score 55-85 overall. Score each dimension on structure/formatting, quantified details, professional summary, employment history, education section, and skills section.
 
 RESUME:

@@ -155,16 +155,17 @@ export const useFunnel = defineStore('funnel', {
           if (this.upload && this.upload.kind === 'file' && this.upload.file) {
             text = await extractText(this.upload.file)
           }
-          // LinkedIn: leer el perfil REAL vía el worker (Renidly) y convertirlo a texto de CV
+          // LinkedIn: leer el perfil REAL vía el worker (Renidly) y convertirlo a texto de CV.
+          // Con timeout: si Renidly se cuelga, no podemos dejar el análisis pendiente para siempre.
           if (this.upload && this.upload.kind === 'linkedin' && this.upload.handle && AI_ENDPOINT) {
             try {
-              const r = await fetch(`${AI_ENDPOINT}/li-profile?handle=${encodeURIComponent(this.upload.handle)}`)
+              const r = await fetch(`${AI_ENDPOINT}/li-profile?handle=${encodeURIComponent(this.upload.handle)}`, { signal: AbortSignal.timeout(12000) })
               const j = await r.json()
               if (j.profile) {
                 this.liProfile = j.profile
                 text = liProfileToText(j.profile)
               }
-            } catch (e) { /* sin perfil → sigue el fallback por categorías */ }
+            } catch (e) { /* sin perfil → sigue el fallback */ }
           }
           // 1st choice: backend proxy (key never touches the client)
           if (text && text.trim().length > 200 && AI_ENDPOINT) {
@@ -206,7 +207,12 @@ export const useFunnel = defineStore('funnel', {
           }
           throw new Error('fallback')
         } catch (e) {
-          this.aiTitles = this.fallbackTitles()
+          // Si al menos tenemos el perfil de LinkedIn, usar sus puestos recientes como títulos
+          // (mejor que los genéricos por categoría). Si no, fallback por categorías.
+          const liTitles = (this.liProfile && this.liProfile.positions)
+            ? this.liProfile.positions.slice(0, 2).map(p => p.title).filter(Boolean)
+            : []
+          this.aiTitles = liTitles.length ? liTitles : this.fallbackTitles()
           this.aiStatus = 'fallback'
         }
       })()

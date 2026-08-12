@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { TITLE_SUGGESTIONS } from 'src/data/screens'
 import FootContinue from './FootContinue.vue'
@@ -54,10 +54,18 @@ import FootContinue from './FootContinue.vue'
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 
-// Prefill once with the top 5 AI suggestions, then the user owns the list
-if (!f.answers.P19T) f.answers.P19T = f.aiTitles.slice(0, 5)
+// Prefill con las sugerencias de la IA; después la lista es del usuario.
+// REACTIVO: si la IA aún estaba analizando al llegar aquí, rellena en cuanto termine
+// (mientras el usuario no haya escrito nada). Un array vacío cuenta como "sin rellenar".
+if (!f.answers.P19T || !f.answers.P19T.length) f.answers.P19T = f.aiTitles.slice(0, 5)
 const titles = computed(() => f.answers.P19T)
 const prefilled = ref(f.aiTitles.length > 0 && titles.value.length > 0)
+watch(() => f.aiTitles, (t) => {
+  if (t.length && (!f.answers.P19T || !f.answers.P19T.length)) {
+    f.answers.P19T = t.slice(0, 5)
+    prefilled.value = true
+  }
+})
 
 const draft = ref('')
 const showKey = ref(false)

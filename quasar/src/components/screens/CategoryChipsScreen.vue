@@ -77,7 +77,7 @@ function inferCategories () {
   return found.slice(0, 3).map(name => ({ t: CATEGORIES.find(c => c[0] === name) })).filter(x => x.t)
 }
 
-if (!f.answers.P13) f.answers.P13 = inferCategories()
+if (!f.answers.P13 || !f.answers.P13.length) f.answers.P13 = inferCategories()
 const picked = computed(() => f.answers.P13)
 const prefilled = ref(picked.value.length > 0)
 

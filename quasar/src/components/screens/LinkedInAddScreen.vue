@@ -35,11 +35,20 @@ const handle = ref('')
 const err = ref(false)
 
 // El perfil se lee de verdad vía el worker (/li-profile → Renidly) dentro de analyzeResume.
+// Extrae el handle de CUALQUIER variante: URL completa (con o sin https/www/subdominio de país,
+// con query o barra final), "linkedin.com/in/foo", "@foo" o "foo" a secas.
+function extractHandle (raw) {
+  const u = (raw || '').trim()
+  const m = u.match(/linkedin\.com\/in\/([^/?#\s]+)/i)
+  if (m) return decodeURIComponent(m[1])
+  return u.replace(/^@/, '').replace(/[/?#].*$/, '').trim()
+}
 function add () {
   const u = handle.value.trim()
   if (u.length < 3) { err.value = true; return }
-  const clean = u.replace(/^https?:\/\/(www\.)?/, '').replace(/^linkedin\.com\/in\//, '@').replace(/^@?/, '@').replace(/\/?(\?.*)?$/, '')
-  f.upload = { kind: 'linkedin', name: clean, handle: clean.slice(1) }
+  const h = extractHandle(u)
+  if (!h || h.length < 2) { err.value = true; return }
+  f.upload = { kind: 'linkedin', name: '@' + h, handle: h }
   f.answers.P19 = 'linkedin'
   f.analyzeResume()
   f.next()
