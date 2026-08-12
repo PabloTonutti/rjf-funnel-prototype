@@ -26,6 +26,8 @@ import CityScreen from 'components/screens/CityScreen.vue'
 import CategoryChipsScreen from 'components/screens/CategoryChipsScreen.vue'
 import CompareScreen from 'components/screens/CompareScreen.vue'
 import ChartScreen from 'components/screens/ChartScreen.vue'
+import PotentialScreen from 'components/screens/PotentialScreen.vue'
+import ReviewsScreen from 'components/screens/ReviewsScreen.vue'
 import LoaderScreen from 'components/screens/LoaderScreen.vue'
 import ResultScreen from 'components/screens/ResultScreen.vue'
 import SignupScreen from 'components/screens/SignupScreen.vue'
@@ -58,6 +60,8 @@ const MAP = {
   titles: JobTitlesScreen,
   compare: CompareScreen,
   chart: ChartScreen,
+  potential: PotentialScreen,
+  reviews: ReviewsScreen,
   loader: LoaderScreen,
   result: ResultScreen,
   signup: SignupScreen,

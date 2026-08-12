@@ -53,13 +53,52 @@ const cityPlaceholder = computed(() => {
   return cap ? f.T([`e.g. ${cap}`, `p. ej. ${cap}`]) : ''
 })
 
+// Ciudades principales por país: sugerencias INSTANTÁNEAS desde el primer carácter
+// (Photon complementa/afina a partir de 2 caracteres).
+const LOCAL_CITIES = {
+  Spain: ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Bilbao', 'Alicante', 'Murcia', 'Granada', 'Palma', 'Las Palmas', 'Vigo', 'A Coruña', 'San Sebastián'],
+  Mexico: ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'Querétaro', 'Mérida', 'Cancún', 'León', 'Toluca'],
+  Argentina: ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'Mar del Plata', 'Salta', 'Tucumán'],
+  Colombia: ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Bucaramanga', 'Pereira'],
+  Chile: ['Santiago', 'Valparaíso', 'Concepción', 'Viña del Mar', 'Antofagasta', 'Temuco'],
+  Peru: ['Lima', 'Arequipa', 'Trujillo', 'Cusco', 'Chiclayo', 'Piura'],
+  Uruguay: ['Montevideo', 'Punta del Este', 'Salto'],
+  Ecuador: ['Quito', 'Guayaquil', 'Cuenca'],
+  'United States': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Miami', 'San Francisco', 'Seattle', 'Boston', 'Austin', 'Denver', 'Atlanta', 'Dallas', 'Washington'],
+  'United Kingdom': ['London', 'Manchester', 'Birmingham', 'Edinburgh', 'Glasgow', 'Leeds', 'Liverpool', 'Bristol'],
+  Ireland: ['Dublin', 'Cork', 'Galway', 'Limerick', 'Waterford'],
+  France: ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Bordeaux', 'Lille', 'Nantes', 'Nice'],
+  Germany: ['Berlin', 'Munich', 'Hamburg', 'Frankfurt', 'Cologne', 'Stuttgart', 'Düsseldorf', 'Leipzig'],
+  Italy: ['Rome', 'Milan', 'Naples', 'Turin', 'Bologna', 'Florence', 'Venice'],
+  Portugal: ['Lisbon', 'Porto', 'Braga', 'Coimbra', 'Faro'],
+  Netherlands: ['Amsterdam', 'Rotterdam', 'The Hague', 'Utrecht', 'Eindhoven'],
+  Belgium: ['Brussels', 'Antwerp', 'Ghent', 'Liège'],
+  Switzerland: ['Zurich', 'Geneva', 'Basel', 'Bern', 'Lausanne'],
+  Canada: ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa'],
+  Brazil: ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Brasília', 'Curitiba', 'Porto Alegre'],
+  Australia: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide']
+}
+const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+function localMatches (query) {
+  const list = LOCAL_CITIES[f.answers.P11] || []
+  const nq = norm(query)
+  return list.filter(c => norm(c).startsWith(nq)).slice(0, 6)
+    .map(name => ({ name, sub: '', kind: name === capitalOf() ? f.T(['Capital', 'Capital']) : f.T(['City', 'Ciudad']) }))
+}
+function mergeRows (locals, photon) {
+  const seen = new Set(locals.map(r => norm(r.name)))
+  return [...locals, ...photon.filter(r => !seen.has(norm(r.name)))].slice(0, 6)
+}
+
 // Free typeahead geocoding (photon.komoot.io, CORS-friendly), filtered to the chosen country
 let debounce = null, ctrl = null
 function onType () {
   open.value = true
   clearTimeout(debounce)
   const query = q.value.trim()
-  if (query.length < 2) { rows.value = []; return }
+  if (query.length < 1) { rows.value = []; return }
+  rows.value = localMatches(query) // instantáneo desde el PRIMER carácter
+  if (query.length < 2) return     // Photon afina a partir de 2
   debounce = setTimeout(async () => {
     try {
       if (ctrl) ctrl.abort()
@@ -70,7 +109,7 @@ function onType () {
       const cc = CCODE[f.answers.P11] || null
       const KIND = { city: ['City', 'Ciudad'], town: ['Town', 'Pueblo'], village: ['Village', 'Pueblo'], borough: ['District', 'Distrito'], suburb: ['Area', 'Zona'], state: ['Region', 'Región'], county: ['Region', 'Región'] }
       const seen = new Set()
-      rows.value = (j.features || [])
+      const photonRows = (j.features || [])
         .filter(ft => !cc || ft.properties.countrycode === cc)
         .filter(ft => ['city', 'town', 'village', 'borough', 'suburb', 'state', 'county'].includes(ft.properties.osm_value) || ft.properties.type === 'city')
         .map(ft => {
@@ -81,8 +120,9 @@ function onType () {
         })
         .filter(r => { const k = r.name + '|' + r.sub; if (seen.has(k)) return false; seen.add(k); return true })
         .slice(0, 6)
+      rows.value = mergeRows(localMatches(q.value.trim()), photonRows)
     } catch (e) { /* offline or aborted → free-text input still works */ }
-  }, 280)
+  }, 160)
 }
 function capitalOf () {
   const caps = { Spain: 'Madrid', France: 'Paris', Germany: 'Berlin', Italy: 'Rome', Portugal: 'Lisbon', Ireland: 'Dublin', 'United Kingdom': 'London', 'United States': 'Washington', Netherlands: 'Amsterdam', Belgium: 'Brussels', Austria: 'Vienna', Mexico: 'Mexico City', Argentina: 'Buenos Aires' }
