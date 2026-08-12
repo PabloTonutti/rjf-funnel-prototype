@@ -40,14 +40,14 @@ import FootContinue from './FootContinue.vue'
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 
-// Opiniones REALES (es.trustpilot.com/review/jobwinner.ai · 4,7 "Excelente" · 41 opiniones)
+// Opiniones REALES en inglés (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent" · 41 reviews)
 const REVIEWS = [
-  { n: 'Mariel Jara', d: '10 jul 2026', t: 'La herramienta es muy útil', x: 'Muy útil para personalizar el CV y la carta de acuerdo a la oferta y ver el porcentaje de match con el puesto.' },
-  { n: 'Karol Guerrero Soto', d: '20 abr 2026', t: '¡Excelente herramienta!', x: 'La usé y me funcionó muy bien. Te indica las áreas que debes mejorar para que el algoritmo de LinkedIn te visualice mejor.' },
-  { n: 'Pablo Labarta', d: '14 abr 2026', t: 'Una plataforma que evoluciona', x: 'Unos cracks. Profesionalidad y transparencia desde el primer momento. Escuchan el feedback y mejoran la app constantemente.' },
-  { n: 'Ivon', d: '17 mar 2026', t: 'Es una herramienta muy útil', x: 'Te ayuda a personalizar tu experiencia potenciando las habilidades que encajan con el perfil requerido. Buenísimo.' },
-  { n: 'Giovanna Mejia', d: '2 dic 2025', t: 'La mejor inversión', x: 'Subes tu CV y te lo redacta acorde a la oferta. Te quita el estrés y te deja centrarte en la entrevista. Os lo recomiendo.' },
-  { n: 'M. Rivas', d: '6 nov 2025', t: 'Vale la pena', x: 'Muy útil para no tener que estar modificando interminablemente tu CV. ¿Vale la pena? Sí, 100%.' }
+  { n: 'Conall Bradley', d: 'Jan 13, 2026', t: 'From silence to 3 interviews in 1 week', x: "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS." },
+  { n: 'Lavallée Alexandre', d: 'Feb 15, 2026', t: 'A must-have for interview prep', x: 'Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.' },
+  { n: 'Disha', d: 'Dec 18, 2025', t: 'Made my applications easier', x: 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.' },
+  { n: 'Michael Trailer', d: 'Mar 16, 2026', t: 'Support that makes a difference', x: 'I really appreciate the support and the quick response from the team. Their kindness and customer support made a real difference.' },
+  { n: 'Montse Lorente', d: 'Dec 23, 2025', t: 'Great tool', x: 'Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.' },
+  { n: 'Belén Franco', d: 'Dec 22, 2025', t: 'I love using it with my clients', x: 'An amazing tool that has helped my clients land jobs faster and focus on the important things.' }
 ]
 const row1 = REVIEWS.slice(0, 3)
 const row2 = REVIEWS.slice(3)

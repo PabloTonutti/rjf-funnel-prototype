@@ -57,7 +57,7 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 
 /* ============ options ============ */
 .options{display:flex;flex-direction:column;gap:10px;margin:6px 0 10px}
-.opt{background:#fff;border:1.5px solid var(--jw-line);border-radius:var(--r-card);padding:13px 14px;font-size:15.5px;font-weight:600;color:var(--jw-ink);cursor:pointer;text-align:left;display:flex;align-items:center;gap:13px;transition:border-color .15s, background .15s, box-shadow .15s, transform .15s;font-family:var(--inter);line-height:1.35}
+.opt{background:#fff;border:1.5px solid var(--jw-line);border-radius:var(--r-card);padding:13px 14px;min-height:73px;font-size:15.5px;font-weight:600;color:var(--jw-ink);cursor:pointer;text-align:left;display:flex;align-items:center;gap:13px;transition:border-color .15s, background .15s, box-shadow .15s, transform .15s;font-family:var(--inter);line-height:1.35}
 .opt:active{transform:scale(.985)}
 @media (hover:hover){
   .opt:hover{border-color:var(--jw-blue);background:#F8FBFF;box-shadow:0 4px 14px rgba(0,122,255,.14);transform:translateY(-2px)}
