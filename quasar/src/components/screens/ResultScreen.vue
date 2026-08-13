@@ -7,13 +7,6 @@
     </div></div>
 
     <div class="pw-body">
-      <!-- Cronología: consigue empleo en 4-6 semanas -->
-      <div class="card tlx-card">
-        <h2 class="pw-sec-title">{{ f.T(['Get a job in 4–6 weeks', 'Consigue empleo en 4-6 semanas']) }}</h2>
-        <div v-html="timelineSvg" style="display:flex;justify-content:center" />
-        <p class="footnote" style="margin-top:8px">{{ f.T(['Your job search timeline', 'Tu cronología de búsqueda de empleo']) }}</p>
-      </div>
-
       <!-- Plan personalizado -->
       <div class="result-hero">
         <div class="illo" style="margin:2px 0 10px" v-html="ILLO.trophy" />
@@ -192,40 +185,6 @@ const tools = [
   { i: 'mic', b: ['Interview with confidence', 'Entrevistas con confianza'], tool: 'AI Mock Interview practice' },
   { i: 'pen', b: ['Cover letters that convert', 'Cartas que convierten'], tool: 'AI Cover Letter' }
 ]
-
-// Cronología 4-6 semanas: curva multicolor con hitos (como el diseño de referencia)
-const timelineSvg = computed(() => {
-  const en = f.lang === 'en'
-  const P = [
-    { x: 52, y: 200, v: '300+', l: en ? 'jobs found' : 'empleos encontrados', first: true },
-    { x: 142, y: 156, v: '300 – 600', l: en ? 'applications' : 'candidaturas' },
-    { x: 232, y: 110, v: '5 – 10', l: en ? 'interviews' : 'entrevistas' },
-    { x: 322, y: 64, v: '1 – 2', l: en ? 'job offers' : 'ofertas' }
-  ]
-  const X = en ? ['Today', 'Week 2', 'Week 4', 'Week 6'] : ['Hoy', 'Semana 2', 'Semana 4', 'Semana 6']
-  const grid = P.map(p => `<line x1="${p.x}" y1="40" x2="${p.x}" y2="218" stroke="#E3E9F2" stroke-width="1.5" stroke-dasharray="3 5"/>`).join('')
-  const labels = P.map(p => {
-    const anchor = p.first ? 'start' : (p.x > 300 ? 'end' : 'middle')
-    const lx = p.first ? p.x - 22 : (p.x > 300 ? p.x + 22 : p.x)
-    return `<text x="${lx}" y="${p.y - 34}" text-anchor="${anchor}" font-size="14.5" font-weight="800" fill="#1C2333" font-family="'Plus Jakarta Sans',sans-serif">${p.v}</text>
-      <text x="${lx}" y="${p.y - 19}" text-anchor="${anchor}" font-size="11.5" fill="#5A6474" font-family="Inter,sans-serif">${p.l}</text>`
-  }).join('')
-  const dots = P.map((p, i) => i === 0
-    ? `<circle cx="${p.x}" cy="${p.y}" r="12" fill="#22C55E"/><path d="M${p.x - 5} ${p.y} l3.5 3.5 l7 -7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
-    : `<circle cx="${p.x}" cy="${p.y}" r="9.5" fill="#F5C242" stroke="#fff" stroke-width="3"/>`).join('')
-  const xlabels = P.map((p, i) => `<text x="${p.x}" y="238" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1C2333" font-family="Inter,sans-serif">${X[i]}</text>`).join('')
-  return `<svg viewBox="0 0 360 246" style="width:100%;max-width:470px">
-    <defs><linearGradient id="tlgrad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#FF66C4"/><stop offset="35%" stop-color="#FFA63F"/>
-      <stop offset="65%" stop-color="#7ED957"/><stop offset="100%" stop-color="#38B6FF"/>
-    </linearGradient></defs>
-    ${grid}
-    <path d="M52 200 C97 200 97 156 142 156 C187 156 187 110 232 110 C277 110 277 64 322 64 L340 58" fill="none" stroke="url(#tlgrad)" stroke-width="7" stroke-linecap="round"/>
-    ${dots}${labels}
-    <line x1="30" y1="218" x2="340" y2="218" stroke="#E3E9F2" stroke-width="1.5"/>
-    ${xlabels}
-  </svg>`
-})
 
 // ---- Moneda por ubicación (país elegido en el funnel): eurozona €, Reino Unido £, resto $ ----
 const EUROZONE = ['Spain', 'France', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium', 'Austria', 'Ireland', 'Finland', 'Greece', 'Slovakia', 'Slovenia', 'Lithuania', 'Latvia', 'Estonia', 'Luxembourg', 'Malta', 'Cyprus', 'Croatia']
