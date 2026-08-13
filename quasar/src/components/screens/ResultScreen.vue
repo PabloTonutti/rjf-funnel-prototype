@@ -7,14 +7,18 @@
     </div></div>
 
     <div class="pw-body">
+      <!-- Cronología: consigue empleo en 4-6 semanas -->
+      <div class="card tlx-card">
+        <h2 class="pw-sec-title">{{ f.T(['Get a job in 4–6 weeks', 'Consigue empleo en 4-6 semanas']) }}</h2>
+        <div v-html="timelineSvg" style="display:flex;justify-content:center" />
+        <p class="footnote" style="margin-top:8px">{{ f.T(['Your job search timeline', 'Tu cronología de búsqueda de empleo']) }}</p>
+      </div>
+
       <!-- Plan personalizado -->
       <div class="result-hero">
         <div class="illo" style="margin:2px 0 10px" v-html="ILLO.trophy" />
         <h1 style="font-size:26px">{{ f.T(['Your personalized plan is ready', 'Tu plan personalizado está listo']) }}</h1>
         <p class="subtitle" style="margin-bottom:0">{{ f.T(['We got you covered for all your job hunt.', 'Te cubrimos en toda tu búsqueda de empleo.']) }}</p>
-        <div v-if="f.answers.PEMAIL" class="plan-email-pill">
-          ✉️ {{ f.T(['Your plan will be sent to', 'Tu plan se enviará a']) }} <b>{{ f.answers.PEMAIL }}</b>
-        </div>
       </div>
       <div class="result-cols">
         <!-- Plan: un paso por tarjeta, una sola columna -->
@@ -40,7 +44,6 @@
           <div class="pc-row"><span class="k">{{ f.T(['Minimum salary', 'Salario mínimo']) }}</span><span class="v">{{ salary }}</span></div>
           <div class="pc-row"><span class="k">{{ f.T(['Location', 'Ubicación']) }}</span><span class="v">{{ location }}</span></div>
           <div class="pc-row"><span class="k">{{ f.T(['Work mode', 'Modalidad']) }}</span><span class="v">{{ val(f.answers.P9) }}</span></div>
-          <div v-if="f.answers.PEMAIL" class="pc-row"><span class="k">Email</span><span class="v">{{ f.answers.PEMAIL }}</span></div>
         </div>
       </div>
 
@@ -69,7 +72,17 @@
         <span class="sb">stripe</span>
       </div>
 
-      <div class="pw-cols">
+      <!-- Beneficios de las herramientas IA (beneficio grande, nombre de la herramienta debajo) -->
+      <h2 class="pw-sec-title" style="margin-top:28px">{{ f.T(['Access to over 25 AI tools', 'Acceso a más de 25 herramientas de IA']) }}</h2>
+      <div class="tools-grid">
+        <div v-for="(t, k) in tools" :key="k" class="tool-card">
+          <span class="tool-ic" v-html="iconFor(t.i)" />
+          <div><b>{{ f.T(t.b) }}</b><small>{{ t.tool }}</small></div>
+        </div>
+      </div>
+
+      <h2 class="pw-sec-title" style="margin-top:28px">{{ f.T(['A bullet-proof method to find your job', 'Un método a prueba de balas para encontrar empleo']) }}</h2>
+      <div class="pw-cols pw-cols-full">
         <div class="pw-feat-card">
           <div class="pw-feat-head"><span class="pw-feat-ic" v-html="duo('search')" /><h3>{{ f.T(['What you unlock', 'Lo que desbloqueas']) }}</h3></div>
           <div v-for="(x, k) in unlock" :key="k" class="feat"><span class="ck" v-html="ic('check')" /> {{ f.T(x) }}</div>
@@ -98,9 +111,9 @@
       <p class="footnote" style="margin:12px 0 20px">{{ f.T(['No commitment. Cancel anytime from your account.', 'Sin permanencia. Cancela cuando quieras desde tu cuenta.']) }}</p>
     </div>
 
-    <!-- Mobile: CTA fija cuando los botones no están a la vista -->
+    <!-- Mobile: CTA fija → lleva a la vista de precios (no directo a Stripe) -->
     <div class="pw-sticky" :class="{ show: showSticky }">
-      <button class="btn btn-primary" @click="goCheckout">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button class="btn btn-primary" @click="scrollToPlans">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
     </div>
   </div>
 </template>
@@ -170,6 +183,50 @@ const revs = [
   [['Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.', 'Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.'], 'Montse Lorente · Trustpilot']
 ]
 
+// Herramientas IA: beneficio como titular, nombre de la herramienta debajo
+const tools = [
+  { i: 'search', b: ['Jobs that truly fit you', 'Empleos que encajan de verdad'], tool: 'AI Job Match' },
+  { i: 'resume', b: ['A resume that stands out', 'Un CV que destaca'], tool: 'AI Resume Builder' },
+  { i: 'doccheck', b: ['Tailored apps in seconds', 'Candidaturas a medida en segundos'], tool: 'AI Application Kit' },
+  { i: 'shieldcheck', b: ['Pass the ATS robots', 'Supera los robots ATS'], tool: 'AI ATS Check' },
+  { i: 'mic', b: ['Interview with confidence', 'Entrevistas con confianza'], tool: 'AI Mock Interview practice' },
+  { i: 'pen', b: ['Cover letters that convert', 'Cartas que convierten'], tool: 'AI Cover Letter' }
+]
+
+// Cronología 4-6 semanas: curva multicolor con hitos (como el diseño de referencia)
+const timelineSvg = computed(() => {
+  const en = f.lang === 'en'
+  const P = [
+    { x: 52, y: 200, v: '300+', l: en ? 'jobs found' : 'empleos encontrados', first: true },
+    { x: 142, y: 156, v: '300 – 600', l: en ? 'applications' : 'candidaturas' },
+    { x: 232, y: 110, v: '5 – 10', l: en ? 'interviews' : 'entrevistas' },
+    { x: 322, y: 64, v: '1 – 2', l: en ? 'job offers' : 'ofertas' }
+  ]
+  const X = en ? ['Today', 'Week 2', 'Week 4', 'Week 6'] : ['Hoy', 'Semana 2', 'Semana 4', 'Semana 6']
+  const grid = P.map(p => `<line x1="${p.x}" y1="40" x2="${p.x}" y2="218" stroke="#E3E9F2" stroke-width="1.5" stroke-dasharray="3 5"/>`).join('')
+  const labels = P.map(p => {
+    const anchor = p.first ? 'start' : (p.x > 300 ? 'end' : 'middle')
+    const lx = p.first ? p.x - 22 : (p.x > 300 ? p.x + 22 : p.x)
+    return `<text x="${lx}" y="${p.y - 34}" text-anchor="${anchor}" font-size="14.5" font-weight="800" fill="#1C2333" font-family="'Plus Jakarta Sans',sans-serif">${p.v}</text>
+      <text x="${lx}" y="${p.y - 19}" text-anchor="${anchor}" font-size="11.5" fill="#5A6474" font-family="Inter,sans-serif">${p.l}</text>`
+  }).join('')
+  const dots = P.map((p, i) => i === 0
+    ? `<circle cx="${p.x}" cy="${p.y}" r="12" fill="#22C55E"/><path d="M${p.x - 5} ${p.y} l3.5 3.5 l7 -7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+    : `<circle cx="${p.x}" cy="${p.y}" r="9.5" fill="#F5C242" stroke="#fff" stroke-width="3"/>`).join('')
+  const xlabels = P.map((p, i) => `<text x="${p.x}" y="238" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1C2333" font-family="Inter,sans-serif">${X[i]}</text>`).join('')
+  return `<svg viewBox="0 0 360 246" style="width:100%;max-width:470px">
+    <defs><linearGradient id="tlgrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FF66C4"/><stop offset="35%" stop-color="#FFA63F"/>
+      <stop offset="65%" stop-color="#7ED957"/><stop offset="100%" stop-color="#38B6FF"/>
+    </linearGradient></defs>
+    ${grid}
+    <path d="M52 200 C97 200 97 156 142 156 C187 156 187 110 232 110 C277 110 277 64 322 64 L340 58" fill="none" stroke="url(#tlgrad)" stroke-width="7" stroke-linecap="round"/>
+    ${dots}${labels}
+    <line x1="30" y1="218" x2="340" y2="218" stroke="#E3E9F2" stroke-width="1.5"/>
+    ${xlabels}
+  </svg>`
+})
+
 // ---- Moneda por ubicación (país elegido en el funnel): eurozona €, Reino Unido £, resto $ ----
 const EUROZONE = ['Spain', 'France', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium', 'Austria', 'Ireland', 'Finland', 'Greece', 'Slovakia', 'Slovenia', 'Lithuania', 'Latvia', 'Estonia', 'Luxembourg', 'Malta', 'Cyprus', 'Croatia']
 const currency = computed(() => {
@@ -206,7 +263,12 @@ const countdown = computed(() => {
   return `${fmt(Math.floor(f.secondsLeft / 60))}:${fmt(f.secondsLeft % 60)}`
 })
 function scrollToPlans () {
-  if (plansEl.value) plansEl.value.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  // OJO: el scroll 'smooth' queda bloqueado en esta página (cadena #main/overflow); 'instant' sí funciona.
+  if (!plansEl.value) return
+  const top = plansEl.value.getBoundingClientRect().top + window.scrollY - 90
+  window.scrollTo({ top, behavior: 'instant' })
+  const m = document.getElementById('main')
+  if (m && m.scrollHeight > m.clientHeight) m.scrollTo({ top: plansEl.value.offsetTop - 90, behavior: 'instant' })
 }
 
 function checkSticky () {
