@@ -126,6 +126,7 @@ const S = [
 {id:'P48',phase:5,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
 {id:'P49',phase:5,type:'result'},
 {id:'P50',phase:5,type:'signup'},
+{id:'P51',phase:5,type:'paywall'}, // precios + cuenta atrás + reviews + comparativa (diseño recuperado del prototipo)
 {id:'P52',phase:5,type:'success'}
 ];
 
