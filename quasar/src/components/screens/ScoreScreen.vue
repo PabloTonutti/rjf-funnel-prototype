@@ -7,8 +7,8 @@
         {{ f.T(['Your score:', 'Tu nota:']) }} <b style="color:#5B7A4B">{{ f.T(['Good, but not optimized', 'Buena, pero sin optimizar']) }}</b>
       </p>
       <div v-for="(r, k) in rows" :key="k" class="score-row">
-        <div class="score-meta"><span>{{ f.T(r.label) }}</span><b :style="{ color: r.v >= 88 ? '#5B7A4B' : '#C06B45' }">{{ r.v }}%</b></div>
-        <div class="score-bar"><i :style="{ width: r.v + '%', background: r.v >= 88 ? 'var(--jw-success)' : 'var(--jw-terracotta)' }" /></div>
+        <div class="score-meta"><span>{{ f.T(r.label) }}</span><b style="color:var(--jw-blue)">{{ r.v }}%</b></div>
+        <div class="score-bar"><i :style="{ width: r.v + '%', background: 'var(--jw-blue)' }" /></div>
       </div>
     </div>
   </div></div>
