@@ -56,16 +56,19 @@
           <div class="radio" />
           <div>
             <div class="plan-name">{{ f.T(p.name) }}</div>
-            <div><span class="plan-old">{{ p.old }}</span><span class="chip">60% OFF</span></div>
+            <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
+            <div class="plan-bill">{{ f.T(p.bill) }}</div>
           </div>
-          <div class="plan-day"><div class="n">{{ p.day }} €</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
+          <!-- El weekly (9/sem) superaría 1/día: se muestra por semana; el resto por día (<1) -->
+          <div class="plan-day" v-if="perDay(p) < 1"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
+          <div class="plan-day" v-else><div class="n">{{ money(p.price) }}</div><div class="u">{{ f.T(['per week', 'por semana']) }}</div></div>
         </div>
       </div>
 
-      <button ref="buyEl" class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button ref="buyEl" class="btn btn-primary" @click="goCheckout">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
       <div class="stripe-badge">
         <span v-html="ic('lock', 13)" style="display:contents" /> {{ f.T(['Secure checkout with', 'Pago seguro con']) }}
-        <span class="sb">stripe</span> <em style="font-size:11px">{{ f.T(['(mock, no charge)', '(maqueta, sin cobro)']) }}</em>
+        <span class="sb">stripe</span>
       </div>
 
       <div class="pw-cols">
@@ -93,13 +96,13 @@
         </div>
       </div>
 
-      <button ref="buy2El" class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button ref="buy2El" class="btn btn-primary" @click="goCheckout">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
       <p class="footnote" style="margin:12px 0 20px">{{ f.T(['No commitment. Cancel anytime from your account.', 'Sin permanencia. Cancela cuando quieras desde tu cuenta.']) }}</p>
     </div>
 
     <!-- Mobile: CTA fija cuando los botones no están a la vista -->
     <div class="pw-sticky" :class="{ show: showSticky }">
-      <button class="btn btn-primary" @click="f.next()">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button class="btn btn-primary" @click="goCheckout">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
     </div>
   </div>
 </template>
@@ -161,10 +164,32 @@ const included = [
   ['Job Tracker to organize your applications', 'Job Tracker para organizar tus candidaturas'],
   ['AI interview preparation', 'Preparación de entrevistas con IA']
 ]
+// Reviews REALES de Trustpilot (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent")
 const revs = [
-  [['In 5 weeks I went from zero responses to 2 offers. The matching is on another level.', 'En 5 semanas pasé de cero respuestas a 2 ofertas. El matching es otra cosa.'], 'Andrea · Product Designer'],
-  [['Tailored applications saved me hours every week. And you can tell by the replies.', 'Las solicitudes personalizadas me ahorraron horas cada semana. Y se nota en las respuestas.'], 'Carlos · Data Analyst']
+  [["I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS.", "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS."], 'Conall Bradley · Trustpilot'],
+  [['Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.', 'Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.'], 'Lavallée Alexandre · Trustpilot'],
+  [['It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.', 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.'], 'Disha · Trustpilot'],
+  [['Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.', 'Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.'], 'Montse Lorente · Trustpilot']
 ]
+
+// ---- Moneda por ubicación (país elegido en el funnel): eurozona €, Reino Unido £, resto $ ----
+const EUROZONE = ['Spain', 'France', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium', 'Austria', 'Ireland', 'Finland', 'Greece', 'Slovakia', 'Slovenia', 'Lithuania', 'Latvia', 'Estonia', 'Luxembourg', 'Malta', 'Cyprus', 'Croatia']
+const currency = computed(() => {
+  const c = f.answers.P11
+  if (c === 'United Kingdom') return '£'
+  if (EUROZONE.includes(c)) return '€'
+  return '$'
+})
+const money = n => `${Number(n).toFixed(2)} ${currency.value}`
+const perDay = p => p.price / p.days
+
+// Checkout REAL: Stripe Payment Link del plan elegido, con el email capturado ya rellenado
+function goCheckout () {
+  const p = PLANS[f.selectedPlan] || PLANS[1]
+  const email = (f.answers.PEMAIL || '').trim()
+  const url = p.link + (email ? `?prefilled_email=${encodeURIComponent(email)}` : '')
+  window.location.href = url
+}
 
 const countdown = computed(() => {
   const fmt = n => String(n).padStart(2, '0')

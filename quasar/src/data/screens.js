@@ -132,9 +132,17 @@ const S = [
 {id:'P52',phase:5,type:'success'}
 ];
 
+// Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
+// "old" = precio de referencia del 60% OFF. El símbolo de moneda mostrado se decide por país en ResultScreen.
 const PLANS=[
-  {name:['1 week','1 semana'], old:'24.99 €', day:'1.43', bill:['Billed 9.99 € per week, cancel anytime.','Se factura 9,99 € por semana, cancela cuando quieras.'], price:'9.99 €'},
-  {name:['1 month','1 mes'], old:'49.99 €', day:'0.67', bill:['Billed 19.99 €/month, cancel anytime.','Se factura 19,99 €/mes, cancela cuando quieras.'], price:'19.99 €', popular:true},
-  {name:['3 months','3 meses'], old:'99.99 €', day:'0.44', bill:['Billed 39.99 € every 3 months, cancel anytime.','Se factura 39,99 € cada 3 meses, cancela cuando quieras.'], price:'39.99 €'}
+  {key:'weekly', name:['Weekly Access','Acceso semanal'], price:9.00, days:7, old:22.50,
+   link:'https://buy.stripe.com/8x2bJ1cOvesG4DJe1z5ZC0s',
+   bill:['Billed weekly, cancel anytime.','Facturación semanal, cancela cuando quieras.']},
+  {key:'monthly', name:['Monthly Access','Acceso mensual'], price:29.00, days:30, old:72.50, popular:true,
+   link:'https://buy.stripe.com/8x28wPdSzacqb279Lj5ZC0t',
+   bill:['Billed monthly, cancel anytime.','Facturación mensual, cancela cuando quieras.']},
+  {key:'lifetime', name:['Lifetime Access','Acceso de por vida'], price:145.00, days:365, old:362.50, once:true,
+   link:'https://buy.stripe.com/3cI5kD7ubesGdaf1eN5ZC0u',
+   bill:['One-time payment — yours forever.','Pago único: tuyo para siempre.']}
 ];
 export { PHASES, PHASE_ICONS, EU, CDATA, COUNTRIES, CCODE, flagOf, S as SCREENS, PLANS, CATEGORIES, TITLE_SUGGESTIONS }
