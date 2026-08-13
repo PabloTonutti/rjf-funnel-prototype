@@ -93,6 +93,10 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 .inter h1{font-size:26px}
 .inter h1.h1-xl{font-size:31px}
 
+/* Pill con el email capturado, bajo el subtítulo del plan */
+.plan-email-pill{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:#EEF6FF;border:1px solid #BFDCFF;color:var(--jw-blue);font-size:13.5px;border-radius:22px;padding:8px 14px}
+.plan-email-pill b{font-weight:700}
+
 /* ============ potential (curva de entrevistas) ============ */
 .pot-card{background:#fff;border:1px solid var(--jw-line);border-radius:var(--r-card);box-shadow:var(--shadow);padding:20px 18px 14px;max-width:520px;margin:14px auto 0;width:100%}
 .pot-card h3{font-family:var(--pjs);font-weight:800;font-size:17px;text-align:left;margin-bottom:10px}

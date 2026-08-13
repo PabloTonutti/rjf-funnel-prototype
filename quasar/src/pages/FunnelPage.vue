@@ -31,7 +31,7 @@ import ReviewsScreen from 'components/screens/ReviewsScreen.vue'
 import LoaderScreen from 'components/screens/LoaderScreen.vue'
 import ResultScreen from 'components/screens/ResultScreen.vue'
 import SignupScreen from 'components/screens/SignupScreen.vue'
-import PaywallScreen from 'components/screens/PaywallScreen.vue'
+import EmailScreen from 'components/screens/EmailScreen.vue'
 import SuccessScreen from 'components/screens/SuccessScreen.vue'
 
 const f = useFunnel()
@@ -65,7 +65,7 @@ const MAP = {
   loader: LoaderScreen,
   result: ResultScreen,
   signup: SignupScreen,
-  paywall: PaywallScreen,
+  email: EmailScreen,
   success: SuccessScreen
 }
 

@@ -18,7 +18,7 @@
         <div id="phaseLabel">{{ phaseLabel }}</div>
       </div>
     </header>
-    <main id="main" :class="{ pwmode: f.screen.type === 'paywall' }"><router-view /></main>
+    <main id="main" :class="{ pwmode: f.screen.type === 'result' }"><router-view /></main>
     <footer id="foot"></footer>
   </div>
 </template>
@@ -51,8 +51,9 @@ onUnmounted(() => {
 })
 
 const hidden = computed(() => ['loader', 'success'].includes(f.screen.type))
-const showProg = computed(() => !hidden.value && f.screen.type !== 'paywall')
-const hideBack = computed(() => f.currentI === 0 || hidden.value || f.screen.type === 'paywall')
+// 'result' es ahora la página de conversión (plan + precios + countdown): sin barra de progreso ni atrás
+const showProg = computed(() => !hidden.value && f.screen.type !== 'result')
+const hideBack = computed(() => f.currentI === 0 || hidden.value || f.screen.type === 'result')
 const phaseLabel = computed(() => PHASES[f.screen.phase])
 
 // El contador "Step X of Y" se oculta a propósito: el usuario no debe ver los pasos.

@@ -121,12 +121,14 @@ const S = [
  title:['Time to create a personalized plan for you!','¡Hora de crear un plan personalizado para ti!'],
  body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
  cta:['CREATE PLAN','Crear plan']},
+{id:'PEMAIL',phase:4,type:'email',
+ title:['Where should we send your personalized plan?','¿Dónde te enviamos tu plan personalizado?'],
+ sub:["We'll save your plan and your job matches to this email.",'Guardaremos tu plan y tus empleos compatibles en este email.']},
 
 /* ---------------- PHASE 5 · RESULTS ---------------- */
 {id:'P48',phase:5,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
 {id:'P49',phase:5,type:'result'},
-{id:'P50',phase:5,type:'signup'},
-{id:'P51',phase:5,type:'paywall'}, // precios + cuenta atrás + reviews + comparativa (diseño recuperado del prototipo)
+{id:'P50',phase:5,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
 {id:'P52',phase:5,type:'success'}
 ];
 

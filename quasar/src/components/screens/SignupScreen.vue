@@ -46,7 +46,7 @@ const f = useFunnel()
 
 const mode = ref('choice')
 const name = ref('')
-const email = ref('')
+const email = ref(f.answers.PEMAIL || '') // prefilado con el email capturado antes del plan
 const password = ref('')
 
 const valid = computed(() =>
