@@ -36,6 +36,10 @@ import SuccessScreen from 'components/screens/SuccessScreen.vue'
 
 const f = useFunnel()
 
+// Si el usuario ya llegó a su plan personalizado (visita anterior o vuelta desde Stripe),
+// restaurar su estado y llevarle directo a la página del plan.
+f.restorePlan()
+
 // Dev-only helper: lets you drive the funnel from the console (window.__funnel)
 if (process.env.DEV) window.__funnel = f
 

@@ -50,10 +50,12 @@ const checks = [
   ['Work Preferences', 'Preferencias de trabajo'], ['Location & Remote', 'Ubicación y Remoto'],
   ['Target roles & timeline', 'Puestos objetivo y plazo']
 ]
+// Reviews REALES de Trustpilot (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent")
 const reviews = [
-  ['Michael', ['Using AI to automate job applications has saved me countless hours and landed me 12 interviews in three weeks!', 'Usar IA para automatizar candidaturas me ha ahorrado horas incontables y me consiguió 12 entrevistas en tres semanas.']],
-  ['Laura', ['I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.', 'Dejé de perder horas en portales. En dos semanas tenía más respuestas que en tres meses por mi cuenta.']],
-  ['Sergio', ['The ATS-optimized resume made the difference. Recruiters finally reply.', 'El CV optimizado para ATS marcó la diferencia. Por fin contestan.']]
+  ['Conall Bradley', ["I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS.", "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS."]],
+  ['Disha', ['It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.', 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.']],
+  ['Lavallée Alexandre', ['Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.', 'Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.']],
+  ['Montse Lorente', ['Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.', 'Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.']]
 ]
 const microQs = [
   { at: 45, key: 'P48a', q: ['Open to learn new skills if the role requires it?', '¿Abierto a aprender nuevas skills si el rol lo requiere?'] },

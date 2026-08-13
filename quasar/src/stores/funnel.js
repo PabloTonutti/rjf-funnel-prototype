@@ -85,6 +85,45 @@ export const useFunnel = defineStore('funnel', {
   },
 
   actions: {
+    // ---- Persistencia del plan (localStorage: sobrevive reloads y a volver de Stripe;
+    // se pierde solo si el usuario limpia la caché, tal y como se quiere) ----
+    persistPlan () {
+      try {
+        const snap = {
+          v: 1,
+          lang: this.lang,
+          answers: { ...this.answers },
+          aiTitles: this.aiTitles,
+          aiIndustries: this.aiIndustries,
+          aiScore: this.aiScore,
+          selectedPlan: this.selectedPlan,
+          secondsLeft: this.secondsLeft,
+          upload: this.upload ? { kind: this.upload.kind, name: this.upload.name, handle: this.upload.handle || null } : null
+        }
+        localStorage.setItem('jw_plan_state', JSON.stringify(snap))
+      } catch (e) { /* almacenamiento bloqueado → sin persistencia, el funnel sigue */ }
+    },
+    // Si el usuario YA llegó a su plan, restaurarlo y saltar directo a la página del plan.
+    restorePlan () {
+      try {
+        const raw = localStorage.getItem('jw_plan_state')
+        if (!raw) return false
+        const s = JSON.parse(raw)
+        if (!s || !s.answers) return false
+        this.lang = s.lang || this.lang
+        this.answers = s.answers
+        this.aiTitles = s.aiTitles || []
+        this.aiIndustries = s.aiIndustries || []
+        this.aiScore = s.aiScore || null
+        this.selectedPlan = typeof s.selectedPlan === 'number' ? s.selectedPlan : 1
+        if (typeof s.secondsLeft === 'number' && s.secondsLeft > 0) this.secondsLeft = s.secondsLeft
+        this.upload = s.upload || null
+        const i = SCREENS.findIndex(x => x.id === 'P49')
+        if (i >= 0) this.currentI = i
+        return true
+      } catch (e) { return false }
+    },
+
     nextIndex (i) {
       let n = i + 1
       while (SCREENS[n] && SCREENS[n].cond && !SCREENS[n].cond(this)) n++

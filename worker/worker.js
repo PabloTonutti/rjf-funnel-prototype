@@ -59,11 +59,57 @@ async function liProfile (req, env, CORS) {
   return Response.json({ profile: slim }, { headers: CORS })
 }
 
+// POST /checkout {plan, email} → crea una Checkout Session de Stripe con customer_email
+// FIJADO (el usuario NO puede editarlo, a diferencia del prefilled_email de los Payment Links).
+// Requiere el secreto STRIPE_SECRET_KEY (npx wrangler secret put STRIPE_SECRET_KEY).
+const PLAN_MATCH = {
+  weekly: { amount: 900, type: 'recurring', interval: 'week' },
+  monthly: { amount: 2900, type: 'recurring', interval: 'month' },
+  lifetime: { amount: 14500, type: 'one_time' }
+}
+let priceCache = null
+async function checkout (req, env, CORS) {
+  if (!env.STRIPE_SECRET_KEY) return Response.json({ error: 'stripe key not configured' }, { status: 501, headers: CORS })
+  const { plan, email } = await req.json()
+  const spec = PLAN_MATCH[plan]
+  if (!spec || !email || !/.+@.+\..+/.test(email)) return Response.json({ error: 'bad request' }, { status: 400, headers: CORS })
+  if (!priceCache) {
+    const r = await fetch('https://api.stripe.com/v1/prices?active=true&limit=100', { headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` } })
+    priceCache = (await r.json()).data || []
+  }
+  const price = priceCache.find(p => p.unit_amount === spec.amount && p.currency === 'eur' &&
+    (spec.type === 'one_time' ? p.type === 'one_time' : (p.type === 'recurring' && p.recurring && p.recurring.interval === spec.interval)))
+  if (!price) return Response.json({ error: 'price not found' }, { status: 404, headers: CORS })
+  const origin = req.headers.get('Origin')
+  const back = ALLOWED(origin) ? origin : 'https://pablotonutti.github.io'
+  const home = back === 'https://pablotonutti.github.io' ? back + '/rjf-funnel-prototype/' : back + '/'
+  const body = new URLSearchParams({
+    mode: spec.type === 'one_time' ? 'payment' : 'subscription',
+    customer_email: email, // ← bloqueado en el checkout
+    'line_items[0][price]': price.id,
+    'line_items[0][quantity]': '1',
+    success_url: home + '?paid=1',
+    cancel_url: home
+  })
+  const r2 = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  })
+  const j = await r2.json()
+  if (!j.url) return Response.json({ error: 'session failed' }, { status: 502, headers: CORS })
+  return Response.json({ url: j.url }, { headers: CORS })
+}
+
 export default {
   async fetch (req, env) {
     const CORS = corsFor(req.headers.get('Origin'))
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
     const path = new URL(req.url).pathname
+    if (path === '/checkout') {
+      if (req.method !== 'POST') return new Response('POST only', { status: 405, headers: CORS })
+      try { return await checkout(req, env, CORS) } catch (e) { return Response.json({ error: 'checkout failed' }, { status: 500, headers: CORS }) }
+    }
     if (path === '/li-profile') {
       if (req.method !== 'GET') return new Response('GET only', { status: 405, headers: CORS })
       try { return await liProfile(req, env, CORS) } catch (e) { return Response.json({ error: 'profile fetch failed' }, { status: 500, headers: CORS }) }

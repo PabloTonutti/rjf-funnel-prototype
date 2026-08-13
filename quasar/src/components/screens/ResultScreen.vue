@@ -59,9 +59,7 @@
             <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
             <div class="plan-bill">{{ f.T(p.bill) }}</div>
           </div>
-          <!-- El weekly (9/sem) superaría 1/día: se muestra por semana; el resto por día (<1) -->
-          <div class="plan-day" v-if="perDay(p) < 1"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
-          <div class="plan-day" v-else><div class="n">{{ money(p.price) }}</div><div class="u">{{ f.T(['per week', 'por semana']) }}</div></div>
+          <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
         </div>
       </div>
 
@@ -183,12 +181,24 @@ const currency = computed(() => {
 const money = n => `${Number(n).toFixed(2)} ${currency.value}`
 const perDay = p => p.price / p.days
 
-// Checkout REAL: Stripe Payment Link del plan elegido, con el email capturado ya rellenado
-function goCheckout () {
+// Checkout REAL. 1º intento: sesión de Checkout creada por el worker con customer_email
+// BLOQUEADO (no editable). Fallback: Payment Link con prefilled_email (editable).
+const AI_ENDPOINT = (typeof localStorage !== 'undefined' && localStorage.getItem('jw_ai_endpoint')) || 'https://jobwinner-ai.jobwinner.workers.dev'
+async function goCheckout () {
   const p = PLANS[f.selectedPlan] || PLANS[1]
   const email = (f.answers.PEMAIL || '').trim()
-  const url = p.link + (email ? `?prefilled_email=${encodeURIComponent(email)}` : '')
-  window.location.href = url
+  f.persistPlan() // al volver de Stripe (atrás del navegador), se restaura esta página
+  try {
+    const r = await fetch(`${AI_ENDPOINT}/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan: p.key, email }),
+      signal: AbortSignal.timeout(6000)
+    })
+    const j = await r.json()
+    if (j && j.url) { window.location.href = j.url; return }
+  } catch (e) { /* worker sin clave de Stripe u offline → fallback */ }
+  window.location.href = p.link + (email ? `?prefilled_email=${encodeURIComponent(email)}` : '')
 }
 
 const countdown = computed(() => {
@@ -209,6 +219,7 @@ function checkSticky () {
 }
 let timer = null
 onMounted(() => {
+  f.persistPlan() // el usuario llegó a su plan: recordarlo para próximas visitas
   timer = setInterval(() => { if (f.secondsLeft > 0) f.secondsLeft-- }, 1000)
   window.addEventListener('scroll', checkSticky, { passive: true })
   const m = document.getElementById('main')
