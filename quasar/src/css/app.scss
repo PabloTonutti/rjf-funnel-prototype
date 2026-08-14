@@ -108,6 +108,33 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 .pw-cols.pw-cols-full{display:flex;flex-direction:column;gap:14px}
 .pw-cols.pw-cols-full .pw-feat-card{width:100%}
 
+/* ============ página /preferences ============ */
+.pref-hdr{display:flex;align-items:center;gap:12px;padding:14px 20px;position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);z-index:20;border-bottom:1px solid var(--jw-line)}
+.pref-hdr h1{font-size:19px;flex:1;text-align:center;margin:0}
+.pref-back{width:40px;height:40px;border:1.5px solid #B9C9DE;background:#fff;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--jw-ink);flex:none;box-shadow:0 1px 4px rgba(2,17,45,.08)}
+.pref-main{flex:1;padding:16px 24px 8px;overflow-y:auto;max-width:600px;margin:0 auto;width:100%}
+.pref-group{font-family:var(--pjs);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--jw-blue);margin:26px 0 2px}
+.pref-sec{padding:16px 0 18px;border-bottom:1px solid var(--jw-line)}
+.pref-title{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.pref-title b{font-family:var(--pjs);font-size:16.5px}
+.pcheck{display:flex;color:#C9D1DC}
+.pcheck.on{color:#22C55E}
+.pref-sub{color:var(--jw-slate);font-size:13.5px;margin:2px 0 10px}
+.pref-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.ppill{border:1.5px solid var(--jw-line);background:#fff;border-radius:22px;padding:9px 15px;font-family:var(--inter);font-weight:600;font-size:13.5px;color:var(--jw-ink);cursor:pointer;transition:all .15s}
+.ppill:hover{border-color:var(--jw-blue)}
+.ppill.on{background:var(--jw-blue);border-color:var(--jw-blue);color:#fff}
+.pref-chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
+.pref-chip{display:inline-flex;align-items:center;gap:7px;background:var(--jw-tint);border:1px solid #BFDCFF;color:var(--jw-blue);font-weight:600;font-size:13.5px;border-radius:22px;padding:8px 12px}
+.pref-chip button{background:none;border:none;color:var(--jw-blue);cursor:pointer;font-size:13px;padding:0}
+.pref-addrow{display:flex;gap:8px;align-items:center;margin-top:10px;max-width:420px;position:relative}
+.pref-addrow input{flex:1;padding:11px 13px;border:1.5px solid var(--jw-line);border-radius:10px;font-family:var(--inter);font-size:14px;min-width:0}
+.pref-addrow input:focus{outline:none;border-color:var(--jw-blue)}
+.pref-add{border:none;background:var(--jw-blue);color:#fff;border-radius:10px;padding:11px 16px;font-weight:700;font-size:13px;cursor:pointer;flex:none}
+.pref-add:disabled{background:var(--jw-line);color:var(--jw-slate);cursor:default}
+.pref-unit{color:var(--jw-slate);font-weight:700}
+.pref-select{width:100%;max-width:420px;padding:11px 13px;border:1.5px solid var(--jw-line);border-radius:10px;font-family:var(--inter);font-size:14px;background:#fff;margin-top:8px}
+
 /* Pill con el email capturado, bajo el subtítulo del plan */
 .plan-email-pill{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:#EEF6FF;border:1px solid #BFDCFF;color:var(--jw-blue);font-size:13.5px;border-radius:22px;padding:8px 14px}
 .plan-email-pill b{font-weight:700}
