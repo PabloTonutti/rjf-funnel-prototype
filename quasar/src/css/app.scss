@@ -108,11 +108,14 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 .pw-cols.pw-cols-full{display:flex;flex-direction:column;gap:14px}
 .pw-cols.pw-cols-full .pw-feat-card{width:100%}
 
-/* ============ página /preferences ============ */
-.pref-hdr{display:flex;align-items:center;gap:12px;padding:14px 20px;position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);z-index:20;border-bottom:1px solid var(--jw-line)}
-.pref-hdr h1{font-size:19px;flex:1;text-align:center;margin:0}
-.pref-back{width:40px;height:40px;border:1.5px solid #B9C9DE;background:#fff;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--jw-ink);flex:none;box-shadow:0 1px 4px rgba(2,17,45,.08)}
-.pref-main{flex:1;padding:16px 24px 8px;overflow-y:auto;max-width:600px;margin:0 auto;width:100%}
+/* ============ página /preferences (vive fuera del funnel: página ancha con hueco para sidebar) ============ */
+.prefs-page{min-height:100vh;background:#fff}
+.prefs-inner{padding:34px 44px 60px;max-width:1060px}
+@media (min-width:1100px){ .prefs-inner{margin-left:280px} } /* espacio reservado para el sidebar izquierdo */
+@media (max-width:700px){ .prefs-inner{padding:22px 20px 44px} }
+.prefs-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:4px}
+.prefs-head h1{font-size:27px;margin-bottom:5px}
+.prefs-intro{color:var(--jw-slate);font-size:14.5px;max-width:560px}
 .pref-group{font-family:var(--pjs);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--jw-blue);margin:26px 0 2px}
 .pref-sec{padding:16px 0 18px;border-bottom:1px solid var(--jw-line)}
 .pref-title{display:flex;align-items:center;gap:9px;margin-bottom:4px}

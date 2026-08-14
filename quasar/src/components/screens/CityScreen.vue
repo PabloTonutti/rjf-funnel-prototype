@@ -54,31 +54,8 @@ const cityPlaceholder = computed(() => {
 })
 
 // Ciudades principales por país: sugerencias INSTANTÁNEAS desde el primer carácter
-// (Photon complementa/afina a partir de 2 caracteres).
-const LOCAL_CITIES = {
-  Spain: ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Bilbao', 'Alicante', 'Murcia', 'Granada', 'Palma', 'Las Palmas', 'Vigo', 'A Coruña', 'San Sebastián'],
-  Mexico: ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'Querétaro', 'Mérida', 'Cancún', 'León', 'Toluca'],
-  Argentina: ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'Mar del Plata', 'Salta', 'Tucumán'],
-  Colombia: ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Bucaramanga', 'Pereira'],
-  Chile: ['Santiago', 'Valparaíso', 'Concepción', 'Viña del Mar', 'Antofagasta', 'Temuco'],
-  Peru: ['Lima', 'Arequipa', 'Trujillo', 'Cusco', 'Chiclayo', 'Piura'],
-  Uruguay: ['Montevideo', 'Punta del Este', 'Salto'],
-  Ecuador: ['Quito', 'Guayaquil', 'Cuenca'],
-  'United States': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Miami', 'San Francisco', 'Seattle', 'Boston', 'Austin', 'Denver', 'Atlanta', 'Dallas', 'Washington'],
-  'United Kingdom': ['London', 'Manchester', 'Birmingham', 'Edinburgh', 'Glasgow', 'Leeds', 'Liverpool', 'Bristol'],
-  Ireland: ['Dublin', 'Cork', 'Galway', 'Limerick', 'Waterford'],
-  France: ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Bordeaux', 'Lille', 'Nantes', 'Nice'],
-  Germany: ['Berlin', 'Munich', 'Hamburg', 'Frankfurt', 'Cologne', 'Stuttgart', 'Düsseldorf', 'Leipzig'],
-  Italy: ['Rome', 'Milan', 'Naples', 'Turin', 'Bologna', 'Florence', 'Venice'],
-  Portugal: ['Lisbon', 'Porto', 'Braga', 'Coimbra', 'Faro'],
-  Netherlands: ['Amsterdam', 'Rotterdam', 'The Hague', 'Utrecht', 'Eindhoven'],
-  Belgium: ['Brussels', 'Antwerp', 'Ghent', 'Liège'],
-  Switzerland: ['Zurich', 'Geneva', 'Basel', 'Bern', 'Lausanne'],
-  Canada: ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa'],
-  Brazil: ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte', 'Brasília', 'Curitiba', 'Porto Alegre'],
-  Australia: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide']
-}
-const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+// (Photon complementa/afina a partir de 2 caracteres). Lista compartida en utils/cities.js.
+import { LOCAL_CITIES, normCity as norm } from 'src/utils/cities'
 function localMatches (query) {
   const list = LOCAL_CITIES[f.answers.P11] || []
   const nq = norm(query)
