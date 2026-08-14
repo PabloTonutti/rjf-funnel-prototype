@@ -127,6 +127,7 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 .ppill{border:1.5px solid var(--jw-line);background:#fff;border-radius:22px;padding:9px 15px;font-family:var(--inter);font-weight:600;font-size:13.5px;color:var(--jw-ink);cursor:pointer;transition:all .15s}
 .ppill:hover{border-color:var(--jw-blue)}
 .ppill.on{background:var(--jw-blue);border-color:var(--jw-blue);color:#fff}
+.ppill.on::before{content:'✓';font-weight:800;margin-right:7px}
 .pref-chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 2px}
 .pref-chip{display:inline-flex;align-items:center;gap:7px;background:var(--jw-tint);border:1px solid #BFDCFF;color:var(--jw-blue);font-weight:600;font-size:13.5px;border-radius:22px;padding:8px 12px}
 .pref-chip button{background:none;border:none;color:var(--jw-blue);cursor:pointer;font-size:13px;padding:0}

@@ -91,7 +91,7 @@
         </select>
       </section>
 
-      <section class="pref-sec" style="border-bottom:none">
+      <section class="pref-sec">
         <div class="pref-title"><span class="pcheck" :class="{ on: !!a.PCITY }" v-html="CK" /> <b>9. {{ T(['City / region', 'Ciudad / región']) }}</b></div>
         <div class="pref-addrow" style="position:relative">
           <input v-model="cityDraft" :placeholder="T(['Your city (optional — anywhere works)', 'Tu ciudad (opcional: cualquier lugar vale)'])"
@@ -99,6 +99,31 @@
           <div v-if="cityOpen && citySugs.length" class="sug-list">
             <button v-for="s in citySugs" :key="s.name" class="sug-row" @mousedown.prevent="pickCity(s.name)">{{ s.name }}</button>
           </div>
+        </div>
+      </section>
+
+      <!-- ============ COMPANY PREFERENCES ============ -->
+      <h2 class="pref-group">{{ T(['Company preferences', 'Preferencias de empresa']) }}</h2>
+
+      <section class="pref-sec">
+        <div class="pref-title"><span class="pcheck" :class="{ on: (a.PCOMPSIZE || []).length }" v-html="CK" /> <b>10. {{ T(['Preferred company size', 'Tamaño de empresa preferido']) }}</b></div>
+        <p class="pref-sub">{{ T(['You will still see other companies in your recommendations, but these will be prioritized', 'Seguirás viendo otras empresas en tus recomendaciones, pero estas tendrán prioridad']) }}</p>
+        <div class="pref-pills">
+          <button v-for="s in COMPANY_SIZES" :key="s" class="ppill" :class="{ on: (a.PCOMPSIZE || []).includes(s) }" @click="toggleSize(s)">{{ s }}</button>
+        </div>
+      </section>
+
+      <section class="pref-sec" style="border-bottom:none">
+        <div class="pref-title"><span class="pcheck" :class="{ on: (a.PDREAM || []).length }" v-html="CK" /> <b>11. {{ T(['Dream companies', 'Empresas soñadas']) }}</b></div>
+        <p class="pref-sub">{{ T(["Companies you'd love to work for — we'll prioritize their openings", 'Empresas en las que te encantaría trabajar: priorizaremos sus ofertas']) }}</p>
+        <div class="pref-chips">
+          <span v-for="(c, k) in (a.PDREAM || [])" :key="c + k" class="pref-chip">
+            {{ c }} <button @click="a.PDREAM.splice(k, 1)" aria-label="remove">✕</button>
+          </span>
+        </div>
+        <div class="pref-addrow">
+          <input v-model="dreamDraft" :placeholder="T([`Enter companies you'd like to prioritize…`, 'Añade empresas que quieras priorizar…'])" @keydown.enter.prevent="addDream">
+          <button class="pref-add" :disabled="!dreamDraft.trim()" @click="addDream">＋ {{ T(['Add', 'Añadir']) }}</button>
         </div>
       </section>
     </div>
@@ -203,4 +228,20 @@ function speedLabel (m) {
   return f.lang === 'en' ? `${m} months` : `${m} meses`
 }
 function setSpeed (m) { a.PSPEED = { months: m, t: [speedLabel(m), speedLabel(m)] } }
+
+// --- Preferencias de empresa ---
+const COMPANY_SIZES = ['1 - 50', '51 - 200', '201 - 1,000', '1,001+']
+function toggleSize (s) {
+  if (!a.PCOMPSIZE) a.PCOMPSIZE = []
+  const i = a.PCOMPSIZE.indexOf(s)
+  if (i >= 0) a.PCOMPSIZE.splice(i, 1); else a.PCOMPSIZE.push(s)
+}
+const dreamDraft = ref('')
+function addDream () {
+  const c = dreamDraft.value.trim()
+  if (!c) return
+  if (!a.PDREAM) a.PDREAM = []
+  if (!a.PDREAM.some(x => x.toLowerCase() === c.toLowerCase())) a.PDREAM.push(c)
+  dreamDraft.value = ''
+}
 </script>
