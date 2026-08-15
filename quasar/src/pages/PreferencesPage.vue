@@ -127,11 +127,13 @@
         </div>
       </section>
     </div>
+    <VariantNav :cur="0" />
   </div>
 </template>
 
 <script setup>
 import { computed, ref, watch } from 'vue'
+import VariantNav from 'src/components/prefs/VariantNav.vue'
 import { useFunnel } from 'stores/funnel'
 import { SCREENS, CATEGORIES, COUNTRIES, flagOf, TITLE_SUGGESTIONS } from 'src/data/screens'
 import { suggestCities } from 'src/utils/cities'
