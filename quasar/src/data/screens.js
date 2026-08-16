@@ -141,7 +141,7 @@ const PLANS=[
   {key:'monthly', name:['Monthly Access','Acceso mensual'], price:29.00, days:30, old:72.50, popular:true,
    link:'https://buy.stripe.com/8x28wPdSzacqb279Lj5ZC0t',
    bill:['Billed monthly, cancel anytime.','Facturación mensual, cancela cuando quieras.']},
-  {key:'lifetime', name:['Lifetime Access','Acceso de por vida'], price:145.00, days:365, old:362.50, once:true,
+  {key:'lifetime', name:['Until you\'re hired','Hasta que te contraten'], price:145.00, days:365, old:362.50, once:true,
    link:'https://buy.stripe.com/3cI5kD7ubesGdaf1eN5ZC0u',
    bill:['One-time payment — yours forever.','Pago único: tuyo para siempre.']}
 ];

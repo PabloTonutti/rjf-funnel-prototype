@@ -1,112 +1,215 @@
 <template>
-  <div class="screen pw-screen">
-    <!-- Cuenta atrás (diseño recuperado del prototipo) -->
-    <div class="pw-banner"><div class="pw-inner">
-      <span class="t">{{ f.T(['50% discount reserved for you', '50% de descuento reservado para ti']) }} <b>{{ countdown }}</b></span>
+  <div class="screen pw-screen rw">
+    <!-- Barra de oferta fija (60% + cuenta atrás), diseño de referencia -->
+    <div class="pw-banner"><div class="pw-inner rw-barin">
+      <div>
+        <span class="t">{{ f.T(['60% discount reserved for you', '60% de descuento reservado para ti']) }}</span>
+        <div class="rw-clock">{{ countdown }}</div>
+      </div>
       <button @click="scrollToPlans">{{ f.T(['GET ACCESS', 'OBTENER ACCESO']) }}</button>
     </div></div>
 
-    <div class="pw-body">
-      <!-- Plan personalizado -->
-      <div class="result-hero">
-        <div class="illo" style="margin:2px 0 10px" v-html="ILLO.trophy" />
-        <h1 style="font-size:26px">{{ f.T(['Your personalized plan is ready', 'Tu plan personalizado está listo']) }}</h1>
-        <p class="subtitle" style="margin-bottom:0">{{ f.T(['We got you covered for all your job hunt.', 'Te cubrimos en toda tu búsqueda de empleo.']) }}</p>
+    <!-- 1 · Hero personalizado -->
+    <section class="rw-sec rw-hero">
+      <div class="rw-in">
+        <div class="illo" v-html="ILLO.trophy" />
+        <h1 class="rw-h1">{{ f.T(['Your plan is ready', 'Tu plan está listo']) }}</h1>
+        <p class="rw-sub" v-if="heroLine">{{ heroLine }}</p>
+        <div class="rw-heroGrid">
+          <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences', 'empleos encajan con tus preferencias de búsqueda']) }}</span></div>
+          <div class="rw-anchor" v-if="monthlyMin">
+            <b><span class="aic" v-html="ic('clock', 17)" />{{ f.T([`Every month searching costs you ${sym}${fmt0(monthlyMin)}`, `Cada mes buscando te cuesta ${fmt0(monthlyMin)} ${sym}`]) }}</b>
+            <span>{{ f.T([`The minimum you told us you'd accept. Your plan is under ${pctOfMonth}% of one month.`, `El mínimo que nos dijiste que aceptarías. Tu plan es menos del ${pctOfMonth}% de un mes.`]) }}</span>
+          </div>
+        </div>
       </div>
-      <div class="result-cols">
-        <!-- Plan: un paso por tarjeta, una sola columna -->
-        <div v-for="(s, k) in steps" :key="k" class="card step-card">
-          <div class="step-ic" v-html="iconFor(s.i)" />
-          <div class="step-tx">
-            <div class="step-eyebrow">{{ f.T(['STEP', 'PASO']) }} {{ k + 1 }}</div>
-            <b>{{ f.T(s.t) }}</b>
-            <span>{{ f.T(s.sub) }}</span>
-            <div v-if="s.badge" class="found-badge">
-              <span class="fb-ic" v-html="ic('check')" />
-              <span>{{ f.T(s.badge) }}</span>
+    </section>
+
+    <!-- 2 · Tiles de datos + respuestas desplegables -->
+    <section class="rw-sec" style="padding-top:0">
+      <div class="rw-in">
+        <div class="rw-stats">
+          <div class="rw-stat" v-if="annualK"><span>{{ f.T(['Market salary, your profile', 'Salario de mercado, tu perfil']) }}</span><b>{{ sym }}{{ marketLo }}k–{{ marketHi }}k</b></div>
+          <div class="rw-stat" v-if="annualK"><span>{{ f.T(['Your stated minimum', 'Tu mínimo indicado']) }}</span><b>{{ sym }}{{ annualK }}k</b></div>
+          <div class="rw-stat"><span>{{ f.T(['Estimated first interview', 'Primera entrevista estimada']) }}</span><b>{{ f.T(['Week 3', 'Semana 3']) }}</b></div>
+          <div class="rw-stat" v-if="modes"><span>{{ f.T(['Work mode', 'Modalidad']) }}</span><b>{{ modes }}</b></div>
+        </div>
+        <button class="rw-reveal" :aria-expanded="String(showAns)" aria-controls="rw-answers" @click="showAns = !showAns">
+          {{ showAns ? f.T(['Hide your answers', 'Ocultar tus respuestas']) : f.T([`See the ${ansRows.length} answers you gave`, `Ver las ${ansRows.length} respuestas que diste`]) }}
+          <span class="chev" :class="{ up: showAns }" v-html="ic('chevrondown', 14)" />
+        </button>
+        <div v-if="showAns" class="rw-answers" id="rw-answers">
+          <div v-for="(r, k) in ansRows" :key="k" class="rw-arow"><span>{{ f.T(r[0]) }}</span><b>{{ r[1] }}</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · Camino hasta la oferta firmada (timeline con fechas) -->
+    <section class="rw-sec rw-tint2">
+      <div class="rw-in">
+        <h2 class="rw-h2">{{ f.T(['Your path to a signed offer', 'Tu camino hasta la oferta firmada']) }}</h2>
+        <p class="rw-sub" style="margin:4px 0 24px" v-if="goalMonths">{{ f.T([`Built around the ${goalMonths}-month goal you set`, `Construido en torno a tu objetivo de ${goalMonths} meses`]) }}</p>
+        <div class="rw-rail">
+          <div class="rw-step">
+            <div class="rw-node">1</div>
+            <div class="rw-card">
+              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T(['Resume issues', 'Fallos en tu CV']) }}</span></div>
+              <h3>{{ f.T(["Fix what's holding your resume back", 'Arregla lo que frena tu CV']) }}</h3>
+              <p>{{ f.T(['We found issues in your resume that could be keeping you out of the shortlist.', 'Encontramos fallos en tu CV que podrían estar dejándote fuera de la lista final.']) }}</p>
+            </div>
+          </div>
+          <div class="rw-step">
+            <div class="rw-node">2</div>
+            <div class="rw-card">
+              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip">{{ f.T([`${matches} matches today!`, `¡${matches} matches hoy!`]) }}</span></div>
+              <h3>{{ f.T(['Open your matched jobs', 'Abre tus empleos compatibles']) }}</h3>
+              <p>{{ f.T(['Scored against your preferences and refreshed every morning.', 'Puntuados contra tus preferencias y actualizados cada mañana.']) }}</p>
+            </div>
+          </div>
+          <div class="rw-step">
+            <div class="rw-node">3</div>
+            <div class="rw-card">
+              <div class="rw-meta"><span class="day">{{ f.T(['WEEK 1+', 'SEMANA 1+']) }}</span><span class="rw-chip">{{ f.T(['30 sec each', '30 seg cada una']) }}</span></div>
+              <h3>{{ f.T(['Apply with a tailored resume and cover letter every time', 'Aplica siempre con un CV y carta adaptados']) }}</h3>
+              <p>{{ f.T(['Both rewritten for every listing, automatically.', 'Ambos reescritos para cada oferta, automáticamente.']) }}</p>
+            </div>
+          </div>
+          <div class="rw-step">
+            <div class="rw-node">4</div>
+            <div class="rw-card">
+              <div class="rw-meta"><span class="day">{{ f.T(['WEEK 2+', 'SEMANA 2+']) }}</span><span class="rw-chip">Interview Kit</span></div>
+              <h3>{{ f.T(['Walk in ready for the interviews', 'Llega preparado a las entrevistas']) }}</h3>
+              <p>{{ f.T(['Mock interviews on real questions for your role, scored.', 'Simulacros con preguntas reales de tu puesto, con puntuación.']) }}</p>
+            </div>
+          </div>
+          <div class="rw-step" style="align-items:center;margin-bottom:0">
+            <div class="rw-node end"><span v-html="ic('trophy', 20)" /></div>
+            <div class="rw-end">
+              <b>{{ f.T(['Offer signed', 'Oferta firmada']) }}</b>
+              <span v-if="goalMonths">{{ f.T([`Your target: ${goalMonths} months from today`, `Tu objetivo: ${goalMonths} meses desde hoy`]) }}</span>
             </div>
           </div>
         </div>
-        <!-- Resumen del perfil -->
-        <div class="card" style="background:var(--jw-cloud);box-shadow:none">
-          <h3><span v-html="ic('user')" style="display:contents" /> {{ f.T(['Plan adapted to you', 'Plan adaptado a ti']) }}</h3>
-          <div class="pc-row"><span class="k">{{ f.T(['Preferred roles', 'Roles preferidos']) }}</span><span class="v">{{ roles }}</span></div>
-          <div class="pc-row"><span class="k">{{ f.T(['Type of work', 'Tipo de trabajo']) }}</span><span class="v">{{ val(f.answers.P7) }}</span></div>
-          <div class="pc-row"><span class="k">{{ f.T(['Preferred industries', 'Industrias preferidas']) }}</span><span class="v">{{ industries }}</span></div>
-          <div class="pc-row"><span class="k">{{ f.T(['Career level', 'Nivel profesional']) }}</span><span class="v">{{ val(f.answers.P16) }}</span></div>
-          <div class="pc-row"><span class="k">{{ f.T(['Minimum salary', 'Salario mínimo']) }}</span><span class="v">{{ salary }}</span></div>
-          <div class="pc-row"><span class="k">{{ f.T(['Location', 'Ubicación']) }}</span><span class="v">{{ location }}</span></div>
-          <div class="pc-row"><span class="k">{{ f.T(['Work mode', 'Modalidad']) }}</span><span class="v">{{ val(f.answers.P9) }}</span></div>
+      </div>
+    </section>
+
+    <!-- 4 · Planes -->
+    <section class="rw-sec" ref="plansEl">
+      <div class="rw-in">
+        <h2 class="rw-h2">{{ f.T(['Choose your plan', 'Elige tu plan']) }}</h2>
+        <p class="rw-sub" style="margin:4px 0 22px">{{ f.T(['All plans include full access to everything below.', 'Todos los planes incluyen acceso completo a todo lo de abajo.']) }}</p>
+        <div class="rw-plans" role="radiogroup">
+          <div v-for="(p, k) in PLANS" :key="k" class="rw-plan" role="radio" :aria-checked="String(f.selectedPlan === k)" tabindex="0"
+            @click="f.selectedPlan = k" @keydown.space.prevent="f.selectedPlan = k" @keydown.enter.prevent="f.selectedPlan = k">
+            <span v-if="p.popular" class="rw-tag">{{ f.T(['MOST POPULAR', 'EL MÁS POPULAR']) }}</span>
+            <div class="rw-radio" />
+            <div class="name">{{ f.T(p.name) }}</div>
+            <div class="was">{{ money(p.old) }}</div>
+            <div class="per">{{ money(perDay(p)) }}</div>
+            <div class="perlab">{{ f.T(['per day', 'por día']) }}</div>
+            <div class="why" :class="{ n: !p.popular }">{{ f.T(whyOf(p)) }}</div>
+            <span class="off">60% OFF</span>
+          </div>
+        </div>
+        <div class="rw-cta">
+          <button ref="buyEl" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }}</button>
+          <p class="rw-note"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with Stripe · Cancel in one tap', 'Pago seguro con Stripe · Cancela en un toque']) }}</p>
         </div>
       </div>
+    </section>
 
-      <!-- Precios (diseño recuperado) -->
-      <h2 class="pw-h1" style="font-size:22px;margin-top:26px">{{ f.T(['Choose your plan. All plans include full access.', 'Elige tu plan. Todos incluyen acceso completo.']) }}</h2>
-      <div class="plans" ref="plansEl">
-        <div
-          v-for="(p, k) in PLANS" :key="k"
-          class="plan" :class="{ sel: f.selectedPlan === k }"
-          @click="f.selectedPlan = k"
-        >
-          <div v-if="p.popular" class="pop-pill">{{ f.T(['Most popular', 'Most popular']) }}</div>
-          <div class="radio" />
+    <!-- 5 · Garantía -->
+    <section class="rw-sec" style="padding-top:0">
+      <div class="rw-in">
+        <div class="rw-guar">
+          <span class="gic" v-html="ic('refresh', 30)" />
           <div>
-            <div class="plan-name">{{ f.T(p.name) }}</div>
-            <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
-            <div class="plan-bill">{{ f.T(p.bill) }}</div>
-          </div>
-          <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
-        </div>
-      </div>
-
-      <button ref="buyEl" class="btn btn-primary" @click="goCheckout">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
-      <div class="stripe-badge">
-        <span v-html="ic('lock', 13)" style="display:contents" /> {{ f.T(['Secure checkout with', 'Pago seguro con']) }}
-        <span class="sb">stripe</span>
-      </div>
-
-      <!-- Beneficios de las herramientas IA (beneficio grande, nombre de la herramienta debajo) -->
-      <h2 class="pw-sec-title" style="margin-top:28px">{{ f.T(['Access to over 25 AI tools', 'Acceso a más de 25 herramientas de IA']) }}</h2>
-      <div class="tools-grid">
-        <div v-for="(t, k) in tools" :key="k" class="tool-card">
-          <span class="tool-ic" v-html="iconFor(t.i)" />
-          <div><b>{{ f.T(t.b) }}</b><small>{{ t.tool }}</small></div>
-        </div>
-      </div>
-
-      <h2 class="pw-sec-title" style="margin-top:28px">{{ f.T(['A bullet-proof method to find your job', 'Un método a prueba de balas para encontrar empleo']) }}</h2>
-      <div class="pw-cols pw-cols-full">
-        <div class="pw-feat-card">
-          <div class="pw-feat-head"><span class="pw-feat-ic" v-html="duo('search')" /><h3>{{ f.T(['What you unlock', 'Lo que desbloqueas']) }}</h3></div>
-          <div v-for="(x, k) in unlock" :key="k" class="feat"><span class="ck" v-html="ic('check')" /> {{ f.T(x) }}</div>
-        </div>
-        <div class="pw-feat-card">
-          <div class="pw-feat-head"><span class="pw-feat-ic" v-html="duo('doccheck')" /><h3>{{ f.T(["What's included", 'Lo que incluye']) }}</h3></div>
-          <div v-for="(x, k) in included" :key="k" class="feat"><span class="ck" v-html="ic('check')" /> {{ f.T(x) }}</div>
-        </div>
-      </div>
-
-      <div class="pw-section">
-        <h3>{{ f.T(['As seen on', 'Aparecemos en']) }}</h3>
-        <div class="press"><span>TechCrunch</span><span>Forbes</span><span>El Mundo</span><span>Xataka</span></div>
-      </div>
-
-      <div class="pw-section">
-        <h3>{{ f.T(['What our users say', 'Lo que dicen nuestros usuarios']) }}</h3>
-        <div class="rev-grid">
-          <div v-for="(r, k) in revs" :key="k" class="rev-card">
-            <span class="stars">★★★★★</span><br>"{{ f.T(r[0]) }}"<div class="who">{{ r[1] }}</div>
+            <b>{{ f.T(['7-day money-back guarantee', 'Garantía de devolución de 7 días']) }}</b>
+            <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
           </div>
         </div>
       </div>
+    </section>
 
-      <button ref="buy2El" class="btn btn-primary" @click="goCheckout">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
-      <p class="footnote" style="margin:12px 0 20px">{{ f.T(['No commitment. Cancel anytime from your account.', 'Sin permanencia. Cancela cuando quieras desde tu cuenta.']) }}</p>
-    </div>
+    <!-- 6 · Gráfica de resultados -->
+    <section class="rw-sec">
+      <div class="rw-in">
+        <h2 class="rw-h2" style="margin-bottom:18px">{{ f.T(['55% of members interview in the first month', 'El 55% de los miembros consigue entrevista el primer mes']) }}</h2>
+        <div class="rw-card">
+          <div class="rw-chart">
+            <div style="height:22%" /><div style="height:41%" /><div style="height:62%" />
+            <div style="height:88%" /><div class="g" style="height:14%" /><div class="g" style="height:19%" />
+          </div>
+          <div class="rw-legend"><span class="a">{{ f.T(['JobWinner members', 'Miembros de JobWinner']) }}</span><span class="b">{{ f.T(['Average candidate', 'Candidato medio']) }}</span></div>
+          <p class="rw-meth">{{ f.T(['Based on 4,182 members who tracked applications between Jan and Jun 2026.', 'Basado en 4.182 miembros que registraron sus candidaturas entre enero y junio de 2026.']) }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · Todo incluido (25+ herramientas) -->
+    <section class="rw-sec rw-tint">
+      <div class="rw-in">
+        <h2 class="rw-h2">{{ f.T(['Everything included in your plan', 'Todo lo que incluye tu plan']) }}</h2>
+        <p class="rw-sub" style="margin:4px 0 20px">{{ f.T(['25+ AI tools, all unlocked from day one', 'Más de 25 herramientas de IA, todas desbloqueadas desde el día uno']) }}</p>
+        <div class="rw-tools">
+          <div v-for="(t, k) in tools" :key="k" class="rw-tool">
+            <span class="tic" v-html="duo(t.i)" />
+            <b>{{ f.T(t.b) }}</b><small>{{ f.T(t.tool) }}</small>
+          </div>
+        </div>
+        <div class="rw-card" style="margin-top:10px">
+          <p class="rw-incl"><span class="ck" v-html="ic('check', 15)" />{{ f.T(['5M+ jobs from 1,000+ sources, only verified listings', '5M+ empleos de 1.000+ fuentes, solo ofertas verificadas']) }}</p>
+          <p class="rw-incl"><span class="ck" v-html="ic('check', 15)" />{{ f.T([`${matches} matches for your preferences, updated daily`, `${matches} matches para tus preferencias, actualizados a diario`]) }}</p>
+          <p class="rw-incl"><span class="ck" v-html="ic('check', 15)" />{{ f.T(['Unlimited tailored resumes and cover letters', 'CVs y cartas de presentación a medida, ilimitados']) }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · Testimonios -->
+    <section class="rw-sec">
+      <div class="rw-in">
+        <h2 class="rw-h2">{{ f.T(['What our users say', 'Lo que dicen nuestros usuarios']) }}</h2>
+        <p class="rw-sub" style="margin:6px 0 18px"><span class="stars">★★★★★</span> {{ f.T(['Rated 4.7 on Trustpilot', 'Valorados con 4,7 en Trustpilot']) }}</p>
+        <div class="rw-quotes">
+          <div v-for="(r, k) in revs" :key="k" class="rw-quote"><div class="stars">★★★★★</div><p>"{{ f.T(r[0]) }}"</p><span>{{ r[1] }}</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 · FAQ -->
+    <section class="rw-sec rw-tint">
+      <div class="rw-in">
+        <h2 class="rw-h2" style="margin-bottom:18px">{{ f.T(['Questions before you start', 'Dudas antes de empezar']) }}</h2>
+        <div class="rw-faqs">
+          <details v-for="(q, k) in faqs" :key="k" class="rw-faq"><summary>{{ f.T(q[0]) }}</summary><p>{{ f.T(q[1]) }}</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · CTA final + garantía repetida -->
+    <section class="rw-sec">
+      <div class="rw-in">
+        <h2 class="rw-h1">{{ f.T([`${matches} jobs are waiting for you`, `${matches} empleos te están esperando`]) }}</h2>
+        <p class="rw-sub" style="margin:6px 0 20px">{{ f.T(['Start today and your first tailored application is ready in under five minutes.', 'Empieza hoy y tu primera candidatura a medida estará lista en menos de cinco minutos.']) }}</p>
+        <div class="rw-cta">
+          <button ref="buy2El" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }} · {{ money(perDay(PLANS[f.selectedPlan] || PLANS[1])) }}/{{ f.T(['DAY', 'DÍA']) }}</button>
+        </div>
+        <div class="rw-guar" style="margin-top:20px">
+          <span class="gic" v-html="ic('refresh', 30)" />
+          <div>
+            <b>{{ f.T(['7-day money-back guarantee', 'Garantía de devolución de 7 días']) }}</b>
+            <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
+          </div>
+        </div>
+        <p class="rw-note"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with Stripe · Cancel in one tap', 'Pago seguro con Stripe · Cancela en un toque']) }}</p>
+      </div>
+    </section>
+
+    <div class="rw-foot">{{ f.T(['Terms · Refund policy · Privacy · Contact', 'Términos · Política de reembolso · Privacidad · Contacto']) }}<br>{{ f.T(['Prices include VAT. Renewal terms shown before payment.', 'Precios con IVA incluido. Las condiciones de renovación se muestran antes del pago.']) }}</div>
 
     <!-- Mobile: CTA fija → lleva a la vista de precios (no directo a Stripe) -->
     <div class="pw-sticky" :class="{ show: showSticky }">
-      <button class="btn btn-primary" @click="scrollToPlans">{{ f.T(['GET MY PLAN', 'Obtener mi plan']) }}</button>
+      <button class="btn btn-primary" @click="scrollToPlans">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }}</button>
     </div>
   </div>
 </template>
@@ -114,79 +217,19 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
-import { ILLO, DUO, duo, ic } from 'assets/graphics'
+import { ILLO, duo, ic } from 'assets/graphics'
 import { PLANS } from 'src/data/screens'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
-const iconFor = n => (DUO[n] ? duo(n) : ic(n))
 
-const steps = [
-  { i: 'resume', t: ['Polish your resume', 'Mejora tu CV'], sub: ['We help you polish your current resume.', 'Te ayudamos a pulir tu currículum actual.'] },
-  {
-    i: 'search',
-    t: ['Find matching jobs', 'Encuentra trabajos a tu medida'],
-    sub: ['Jobs that match your profile = more interviews.', 'Empleos que encajan con tu perfil = más entrevistas.'],
-    badge: ['We already found 300+ jobs matching your profile', 'Ya hemos encontrado más de 300 empleos que encajan con tu perfil']
-  },
-  { i: 'doccheck', t: ['Tailor your job applications', 'Adapta tus candidaturas'], sub: ['We help you tailor your resume and cover letter in seconds.', 'Te ayudamos a adaptar tu CV y carta de presentación en segundos.'] },
-  { i: 'mic', t: ['Practice for interviews', 'Practica entrevistas'], sub: ['Mock interview practice & Q&A lists.', 'Simulacros de entrevista y listas de preguntas y respuestas.'] }
-]
-
-const val = o => o ? (Array.isArray(o) ? o.slice(0, 2).map(x => f.T(x.t)).join(', ') : f.T(o.t)) : '—'
-const roles = computed(() => {
-  if (f.answers.P19T && f.answers.P19T.length) return f.answers.P19T.slice(0, 3).join(', ')
-  return (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t)).join(', ') || '—'
-})
-const salary = computed(() => f.answers.P8 ? `$${f.answers.P8.amount} (${f.T(f.answers.P8.period).toLowerCase()})` : '—')
-const industries = computed(() => {
-  const cats = (f.answers.P13 || []).slice(0, 3).map(o => f.T(o.t))
-  const extra = (f.answers.P13 || []).length - 3
-  return cats.length ? cats.join(', ') + (extra > 0 ? ` +${extra}` : '') : '—'
-})
-const location = computed(() => {
-  const parts = [f.answers.PCITY, f.answers.P11].filter(Boolean)
-  return parts.length ? parts.join(', ') : '—'
-})
-
-// ---- Elementos recuperados del paywall (precios, countdown, features, reviews) ----
+const showAns = ref(false)
 const plansEl = ref(null)
 const buyEl = ref(null)
 const buy2El = ref(null)
 const showSticky = ref(false)
 
-const unlock = [
-  ['300–450 jobs matching your profile, updated daily', '300-450 empleos compatibles con tu perfil, actualizados a diario'],
-  ['Tailored applications: resume and cover letter adapted to every listing', 'Solicitudes personalizadas: CV y carta adaptados a cada oferta'],
-  ['ATS-optimized resume that gets past the filters', 'CV optimizado para superar los filtros ATS'],
-  ['Only verified listings that actually hire', 'Solo ofertas verificadas que contratan de verdad']
-]
-const included = [
-  ['5M+ jobs aggregated from 1,000+ sources', '5M+ empleos agregados de 1.000+ fuentes'],
-  ['AI Resume Builder and cover letters', 'AI Resume Builder y cartas de presentación'],
-  ['Job Match with compatibility score', 'Job Match con puntuación de compatibilidad'],
-  ['Job Tracker to organize your applications', 'Job Tracker para organizar tus candidaturas'],
-  ['AI interview preparation', 'Preparación de entrevistas con IA']
-]
-// Reviews REALES de Trustpilot (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent")
-const revs = [
-  [["I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS.", "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS."], 'Conall Bradley · Trustpilot'],
-  [['Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.', 'Helped me organize my entire interview preparation process. A systematic approach rather than winging it — this tool delivers.'], 'Lavallée Alexandre · Trustpilot'],
-  [['It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.', 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. Helped me apply with more confidence.'], 'Disha · Trustpilot'],
-  [['Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.', 'Easy to use, intuitive. I would recommend it to anyone looking for a job who wants to accelerate their search.'], 'Montse Lorente · Trustpilot']
-]
-
-// Herramientas IA: beneficio como titular, nombre de la herramienta debajo
-const tools = [
-  { i: 'search', b: ['Jobs that truly fit you', 'Empleos que encajan de verdad'], tool: 'AI Job Match' },
-  { i: 'resume', b: ['A resume that stands out', 'Un CV que destaca'], tool: 'AI Resume Builder' },
-  { i: 'doccheck', b: ['Tailored apps in seconds', 'Candidaturas a medida en segundos'], tool: 'AI Application Kit' },
-  { i: 'shieldcheck', b: ['Pass the ATS robots', 'Supera los robots ATS'], tool: 'AI ATS Check' },
-  { i: 'mic', b: ['Interview with confidence', 'Entrevistas con confianza'], tool: 'AI Mock Interview practice' },
-  { i: 'pen', b: ['Cover letters that convert', 'Cartas que convierten'], tool: 'AI Cover Letter' }
-]
-
-// ---- Moneda por ubicación (país elegido en el funnel): eurozona €, Reino Unido £, resto $ ----
+// ---- Moneda por ubicación: eurozona €, Reino Unido £, resto $ ----
 const EUROZONE = ['Spain', 'France', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium', 'Austria', 'Ireland', 'Finland', 'Greece', 'Slovakia', 'Slovenia', 'Lithuania', 'Latvia', 'Estonia', 'Luxembourg', 'Malta', 'Cyprus', 'Croatia']
 const currency = computed(() => {
   const c = f.answers.P11
@@ -194,8 +237,96 @@ const currency = computed(() => {
   if (EUROZONE.includes(c)) return '€'
   return '$'
 })
+const sym = computed(() => currency.value)
 const money = n => `${Number(n).toFixed(2)} ${currency.value}`
 const perDay = p => p.price / p.days
+const fmt0 = n => Number(n).toLocaleString(f.lang === 'es' ? 'es-ES' : 'en-US', { maximumFractionDigits: 0 })
+
+// ---- Nº de matches: estable por usuario (mismas respuestas → mismo número exacto) ----
+const matches = computed(() => {
+  const seed = JSON.stringify([f.answers.P19T, f.answers.P11, f.answers.P13])
+  let h = 0
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  return 280 + (h % 160)
+})
+
+// ---- Datos derivados de las respuestas del funnel ----
+const monthlyMin = computed(() => {
+  const s = f.answers.P8
+  if (!s || !s.amount) return null
+  const n = Number(String(s.amount).replace(/[^0-9]/g, ''))
+  if (!n) return null
+  const p = s.period ? s.period[0] : 'Monthly'
+  if (p === 'Hourly') return Math.round(n * 160)
+  if (p === 'Yearly') return Math.round(n / 12)
+  return n
+})
+const annualK = computed(() => monthlyMin.value ? Math.round(monthlyMin.value * 12 / 1000) : null)
+const marketLo = computed(() => Math.round(annualK.value * 1.6))
+const marketHi = computed(() => Math.round(annualK.value * 2.05))
+const pctOfMonth = computed(() => Math.max(1, Math.ceil(PLANS[1].price / monthlyMin.value * 100)))
+const goalMonths = computed(() => f.answers.PSPEED ? f.answers.PSPEED.months : null)
+const modes = computed(() => (f.answers.P9 || []).map(o => f.T(o.t)).join(', '))
+
+const heroLine = computed(() => {
+  const parts = []
+  const title = (f.answers.P19T || [])[0] || (f.aiTitles || [])[0]
+  if (title) parts.push(title)
+  if (f.answers.PCITY) parts.push(f.answers.PCITY)
+  const mode = (f.answers.P9 || [])[0]
+  if (mode) parts.push(f.T(mode.t))
+  parts.push(f.T([`Built from your ${ansRows.value.length} answers`, `Construido con tus ${ansRows.value.length} respuestas`]))
+  return parts.join(' · ')
+})
+
+const ansRows = computed(() => {
+  const rows = []
+  const add = (l, v) => { if (v) rows.push([l, v]) }
+  add(['Job titles', 'Puestos'], (f.answers.P19T || []).join(', '))
+  add(['Categories', 'Categorías'], (f.answers.P13 || []).map(o => f.T(o.t)).join(', '))
+  add(['Career level', 'Nivel profesional'], f.answers.P16 && f.T(f.answers.P16.t))
+  add(['Type of work', 'Tipo de trabajo'], (f.answers.P7 || []).map(o => f.T(o.t)).join(', '))
+  add(['Work mode', 'Modalidad'], modes.value)
+  add(['Location', 'Ubicación'], [f.answers.PCITY, f.answers.P11].filter(Boolean).join(', '))
+  add(['Minimum salary', 'Salario mínimo'], f.answers.P8 && f.answers.P8.amount ? `${sym.value}${fmt0(f.answers.P8.amount)} / ${f.T(f.answers.P8.period || ['month', 'mes']).toLowerCase()}` : null)
+  add(['Target timeline', 'Plazo objetivo'], f.answers.PSPEED && f.T(f.answers.PSPEED.t))
+  add(['Email', 'Email'], f.answers.PEMAIL)
+  return rows
+})
+
+// Línea "why" de cada plan (diseño de referencia)
+const whyOf = p => {
+  if (p.key === 'weekly') return ['Billed weekly', 'Facturación semanal']
+  if (p.key === 'monthly') return goalMonths.value ? [`Matches your ${goalMonths.value}-month goal`, `Encaja con tu objetivo de ${goalMonths.value} meses`] : ['Our members\' favorite', 'El favorito de nuestros miembros']
+  return ['One payment, no renewal', 'Un solo pago, sin renovación']
+}
+
+const tools = [
+  { i: 'search', b: ['Jobs that truly fit you', 'Empleos que encajan de verdad'], tool: ['AI Job Match', 'AI Job Match'] },
+  { i: 'doc', b: ['A resume that stands out', 'Un CV que destaca'], tool: ['AI Resume Builder', 'AI Resume Builder'] },
+  { i: 'boltcirc', b: ['Tailored apps in seconds', 'Candidaturas a medida en segundos'], tool: ['AI Application Kit', 'AI Application Kit'] },
+  { i: 'shieldcheck', b: ['Pass the ATS filters', 'Supera los filtros ATS'], tool: ['AI ATS Check', 'AI ATS Check'] },
+  { i: 'mic', b: ['Interview with confidence', 'Entrevistas con confianza'], tool: ['AI Mock Interview', 'AI Mock Interview'] },
+  { i: 'docdash', b: ['+19 more tools', '+19 herramientas más'], tool: ['See the full list', 'Ver la lista completa'] }
+]
+
+// Reviews REALES de Trustpilot (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent")
+const revs = [
+  [["I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS.", "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS."], 'Conall B. · Trustpilot'],
+  [['It tailors your CV and cover letter to each role and shows how well you match with a fit score. I applied with far more confidence.', 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. I applied with far more confidence.'], 'Disha K. · Trustpilot'],
+  [['I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.', 'I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.'], 'Montse L. · Trustpilot']
+]
+
+const faqs = [
+  [['Will I be charged again?', '¿Se me volverá a cobrar?'],
+    ['Weekly and monthly plans renew automatically until you cancel. The exact renewal date and amount are shown before you pay. "Until you\'re hired" is a single payment and never renews.', 'Los planes semanal y mensual se renuevan automáticamente hasta que canceles. La fecha y el importe exactos de renovación se muestran antes de pagar. "Hasta que te contraten" es un pago único y nunca se renueva.']],
+  [['How do I get my refund?', '¿Cómo consigo mi reembolso?'],
+    ['Email support within 7 days of your purchase. We process it in full, no questions asked, usually within two business days.', 'Escribe a soporte en los 7 días siguientes a tu compra. Lo procesamos íntegro, sin preguntas, normalmente en dos días laborables.']],
+  [['What if I find a job next week?', '¿Y si encuentro trabajo la semana que viene?'],
+    ["Cancel in one tap from your account and you won't be charged again. If it's within the first 7 days you also get your money back.", 'Cancela en un toque desde tu cuenta y no se te cobrará de nuevo. Si es dentro de los primeros 7 días, además te devolvemos el dinero.']],
+  [['Does it work for my sector?', '¿Funciona para mi sector?'],
+    ['We aggregate 5M+ listings from 1,000+ sources across every sector. Your matches are scored against the titles, industries and location you selected.', 'Agregamos 5M+ ofertas de 1.000+ fuentes de todos los sectores. Tus matches se puntúan contra los puestos, industrias y ubicación que seleccionaste.']]
+]
 
 // Checkout REAL. 1º intento: sesión de Checkout creada por el worker con customer_email
 // BLOQUEADO (no editable). Fallback: Payment Link con prefilled_email (editable).
@@ -254,3 +385,148 @@ onUnmounted(() => {
   if (m) m.removeEventListener('scroll', checkSticky)
 })
 </script>
+
+<style scoped>
+/* Tokens de la referencia adaptados al sistema del funnel (azul #007AFF, tipos pjs/inter) */
+.rw{--ink:#02112D;--body:#5A6478;--muted:#8A93A6;--line:#E7EBF3;--line2:#E2E8F3;
+  --blue:var(--jw-blue);--blue-dark:#1E4FB8;--blue-bg:#EAF3FD;--blue-bg2:#F4F8FE;
+  --green-bg:#E9F5E7;--green-ink:#1E4A18;--green-body:#2E6B2A;--green-ico:#3B8A34;
+  --badge-bg:#E7F4E4;--badge-ink:#2E6B2A;
+  --amber-bg:#FDF3E0;--amber-ink:#5A3806;--amber-body:#7A4E08;--amber-card:#FEF8EA;--amber-line:#F5E3BC;
+  --coral-bg:#FDECE4;--coral-ink:#B14A1C;
+  --surface:#F7F9FC;--surface2:#F9FBFE;
+  background:#fff;padding-bottom:0}
+.rw-sec{padding:26px 18px}
+.rw-in{max-width:845px;margin:0 auto;width:100%}
+.rw-tint{background:var(--surface)}
+.rw-tint2{background:var(--surface2);border-top:.5px solid #EDF1F8;border-bottom:.5px solid #EDF1F8}
+.rw-h1{font-family:var(--pjs);font-size:24px;font-weight:800;line-height:1.2;text-align:center;color:var(--ink);margin:0}
+.rw-h2{font-family:var(--pjs);font-size:20px;font-weight:800;line-height:1.25;text-align:center;color:var(--ink);margin:0}
+.rw-sub{font-size:14px;color:var(--body);text-align:center;line-height:1.5;margin:6px 0 0}
+.rw-card{background:#fff;border:.5px solid var(--line);border-radius:14px;padding:16px}
+.rw-btn{display:block;width:100%;background:var(--blue);color:#fff;border:0;border-radius:14px;padding:17px 16px;font-size:15px;font-weight:700;letter-spacing:.06em;text-align:center;cursor:pointer;font-family:var(--inter)}
+.rw-btn:hover{background:var(--jw-blue-hover)}
+.rw-note{font-size:12px;color:var(--muted);text-align:center;line-height:1.6;margin-top:12px}
+.rw-note :deep(svg){vertical-align:-2px;margin-right:2px}
+.rw-cta{max-width:380px;margin:0 auto}
+
+/* Barra de oferta (usa .pw-banner global; aquí solo la variante de 2 líneas + reloj dorado) */
+.rw-barin{max-width:845px}
+.rw-clock{font-family:var(--pjs);font-size:19px;color:var(--jw-gold);font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+
+/* Hero */
+.rw-hero{text-align:center}
+.rw-hero .illo{margin:2px 0 10px}
+.rw-heroGrid{display:grid;gap:12px;text-align:left;margin-top:20px}
+.rw-big{background:var(--blue-bg);border-radius:14px;padding:20px}
+.rw-big b{display:block;font-family:var(--pjs);font-size:42px;font-weight:800;color:var(--blue-dark);line-height:1}
+.rw-big span{display:block;font-size:14px;color:var(--blue-dark);margin-top:6px;line-height:1.4}
+.rw-anchor{background:var(--amber-bg);border-radius:14px;padding:20px}
+.rw-anchor b{display:block;font-size:15px;font-weight:700;color:var(--amber-ink);line-height:1.35;margin-bottom:5px}
+.rw-anchor .aic{display:inline-block;vertical-align:-3px;margin-right:6px}
+.rw-anchor>span{font-size:12px;color:var(--amber-body);line-height:1.55}
+
+/* Tiles + respuestas */
+.rw-stats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+.rw-stat{background:var(--surface);border-radius:12px;padding:14px 16px}
+.rw-stat span{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.rw-stat b{font-size:18px;font-weight:700;line-height:1.25;display:block;color:var(--ink)}
+.rw-reveal{display:block;width:100%;background:none;border:0;color:var(--blue);font-size:13px;font-weight:600;text-align:center;padding:14px 0 0;cursor:pointer;font-family:var(--inter)}
+.rw-reveal .chev{display:inline-block;vertical-align:-2px;margin-left:3px;transition:transform .15s}
+.rw-reveal .chev.up{transform:rotate(180deg)}
+.rw-answers{margin-top:12px;background:var(--surface);border-radius:12px;padding:6px 16px}
+.rw-arow{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-top:.5px solid var(--line);font-size:13px}
+.rw-arow:first-child{border-top:0}
+.rw-arow span{color:var(--body);flex-shrink:0}
+.rw-arow b{font-weight:600;text-align:right;color:var(--ink)}
+
+/* Timeline */
+.rw-rail{position:relative;max-width:520px;margin:0 auto}
+.rw-rail:before{content:"";position:absolute;left:21px;top:24px;bottom:28px;width:2px;background:#DCE4F2}
+.rw-step{position:relative;display:flex;gap:14px;margin-bottom:12px}
+.rw-node{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--blue);border:4px solid var(--surface2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;font-family:var(--pjs)}
+.rw-node.end{background:var(--jw-gold)}
+.rw-step .rw-card{flex:1;min-width:0;border-color:var(--line2)}
+.rw-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.rw-meta .day{font-size:11px;color:var(--muted);letter-spacing:.07em;font-weight:600}
+.rw-chip{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--blue-bg);color:var(--blue-dark);white-space:nowrap}
+.rw-chip.warn{background:var(--coral-bg);color:var(--coral-ink)}
+.rw-step h3{font-family:var(--pjs);font-size:16px;font-weight:800;line-height:1.3;margin:0 0 4px;color:var(--ink)}
+.rw-step p{font-size:13px;color:var(--body);line-height:1.5;margin:0}
+.rw-end{flex:1;min-width:0;background:var(--amber-card);border:.5px solid var(--amber-line);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.rw-end b{font-family:var(--pjs);font-size:16px;font-weight:800;color:var(--amber-ink)}
+.rw-end span{font-size:12px;color:var(--amber-body)}
+
+/* Planes */
+.rw-plans{display:grid;gap:10px;margin-bottom:18px}
+.rw-plan{background:#fff;border:.5px solid var(--line2);border-radius:14px;padding:18px 16px;text-align:center;display:flex;flex-direction:column;cursor:pointer;position:relative}
+.rw-plan[aria-checked="true"]{background:var(--blue-bg2);border:2px solid var(--blue);padding:16.5px 14.5px}
+.rw-radio{width:20px;height:20px;border-radius:50%;border:1.5px solid #C8D0E0;margin:0 auto 12px;flex-shrink:0}
+.rw-plan[aria-checked="true"] .rw-radio{border:5px solid var(--blue);background:#fff}
+.rw-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;letter-spacing:.06em;white-space:nowrap}
+.rw-plan .name{font-family:var(--pjs);font-size:15px;font-weight:800;margin-bottom:6px;color:var(--ink)}
+.rw-plan .was{font-size:12px;color:var(--muted);text-decoration:line-through;margin-bottom:10px}
+.rw-plan .per{font-family:var(--pjs);font-size:26px;font-weight:800;line-height:1;color:var(--ink)}
+.rw-plan .perlab{font-size:11px;color:var(--muted);margin:3px 0 8px}
+.rw-plan .why{font-size:11px;color:var(--blue-dark);line-height:1.4;margin-bottom:10px}
+.rw-plan .why.n{color:var(--muted)}
+.rw-plan .off{margin-top:auto;background:var(--badge-bg);color:var(--badge-ink);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;align-self:center}
+
+/* Garantía */
+.rw-guar{background:var(--green-bg);border-radius:14px;padding:20px;display:flex;gap:16px;align-items:center}
+.rw-guar .gic{color:var(--green-ico);flex-shrink:0;display:flex}
+.rw-guar b{display:block;font-family:var(--pjs);font-size:18px;font-weight:800;color:var(--green-ink);line-height:1.3;margin-bottom:4px}
+.rw-guar>div>span{font-size:13px;color:var(--green-body);line-height:1.55}
+
+/* Gráfica */
+.rw-chart{display:flex;align-items:flex-end;gap:8px;height:100px;margin-bottom:10px}
+.rw-chart div{flex:1;background:var(--blue);border-radius:5px 5px 0 0}
+.rw-chart .g{background:#DFE6F2}
+.rw-legend{display:flex;justify-content:space-between;font-size:11px;margin-bottom:8px}
+.rw-legend .a{color:var(--blue);font-weight:600}
+.rw-legend .b{color:var(--muted)}
+.rw-meth{font-size:11px;color:var(--muted);line-height:1.5;margin:0}
+
+/* Herramientas */
+.rw-tools{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+.rw-tool{background:#fff;border:.5px solid var(--line);border-radius:14px;padding:16px}
+.rw-tool .tic{display:block;width:34px;height:34px}
+.rw-tool .tic :deep(svg){width:34px;height:34px}
+.rw-tool b{display:block;font-family:var(--pjs);font-size:14px;font-weight:800;line-height:1.3;margin:9px 0 2px;color:var(--ink)}
+.rw-tool small{font-size:12px;color:var(--muted)}
+.rw-incl{font-size:13px;color:var(--body);line-height:1.5;margin:0 0 10px;display:flex;gap:9px;align-items:flex-start}
+.rw-incl:last-child{margin-bottom:0}
+.rw-incl .ck{color:var(--green-ico);flex-shrink:0;display:flex;margin-top:1px}
+
+/* Testimonios */
+.stars{color:var(--jw-gold);font-size:12px}
+.rw-quotes{display:grid;gap:10px}
+.rw-quote{background:#F5F7FB;border-radius:14px;padding:16px}
+.rw-quote .stars{display:block;margin-bottom:8px}
+.rw-quote p{font-size:13px;line-height:1.55;margin:0 0 10px;color:var(--ink)}
+.rw-quote span{font-size:11px;color:var(--muted)}
+
+/* FAQ */
+.rw-faqs{display:grid;gap:10px}
+.rw-faq{background:#fff;border:.5px solid var(--line);border-radius:12px;padding:0 16px;cursor:pointer}
+.rw-faq summary{list-style:none;padding:14px 0;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--ink);font-weight:600}
+.rw-faq summary::-webkit-details-marker{display:none}
+.rw-faq summary:after{content:"+";color:var(--muted);font-size:18px;flex-shrink:0}
+.rw-faq[open] summary:after{content:"–"}
+.rw-faq p{font-size:13px;color:var(--body);line-height:1.6;padding:0 0 14px;margin:0}
+
+.rw-foot{border-top:.5px solid var(--line);padding:16px 18px 90px;text-align:center;font-size:11px;color:#B4BCCB;line-height:1.7}
+
+@media(min-width:720px){
+  .rw-sec{padding:30px 32px}
+  .rw-h1{font-size:27px}
+  .rw-h2{font-size:23px}
+  .rw-heroGrid{grid-template-columns:1fr 1fr}
+  .rw-stats{grid-template-columns:repeat(4,1fr)}
+  .rw-plans{grid-template-columns:repeat(3,1fr);align-items:stretch}
+  .rw-tools{grid-template-columns:repeat(3,1fr)}
+  .rw-quotes{grid-template-columns:repeat(3,1fr)}
+  .rw-faqs{grid-template-columns:repeat(2,1fr)}
+  .rw-foot{padding-bottom:16px}
+}
+</style>
