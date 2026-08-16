@@ -21,7 +21,10 @@
           <div v-html="journeySvg" />
         </div>
         <div class="rw-heroGrid">
-          <div class="rw-big"><b>💼 {{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
+          <!-- Variante titular con resaltado azul (antes: número grande + texto pequeño) -->
+          <div class="rw-big2">
+            <h3>💼 {{ f.T(['We found', 'Hemos encontrado']) }} <span class="hl">{{ matches }} {{ f.T(['jobs', 'empleos']) }}</span> {{ f.T(['that match your profile', 'que encajan con tu perfil']) }}</h3>
+          </div>
         </div>
       </div>
     </section>
@@ -48,14 +51,14 @@
     <!-- 3 · Camino hasta la oferta firmada (timeline con fechas) -->
     <section class="rw-sec rw-tint2">
       <div class="rw-in">
-        <h2 class="rw-h2">{{ f.T(['Your path to a signed offer', 'Tu camino hasta la oferta firmada']) }}</h2>
+        <h2 class="rw-h1">{{ f.T(['Your path to a signed offer', 'Tu camino hasta la oferta firmada']) }}</h2>
         <p class="rw-sub" style="margin:4px 0 24px" v-if="goalMonths">{{ f.T([`Built around the ${goalMonths}-month goal you set`, `Construido en torno a tu objetivo de ${goalMonths} meses`]) }}</p>
         <div class="rw-rail">
           <div class="rw-step">
             <div class="rw-node">1</div>
             <div class="rw-card">
               <div class="rw-cbody">
-                <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} issues found`, `${issues} fallos encontrados`]) }}</span></div>
+                <div class="rw-meta"><span class="day">{{ f.T(['DAY 1+', 'DÍA 1+']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} issues found`, `${issues} fallos encontrados`]) }}</span></div>
                 <h3>{{ f.T(["Fix what's holding your resume back", 'Arregla lo que frena tu CV']) }}</h3>
                 <p>{{ f.T(['We found issues in your resume that could be keeping you out of the shortlist.', 'Encontramos fallos en tu CV que podrían estar dejándote fuera de la lista final.']) }}</p>
               </div>
@@ -66,7 +69,7 @@
             <div class="rw-node">2</div>
             <div class="rw-card">
               <div class="rw-cbody">
-                <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip">{{ f.T([`${matches} matches today!`, `¡${matches} matches hoy!`]) }}</span></div>
+                <div class="rw-meta"><span class="day">{{ f.T(['DAY 1+', 'DÍA 1+']) }}</span><span class="rw-chip">{{ f.T([`${matches} matches today!`, `¡${matches} matches hoy!`]) }}</span></div>
                 <h3>{{ f.T(['Open your matched jobs', 'Abre tus empleos compatibles']) }}</h3>
                 <p>{{ f.T(['Scored against your preferences and refreshed every morning.', 'Puntuados contra tus preferencias y actualizados cada mañana.']) }}</p>
               </div>
@@ -109,7 +112,7 @@
     <!-- 4 · Planes -->
     <section class="rw-sec" ref="plansEl">
       <div class="rw-in">
-        <h2 class="rw-h2">{{ f.T(['Choose your plan', 'Elige tu plan']) }}</h2>
+        <h2 class="rw-h1">{{ f.T(['Choose your plan', 'Elige tu plan']) }}</h2>
         <p class="rw-sub" style="margin:4px 0 22px">{{ f.T(['All plans include full access to everything below.', 'Todos los planes incluyen acceso completo a todo lo de abajo.']) }}</p>
         <!-- Tarjetas de precio: diseño original del funnel (horizontal, radio a la izquierda) -->
         <div class="plans">
@@ -559,6 +562,11 @@ onUnmounted(() => {
 .rw-big{background:var(--blue-bg);border-radius:14px;padding:20px}
 .rw-big b{display:block;font-family:var(--pjs);font-size:42px;font-weight:800;color:var(--blue-dark);line-height:1}
 .rw-big span{display:block;font-size:14px;color:var(--blue-dark);margin-top:6px;line-height:1.4}
+/* Variante titular con resaltado (estilo marcador, en azul) */
+.rw-big2{background:var(--blue-bg);border-radius:14px;text-align:center;padding:24px 20px}
+.rw-big2 h3{font-family:var(--pjs);font-size:23px;font-weight:800;color:var(--ink);line-height:1.45;margin:0}
+.rw-big2 .hl{background:var(--blue);color:#fff;padding:2px 11px;border-radius:10px;white-space:nowrap;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+@media(min-width:720px){.rw-big2 h3{font-size:26px}}
 
 /* Tiles + respuestas */
 .rw-stats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
