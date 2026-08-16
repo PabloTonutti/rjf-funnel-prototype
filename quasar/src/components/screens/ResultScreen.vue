@@ -21,7 +21,7 @@
           <div v-html="journeySvg" />
         </div>
         <div class="rw-heroGrid">
-          <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
+          <div class="rw-big"><b>💼 {{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
         </div>
       </div>
     </section>
@@ -54,33 +54,45 @@
           <div class="rw-step">
             <div class="rw-node">1</div>
             <div class="rw-card">
-              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} issues found`, `${issues} fallos encontrados`]) }}</span></div>
-              <h3>{{ f.T(["Fix what's holding your resume back", 'Arregla lo que frena tu CV']) }}</h3>
-              <p>{{ f.T(['We found issues in your resume that could be keeping you out of the shortlist.', 'Encontramos fallos en tu CV que podrían estar dejándote fuera de la lista final.']) }}</p>
+              <div class="rw-cbody">
+                <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} issues found`, `${issues} fallos encontrados`]) }}</span></div>
+                <h3>{{ f.T(["Fix what's holding your resume back", 'Arregla lo que frena tu CV']) }}</h3>
+                <p>{{ f.T(['We found issues in your resume that could be keeping you out of the shortlist.', 'Encontramos fallos en tu CV que podrían estar dejándote fuera de la lista final.']) }}</p>
+              </div>
+              <span class="rw-cic" v-html="duo('pen')" />
             </div>
           </div>
           <div class="rw-step">
             <div class="rw-node">2</div>
             <div class="rw-card">
-              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip">{{ f.T([`${matches} matches today!`, `¡${matches} matches hoy!`]) }}</span></div>
-              <h3>{{ f.T(['Open your matched jobs', 'Abre tus empleos compatibles']) }}</h3>
-              <p>{{ f.T(['Scored against your preferences and refreshed every morning.', 'Puntuados contra tus preferencias y actualizados cada mañana.']) }}</p>
+              <div class="rw-cbody">
+                <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip">{{ f.T([`${matches} matches today!`, `¡${matches} matches hoy!`]) }}</span></div>
+                <h3>{{ f.T(['Open your matched jobs', 'Abre tus empleos compatibles']) }}</h3>
+                <p>{{ f.T(['Scored against your preferences and refreshed every morning.', 'Puntuados contra tus preferencias y actualizados cada mañana.']) }}</p>
+              </div>
+              <span class="rw-cic" v-html="duo('search')" />
             </div>
           </div>
           <div class="rw-step">
             <div class="rw-node">3</div>
             <div class="rw-card">
-              <div class="rw-meta"><span class="day">{{ f.T(['WEEK 1+', 'SEMANA 1+']) }}</span><span class="rw-chip">{{ f.T(['30 sec each', '30 seg cada una']) }}</span></div>
-              <h3>{{ f.T(['Apply with a tailored resume and cover letter every time', 'Aplica siempre con un CV y carta adaptados']) }}</h3>
-              <p>{{ f.T(['Both rewritten for every listing, automatically.', 'Ambos reescritos para cada oferta, automáticamente.']) }}</p>
+              <div class="rw-cbody">
+                <div class="rw-meta"><span class="day">{{ f.T(['WEEK 1+', 'SEMANA 1+']) }}</span><span class="rw-chip">{{ f.T(['30 sec each', '30 seg cada una']) }}</span></div>
+                <h3>{{ f.T(['Apply with a tailored resume and cover letter every time', 'Aplica siempre con un CV y carta adaptados']) }}</h3>
+                <p>{{ f.T(['Both rewritten for every listing, automatically.', 'Ambos reescritos para cada oferta, automáticamente.']) }}</p>
+              </div>
+              <span class="rw-cic" v-html="duo('doccheck')" />
             </div>
           </div>
           <div class="rw-step">
             <div class="rw-node">4</div>
             <div class="rw-card">
-              <div class="rw-meta"><span class="day">{{ f.T(['WEEK 2+', 'SEMANA 2+']) }}</span><span class="rw-chip">Interview Kit</span></div>
-              <h3>{{ f.T(['Walk in ready for the interviews', 'Llega preparado a las entrevistas']) }}</h3>
-              <p>{{ f.T(['Mock interviews on real questions for your role, scored.', 'Simulacros con preguntas reales de tu puesto, con puntuación.']) }}</p>
+              <div class="rw-cbody">
+                <div class="rw-meta"><span class="day">{{ f.T(['WEEK 2+', 'SEMANA 2+']) }}</span><span class="rw-chip">Interview Kit</span></div>
+                <h3>{{ f.T(['Walk in ready for the interviews', 'Llega preparado a las entrevistas']) }}</h3>
+                <p>{{ f.T(['Mock interviews on real questions for your role, scored.', 'Simulacros con preguntas reales de tu puesto, con puntuación.']) }}</p>
+              </div>
+              <span class="rw-cic" v-html="duo('mic')" />
             </div>
           </div>
           <div class="rw-step" style="align-items:center;margin-bottom:0">
@@ -183,9 +195,20 @@
     <section class="rw-sec">
       <div class="rw-in">
         <h2 class="rw-h2">{{ f.T(['What our users say', 'Lo que dicen nuestros usuarios']) }}</h2>
-        <p class="rw-sub" style="margin:6px 0 18px"><span class="stars">★★★★★</span> {{ f.T(['Rated 4.7 on Trustpilot', 'Valorados con 4,7 en Trustpilot']) }}</p>
+        <div class="tp-head">
+          <span class="tp-row" v-html="TP_STARS" />
+          <span class="tp-rate">{{ f.T(['Rated', 'Valorados con']) }} <b>4.7</b> {{ f.T(['on', 'en']) }}</span>
+          <span class="tp-logo"><span class="tp-lstar" v-html="TP_STAR" /><b>Trustpilot</b></span>
+        </div>
         <div class="rw-quotes">
-          <div v-for="(r, k) in revs" :key="k" class="rw-quote"><div class="stars">★★★★★</div><p>"{{ f.T(r[0]) }}"</p><span>{{ r[1] }}</span></div>
+          <div v-for="(r, k) in revs" :key="k" class="rw-quote">
+            <div class="tp-row" v-html="TP_STARS" />
+            <p>"{{ f.T(r[0]) }}"</p>
+            <div class="tp-who">
+              <b>{{ r[1] }}</b>
+              <span class="tp-logo sm"><span class="tp-lstar" v-html="TP_STAR" />Trustpilot</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -368,10 +391,14 @@ const showAllTools = ref(false)
 
 // Reviews REALES de Trustpilot (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent")
 const revs = [
-  [["I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS.", "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS."], 'Conall B. · Trustpilot'],
-  [['It tailors your CV and cover letter to each role and shows how well you match with a fit score. I applied with far more confidence.', 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. I applied with far more confidence.'], 'Disha K. · Trustpilot'],
-  [['I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.', 'I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.'], 'Montse L. · Trustpilot']
+  [["I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS.", "I've landed 3 interviews for roles I'm actually excited about. The Skills Match is basically a cheat sheet for beating the ATS."], 'Conall B.'],
+  [['It tailors your CV and cover letter to each role and shows how well you match with a fit score. I applied with far more confidence.', 'It tailors your CV and cover letter to each role and shows how well you match with a fit score. I applied with far more confidence.'], 'Disha K.'],
+  [['I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.', 'I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.'], 'Montse L.']
 ]
+
+// Estrellas estilo Trustpilot: caja verde #00B67A con estrella blanca
+const TP_STAR = '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 1.8l3 6.4 7 .9-5.2 4.8 1.4 6.9-6.2-3.5-6.2 3.5 1.4-6.9L2 9.1l7-.9z"/></svg>'
+const TP_STARS = Array.from({ length: 5 }, () => `<span class="tp-box">${TP_STAR}</span>`).join('')
 
 // FAQ ordenadas estratégicamente: primero puntos de venta, el pricing una sola vez y al final
 const faqs = [
@@ -553,7 +580,9 @@ onUnmounted(() => {
 .rw-step{position:relative;display:flex;gap:14px;margin-bottom:12px}
 .rw-node{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--blue);border:4px solid var(--surface2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;font-family:var(--pjs)}
 .rw-node.end{background:var(--jw-gold)}
-.rw-step .rw-card{flex:1;min-width:0;border-color:var(--line2)}
+.rw-step .rw-card{flex:1;min-width:0;border-color:var(--line2);display:flex;align-items:center;gap:14px}
+.rw-cbody{flex:1;min-width:0}
+.rw-cic{display:none}
 .rw-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
 .rw-meta .day{font-size:11px;color:var(--muted);letter-spacing:.07em;font-weight:600}
 .rw-chip{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--blue-bg);color:var(--blue-dark);white-space:nowrap}
@@ -596,13 +625,23 @@ onUnmounted(() => {
 .rw-incl:last-child{margin-bottom:0}
 .rw-incl .ck{color:var(--green-ico);flex-shrink:0;display:flex;margin-top:1px}
 
-/* Testimonios */
-.stars{color:var(--jw-gold);font-size:12px}
+/* Testimonios (diseño Trustpilot: cajas verdes con estrella blanca) */
+.tp-head{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 18px;flex-wrap:wrap}
+.tp-rate{font-size:13.5px;color:#191919}
+.tp-rate b{font-weight:800}
+.tp-row{display:inline-flex;gap:2px}
+.tp-row :deep(.tp-box),.tp-box{width:20px;height:20px;background:#00B67A;display:inline-flex;align-items:center;justify-content:center}
+.tp-row :deep(svg){width:13px;height:13px;display:block}
+.tp-logo{display:inline-flex;align-items:center;gap:4px;font-size:14px;color:#191919;font-weight:800;font-family:var(--inter)}
+.tp-logo.sm{font-size:11.5px;font-weight:700}
+.tp-lstar{width:15px;height:15px;background:#00B67A;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.tp-lstar :deep(svg){width:10px;height:10px;display:block}
 .rw-quotes{display:grid;gap:10px}
-.rw-quote{background:#F5F7FB;border-radius:14px;padding:16px}
-.rw-quote .stars{display:block;margin-bottom:8px}
-.rw-quote p{font-size:13px;line-height:1.55;margin:0 0 10px;color:var(--ink)}
-.rw-quote span{font-size:11px;color:var(--muted)}
+.rw-quote{background:#fff;border:1px solid #E7EBF3;border-radius:8px;padding:16px;display:flex;flex-direction:column}
+.rw-quote .tp-row{margin-bottom:10px}
+.rw-quote p{font-size:13px;line-height:1.55;margin:0 0 12px;color:#191919}
+.tp-who{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto}
+.tp-who b{font-size:12.5px;color:#191919}
 
 /* FAQ */
 .rw-faqs{display:grid;gap:10px}
@@ -628,6 +667,9 @@ onUnmounted(() => {
   .rw-quotes{grid-template-columns:repeat(3,1fr)}
   .rw-faqs{grid-template-columns:repeat(2,1fr)}
   .rw-foot{padding-bottom:16px}
-  .rw-rail{max-width:560px}
+  /* Timeline: tarjetas más anchas con icono duotone a la derecha (solo desktop) */
+  .rw-rail{max-width:660px}
+  .rw-cic{display:block;width:48px;height:48px;flex:none;margin-right:4px}
+  .rw-cic :deep(svg){width:48px;height:48px}
 }
 </style>
