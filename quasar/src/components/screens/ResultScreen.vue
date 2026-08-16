@@ -23,10 +23,6 @@
         <p class="rw-jcap">{{ f.T(['Your job search timeline', 'Tu línea de tiempo de búsqueda']) }}</p>
         <div class="rw-heroGrid">
           <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
-          <div class="rw-anchor" v-if="monthlyMin">
-            <b><span class="aic" v-html="ic('clock', 17)" />{{ f.T([`Every month searching costs you ${sym}${fmt0(monthlyMin)}`, `Cada mes buscando te cuesta ${fmt0(monthlyMin)} ${sym}`]) }}</b>
-            <span>{{ f.T([`The minimum you told us you'd accept. Your plan is under ${pctOfMonth}% of one month.`, `El mínimo que nos dijiste que aceptarías. Tu plan es menos del ${pctOfMonth}% de un mes.`]) }}</span>
-          </div>
         </div>
       </div>
     </section>
@@ -301,7 +297,6 @@ const monthlyMin = computed(() => {
 const annualK = computed(() => monthlyMin.value ? Math.round(monthlyMin.value * 12 / 1000) : null)
 const marketLo = computed(() => Math.round(annualK.value * 1.6))
 const marketHi = computed(() => Math.round(annualK.value * 2.05))
-const pctOfMonth = computed(() => Math.max(1, Math.ceil(PLANS[1].price / monthlyMin.value * 100)))
 const goalMonths = computed(() => f.answers.PSPEED ? f.answers.PSPEED.months : null)
 const modes = computed(() => (f.answers.P9 || []).map(o => f.T(o.t)).join(', '))
 
@@ -539,10 +534,6 @@ onUnmounted(() => {
 .rw-big{background:var(--blue-bg);border-radius:14px;padding:20px}
 .rw-big b{display:block;font-family:var(--pjs);font-size:42px;font-weight:800;color:var(--blue-dark);line-height:1}
 .rw-big span{display:block;font-size:14px;color:var(--blue-dark);margin-top:6px;line-height:1.4}
-.rw-anchor{background:var(--amber-bg);border-radius:14px;padding:20px}
-.rw-anchor b{display:block;font-size:15px;font-weight:700;color:var(--amber-ink);line-height:1.35;margin-bottom:5px}
-.rw-anchor .aic{display:inline-block;vertical-align:-3px;margin-right:6px}
-.rw-anchor>span{font-size:12px;color:var(--amber-body);line-height:1.55}
 
 /* Tiles + respuestas */
 .rw-stats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
@@ -633,7 +624,6 @@ onUnmounted(() => {
   .rw-sec{padding:30px 32px}
   .rw-h1{font-size:28px}
   .rw-h2{font-size:24px}
-  .rw-heroGrid{grid-template-columns:1fr 1fr}
   .rw-stats{grid-template-columns:repeat(4,1fr)}
   .rw-tools{grid-template-columns:repeat(3,1fr)}
   .rw-tlist{grid-template-columns:repeat(3,1fr)}
