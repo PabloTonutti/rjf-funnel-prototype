@@ -6,13 +6,7 @@
         <span class="t">{{ f.T(['60% discount reserved for you', '60% de descuento reservado para ti']) }}</span>
         <div class="rw-clock">{{ countdown }}</div>
       </div>
-      <div class="rw-barbtns">
-        <button class="rw-lang" @click="f.toggleLang()">
-          <template v-if="f.lang === 'en'"><b>EN</b>·ES</template>
-          <template v-else>EN·<b>ES</b></template>
-        </button>
-        <button @click="scrollToPlans">{{ f.T(['GET ACCESS', 'OBTENER ACCESO']) }}</button>
-      </div>
+      <button @click="scrollToPlans">{{ f.T(['GET ACCESS', 'OBTENER ACCESO']) }}</button>
     </div></div>
 
     <!-- 1 · Hero personalizado -->
@@ -92,7 +86,7 @@
             <div class="rw-node end"><span v-html="ic('trophy', 20)" /></div>
             <div class="rw-end">
               <b>{{ f.T(['Offer signed', 'Oferta firmada']) }}</b>
-              <span>{{ f.T(['Your target: 30 days from today', 'Tu objetivo: 30 días desde hoy']) }}</span>
+              <span v-if="goalMonths">{{ f.T(goalMonths === 1 ? ['Your target: 30 days from today', 'Tu objetivo: 30 días desde hoy'] : [`Your target: ${goalMonths} months from today`, `Tu objetivo: ${goalMonths} meses desde hoy`]) }}</span>
             </div>
           </div>
         </div>
@@ -157,12 +151,24 @@
     <section class="rw-sec rw-tint">
       <div class="rw-in">
         <h2 class="rw-h2">{{ f.T(['Everything included in your plan', 'Todo lo que incluye tu plan']) }}</h2>
-        <p class="rw-sub" style="margin:4px 0 20px">{{ f.T(['25+ AI tools, all unlocked from day one', 'Más de 25 herramientas de IA, todas desbloqueadas desde el día uno']) }}</p>
+        <p class="rw-sub" style="margin:4px 0 20px">{{ f.T([`${5 + MORE_TOOLS.length} AI tools, all unlocked from day one`, `${5 + MORE_TOOLS.length} herramientas de IA, todas desbloqueadas desde el día uno`]) }}</p>
         <div class="rw-tools">
           <div v-for="(t, k) in tools" :key="k" class="rw-tool">
             <span class="tic" v-html="duo(t.i)" />
             <b>{{ f.T(t.b) }}</b><small>{{ f.T(t.tool) }}</small>
           </div>
+          <div class="rw-tool rw-tool-toggle" role="button" tabindex="0" @click="showAllTools = !showAllTools" @keydown.enter.prevent="showAllTools = !showAllTools">
+            <span class="tic" v-html="duo('docdash')" />
+            <b>{{ showAllTools ? f.T(['Show less', 'Ver menos']) : f.T([`+${MORE_TOOLS.length} more tools`, `+${MORE_TOOLS.length} herramientas más`]) }}</b>
+            <small>{{ showAllTools ? f.T(['Back to highlights', 'Volver a destacadas']) : f.T(['See the full list', 'Ver la lista completa']) }}</small>
+          </div>
+        </div>
+        <!-- Lista completa de herramientas reales (jobwinner.ai/tools), de más a menos importante -->
+        <div v-if="showAllTools" class="rw-card" style="margin-top:10px">
+          <div class="rw-tlist">
+            <span v-for="t in MORE_TOOLS" :key="t" class="rw-titem"><span class="ck" v-html="ic('check', 14)" />{{ t }}</span>
+          </div>
+          <button class="rw-lesslink" @click="showAllTools = false">{{ f.T(['Show less', 'Ver menos']) }} <span class="chev up" v-html="ic('chevrondown', 13)" /></button>
         </div>
         <div class="rw-card" style="margin-top:10px">
           <p class="rw-incl"><span class="ck" v-html="ic('check', 15)" />{{ f.T(['5M+ jobs from 1,000+ sources, only verified listings', '5M+ empleos de 1.000+ fuentes, solo ofertas verificadas']) }}</p>
@@ -198,6 +204,23 @@
       <div class="rw-in">
         <h2 class="rw-h1">{{ f.T([`${matches} jobs are waiting for you`, `${matches} empleos te están esperando`]) }}</h2>
         <p class="rw-sub" style="margin:6px 0 20px">{{ f.T(['Start today and your first tailored application is ready in under five minutes.', 'Empieza hoy y tu primera candidatura a medida estará lista en menos de cinco minutos.']) }}</p>
+        <!-- Mismos precios que arriba (misma tarjeta, misma selección) -->
+        <div class="plans">
+          <div
+            v-for="(p, k) in PLANS" :key="'b' + k"
+            class="plan" :class="{ sel: f.selectedPlan === k }"
+            @click="f.selectedPlan = k"
+          >
+            <div v-if="p.popular" class="pop-pill">{{ f.T(['Most popular', 'Most popular']) }}</div>
+            <div class="radio" />
+            <div>
+              <div class="plan-name">{{ f.T(p.name) }}</div>
+              <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
+              <div class="plan-bill">{{ f.T(whyOf(p)) }}</div>
+            </div>
+            <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
+          </div>
+        </div>
         <div class="rw-cta">
           <button ref="buy2El" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }} · {{ money(perDay(PLANS[f.selectedPlan] || PLANS[1])) }}/{{ f.T(['DAY', 'DÍA']) }}</button>
         </div>
@@ -328,9 +351,20 @@ const tools = [
   { i: 'doc', b: ['A resume that stands out', 'Un CV que destaca'], tool: ['AI Resume Builder', 'AI Resume Builder'] },
   { i: 'boltcirc', b: ['Tailored apps in seconds', 'Candidaturas a medida en segundos'], tool: ['AI Application Kit', 'AI Application Kit'] },
   { i: 'shieldcheck', b: ['Pass the ATS filters', 'Supera los filtros ATS'], tool: ['AI ATS Check', 'AI ATS Check'] },
-  { i: 'mic', b: ['Interview with confidence', 'Entrevistas con confianza'], tool: ['AI Mock Interview', 'AI Mock Interview'] },
-  { i: 'docdash', b: ['+19 more tools', '+19 herramientas más'], tool: ['See the full list', 'Ver la lista completa'] }
+  { i: 'mic', b: ['Interview with confidence', 'Entrevistas con confianza'], tool: ['AI Mock Interview', 'AI Mock Interview'] }
 ]
+
+// Resto de herramientas reales (jobwinner.ai/tools), ordenadas de más a menos importante.
+// Nombres de producto: se muestran igual en EN y ES.
+const MORE_TOOLS = [
+  'Job Tracker', 'Skills Match Analysis', 'Job Description Keyword Finder',
+  'Interview Q&A Generator', 'Interview Answer Enhancer', 'Elevator Pitch Generator',
+  'Questions to Ask Generator', 'Interview Email Follow-up Generator', 'AI Company Insights',
+  'LinkedIn Profile Reviewer', 'LinkedIn Headline Generator', 'LinkedIn Summary Generator',
+  'LinkedIn Experience Generator', 'AI Professional Summary Generator',
+  'AI Bullet Point Generator', 'AI Bullet Point Enhancer'
+]
+const showAllTools = ref(false)
 
 // Reviews REALES de Trustpilot (trustpilot.com/review/jobwinner.ai · 4.7 "Excellent")
 const revs = [
@@ -347,7 +381,13 @@ const faqs = [
   [['What if I find a job next week?', '¿Y si encuentro trabajo la semana que viene?'],
     ["Cancel in one tap from your account and you won't be charged again. If it's within the first 7 days you also get your money back.", 'Cancela en un toque desde tu cuenta y no se te cobrará de nuevo. Si es dentro de los primeros 7 días, además te devolvemos el dinero.']],
   [['Does it work for my sector?', '¿Funciona para mi sector?'],
-    ['We aggregate 5M+ listings from 1,000+ sources across every sector. Your matches are scored against the titles, industries and location you selected.', 'Agregamos 5M+ ofertas de 1.000+ fuentes de todos los sectores. Tus matches se puntúan contra los puestos, industrias y ubicación que seleccionaste.']]
+    ['We aggregate 5M+ listings from 1,000+ sources across every sector. Your matches are scored against the titles, industries and location you selected.', 'Agregamos 5M+ ofertas de 1.000+ fuentes de todos los sectores. Tus matches se puntúan contra los puestos, industrias y ubicación que seleccionaste.']],
+  [['What exactly do I get right after paying?', '¿Qué recibo justo después de pagar?'],
+    ['Instant access to everything: your matched jobs are already waiting, your resume review is ready, and your first tailored application can go out in under five minutes.', 'Acceso inmediato a todo: tus empleos compatibles ya te están esperando, la revisión de tu CV está lista y tu primera candidatura a medida puede salir en menos de cinco minutos.']],
+  [['How is this different from LinkedIn or Indeed?', '¿En qué se diferencia de LinkedIn o Indeed?'],
+    ["Job boards show you listings and leave the rest to you. JobWinner covers the whole search end to end: it finds verified matches across 5M+ listings, fixes your resume, tailors every application, preps your interviews and tracks it all in one place.", 'Los portales te enseñan ofertas y el resto es cosa tuya. JobWinner cubre toda la búsqueda de principio a fin: encuentra matches verificados entre 5M+ ofertas, arregla tu CV, adapta cada candidatura, te prepara las entrevistas y lo organiza todo en un solo sitio.']],
+  [["I've been applying for months with no luck. Why would this work?", 'Llevo meses aplicando sin suerte. ¿Por qué esto sí funcionaría?'],
+    ['Mass-applying with the same resume is what keeps most people stuck. Applying to matched jobs with a resume and cover letter tailored to each listing is how our members get to interviews — 55% within the first month.', 'Aplicar en masa con el mismo CV es lo que mantiene atascada a la mayoría. Aplicar a empleos compatibles con un CV y una carta adaptados a cada oferta es lo que lleva a nuestros miembros a entrevistas: el 55% en el primer mes.']]
 ]
 
 // Checkout REAL. 1º intento: sesión de Checkout creada por el worker con customer_email
@@ -437,9 +477,6 @@ onUnmounted(() => {
 /* Barra de oferta (usa .pw-banner global; aquí solo la variante de 2 líneas + reloj dorado) */
 .rw-barin{max-width:845px}
 .rw-clock{font-family:var(--pjs);font-size:19px;color:var(--jw-gold);font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}
-.rw-barbtns{display:flex;align-items:center;gap:8px;flex:none}
-.rw-lang{background:transparent;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.75);border-radius:8px;padding:8px 10px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--inter)}
-.rw-lang b{color:#fff;font-weight:800}
 
 /* Hero */
 .rw-hero{text-align:center}
@@ -504,6 +541,14 @@ onUnmounted(() => {
 .rw-tool .tic :deep(svg){width:34px;height:34px}
 .rw-tool b{display:block;font-family:var(--pjs);font-size:14px;font-weight:800;line-height:1.3;margin:9px 0 2px;color:var(--ink)}
 .rw-tool small{font-size:12px;color:var(--muted)}
+.rw-tool-toggle{cursor:pointer;transition:border-color .15s}
+.rw-tool-toggle:hover{border-color:var(--blue)}
+.rw-tool-toggle b{color:var(--blue)}
+.rw-tlist{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px}
+.rw-titem{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink);line-height:1.35}
+.rw-titem .ck{color:var(--green-ico);flex-shrink:0;display:flex;margin-top:1.5px}
+.rw-lesslink{display:block;margin:14px auto 0;background:none;border:0;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--inter)}
+.rw-lesslink .chev{display:inline-block;vertical-align:-2px;transform:rotate(180deg)}
 .rw-incl{font-size:13px;color:var(--body);line-height:1.5;margin:0 0 10px;display:flex;gap:9px;align-items:flex-start}
 .rw-incl:last-child{margin-bottom:0}
 .rw-incl .ck{color:var(--green-ico);flex-shrink:0;display:flex;margin-top:1px}
@@ -536,10 +581,16 @@ onUnmounted(() => {
   .rw-h2{font-size:23px}
   .rw-heroGrid{grid-template-columns:1fr 1fr}
   .rw-stats{grid-template-columns:repeat(4,1fr)}
-  .rw-plans{grid-template-columns:repeat(3,1fr);align-items:stretch}
   .rw-tools{grid-template-columns:repeat(3,1fr)}
+  .rw-tlist{grid-template-columns:repeat(3,1fr)}
   .rw-quotes{grid-template-columns:repeat(3,1fr)}
   .rw-faqs{grid-template-columns:repeat(2,1fr)}
   .rw-foot{padding-bottom:16px}
+  /* Timeline en desktop: grid 2x2 a ancho completo (la columna estrecha desperdiciaba el espacio) */
+  .rw-rail{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .rw-rail:before{display:none}
+  .rw-step{margin-bottom:0}
+  .rw-step:last-child{grid-column:1/-1;max-width:560px;justify-self:center;width:100%}
+  .rw-step h3{font-size:16.5px}
 }
 </style>
