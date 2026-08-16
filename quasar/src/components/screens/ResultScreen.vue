@@ -6,7 +6,13 @@
         <span class="t">{{ f.T(['60% discount reserved for you', '60% de descuento reservado para ti']) }}</span>
         <div class="rw-clock">{{ countdown }}</div>
       </div>
-      <button @click="scrollToPlans">{{ f.T(['GET ACCESS', 'OBTENER ACCESO']) }}</button>
+      <div class="rw-barbtns">
+        <button class="rw-lang" @click="f.toggleLang()">
+          <template v-if="f.lang === 'en'"><b>EN</b>·ES</template>
+          <template v-else>EN·<b>ES</b></template>
+        </button>
+        <button @click="scrollToPlans">{{ f.T(['GET ACCESS', 'OBTENER ACCESO']) }}</button>
+      </div>
     </div></div>
 
     <!-- 1 · Hero personalizado -->
@@ -16,7 +22,7 @@
         <h1 class="rw-h1">{{ f.T(['Your plan is ready', 'Tu plan está listo']) }}</h1>
         <p class="rw-sub" v-if="heroLine">{{ heroLine }}</p>
         <div class="rw-heroGrid">
-          <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences', 'empleos encajan con tus preferencias de búsqueda']) }}</span></div>
+          <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
           <div class="rw-anchor" v-if="monthlyMin">
             <b><span class="aic" v-html="ic('clock', 17)" />{{ f.T([`Every month searching costs you ${sym}${fmt0(monthlyMin)}`, `Cada mes buscando te cuesta ${fmt0(monthlyMin)} ${sym}`]) }}</b>
             <span>{{ f.T([`The minimum you told us you'd accept. Your plan is under ${pctOfMonth}% of one month.`, `El mínimo que nos dijiste que aceptarías. Tu plan es menos del ${pctOfMonth}% de un mes.`]) }}</span>
@@ -98,17 +104,21 @@
       <div class="rw-in">
         <h2 class="rw-h2">{{ f.T(['Choose your plan', 'Elige tu plan']) }}</h2>
         <p class="rw-sub" style="margin:4px 0 22px">{{ f.T(['All plans include full access to everything below.', 'Todos los planes incluyen acceso completo a todo lo de abajo.']) }}</p>
-        <div class="rw-plans" role="radiogroup">
-          <div v-for="(p, k) in PLANS" :key="k" class="rw-plan" role="radio" :aria-checked="String(f.selectedPlan === k)" tabindex="0"
-            @click="f.selectedPlan = k" @keydown.space.prevent="f.selectedPlan = k" @keydown.enter.prevent="f.selectedPlan = k">
-            <span v-if="p.popular" class="rw-tag">{{ f.T(['MOST POPULAR', 'EL MÁS POPULAR']) }}</span>
-            <div class="rw-radio" />
-            <div class="name">{{ f.T(p.name) }}</div>
-            <div class="was">{{ money(p.old) }}</div>
-            <div class="per">{{ money(perDay(p)) }}</div>
-            <div class="perlab">{{ f.T(['per day', 'por día']) }}</div>
-            <div class="why" :class="{ n: !p.popular }">{{ f.T(whyOf(p)) }}</div>
-            <span class="off">60% OFF</span>
+        <!-- Tarjetas de precio: diseño original del funnel (horizontal, radio a la izquierda) -->
+        <div class="plans">
+          <div
+            v-for="(p, k) in PLANS" :key="k"
+            class="plan" :class="{ sel: f.selectedPlan === k }"
+            @click="f.selectedPlan = k"
+          >
+            <div v-if="p.popular" class="pop-pill">{{ f.T(['Most popular', 'Most popular']) }}</div>
+            <div class="radio" />
+            <div>
+              <div class="plan-name">{{ f.T(p.name) }}</div>
+              <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
+              <div class="plan-bill">{{ f.T(whyOf(p)) }}</div>
+            </div>
+            <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
           </div>
         </div>
         <div class="rw-cta">
@@ -135,13 +145,10 @@
     <section class="rw-sec">
       <div class="rw-in">
         <h2 class="rw-h2" style="margin-bottom:18px">{{ f.T(['55% of members interview in the first month', 'El 55% de los miembros consigue entrevista el primer mes']) }}</h2>
+        <!-- Misma gráfica que la pantalla '55%...' de los primeros pasos del funnel -->
         <div class="rw-card">
-          <div class="rw-chart">
-            <div style="height:22%" /><div style="height:41%" /><div style="height:62%" />
-            <div style="height:88%" /><div class="g" style="height:14%" /><div class="g" style="height:19%" />
-          </div>
-          <div class="rw-legend"><span class="a">{{ f.T(['JobWinner members', 'Miembros de JobWinner']) }}</span><span class="b">{{ f.T(['Average candidate', 'Candidato medio']) }}</span></div>
-          <p class="rw-meth">{{ f.T(['Based on 4,182 members who tracked applications between Jan and Jun 2026.', 'Basado en 4.182 miembros que registraron sus candidaturas entre enero y junio de 2026.']) }}</p>
+          <div style="display:flex;justify-content:center" v-html="chartSvg" />
+          <p class="rw-meth" style="margin-top:8px">{{ f.T(['Based on 4,182 members who tracked applications between Jan and Jun 2026.', 'Basado en 4.182 miembros que registraron sus candidaturas entre enero y junio de 2026.']) }}</p>
         </div>
       </div>
     </section>
@@ -219,6 +226,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { ILLO, duo, ic } from 'assets/graphics'
 import { PLANS } from 'src/data/screens'
+import { membersChartSvg } from 'src/utils/membersChart'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
@@ -269,13 +277,12 @@ const goalMonths = computed(() => f.answers.PSPEED ? f.answers.PSPEED.months : n
 const modes = computed(() => (f.answers.P9 || []).map(o => f.T(o.t)).join(', '))
 
 const heroLine = computed(() => {
+  // La modalidad NO va aquí: ya aparece en el tile "Work mode" (evita el duplicado).
   const parts = []
   const title = (f.answers.P19T || [])[0] || (f.aiTitles || [])[0]
   if (title) parts.push(title)
   if (f.answers.PCITY) parts.push(f.answers.PCITY)
-  const mode = (f.answers.P9 || [])[0]
-  if (mode) parts.push(f.T(mode.t))
-  parts.push(f.T([`Built from your ${ansRows.value.length} answers`, `Construido con tus ${ansRows.value.length} respuestas`]))
+  parts.push(f.T(['Built from your answers', 'Construido con tus respuestas']))
   return parts.join(' · ')
 })
 
@@ -348,6 +355,8 @@ async function goCheckout () {
   window.location.href = p.link + (email ? `?prefilled_email=${encodeURIComponent(email)}` : '')
 }
 
+const chartSvg = computed(() => membersChartSvg(f))
+
 const countdown = computed(() => {
   const fmt = n => String(n).padStart(2, '0')
   return `${fmt(Math.floor(f.secondsLeft / 60))}:${fmt(f.secondsLeft % 60)}`
@@ -413,6 +422,9 @@ onUnmounted(() => {
 /* Barra de oferta (usa .pw-banner global; aquí solo la variante de 2 líneas + reloj dorado) */
 .rw-barin{max-width:845px}
 .rw-clock{font-family:var(--pjs);font-size:19px;color:var(--jw-gold);font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.rw-barbtns{display:flex;align-items:center;gap:8px;flex:none}
+.rw-lang{background:transparent;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.75);border-radius:8px;padding:8px 10px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--inter)}
+.rw-lang b{color:#fff;font-weight:800}
 
 /* Hero */
 .rw-hero{text-align:center}
@@ -457,20 +469,9 @@ onUnmounted(() => {
 .rw-end b{font-family:var(--pjs);font-size:16px;font-weight:800;color:var(--amber-ink)}
 .rw-end span{font-size:12px;color:var(--amber-body)}
 
-/* Planes */
-.rw-plans{display:grid;gap:10px;margin-bottom:18px}
-.rw-plan{background:#fff;border:.5px solid var(--line2);border-radius:14px;padding:18px 16px;text-align:center;display:flex;flex-direction:column;cursor:pointer;position:relative}
-.rw-plan[aria-checked="true"]{background:var(--blue-bg2);border:2px solid var(--blue);padding:16.5px 14.5px}
-.rw-radio{width:20px;height:20px;border-radius:50%;border:1.5px solid #C8D0E0;margin:0 auto 12px;flex-shrink:0}
-.rw-plan[aria-checked="true"] .rw-radio{border:5px solid var(--blue);background:#fff}
-.rw-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700;letter-spacing:.06em;white-space:nowrap}
-.rw-plan .name{font-family:var(--pjs);font-size:15px;font-weight:800;margin-bottom:6px;color:var(--ink)}
-.rw-plan .was{font-size:12px;color:var(--muted);text-decoration:line-through;margin-bottom:10px}
-.rw-plan .per{font-family:var(--pjs);font-size:26px;font-weight:800;line-height:1;color:var(--ink)}
-.rw-plan .perlab{font-size:11px;color:var(--muted);margin:3px 0 8px}
-.rw-plan .why{font-size:11px;color:var(--blue-dark);line-height:1.4;margin-bottom:10px}
-.rw-plan .why.n{color:var(--muted)}
-.rw-plan .off{margin-top:auto;background:var(--badge-bg);color:var(--badge-ink);font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;align-self:center}
+/* Planes: usa las clases globales .plans/.plan del diseño original del funnel;
+   aquí solo se limita el ancho dentro de la sección */
+.rw .plans{max-width:600px;margin:16px auto 18px}
 
 /* Garantía */
 .rw-guar{background:var(--green-bg);border-radius:14px;padding:20px;display:flex;gap:16px;align-items:center}
@@ -478,13 +479,7 @@ onUnmounted(() => {
 .rw-guar b{display:block;font-family:var(--pjs);font-size:18px;font-weight:800;color:var(--green-ink);line-height:1.3;margin-bottom:4px}
 .rw-guar>div>span{font-size:13px;color:var(--green-body);line-height:1.55}
 
-/* Gráfica */
-.rw-chart{display:flex;align-items:flex-end;gap:8px;height:100px;margin-bottom:10px}
-.rw-chart div{flex:1;background:var(--blue);border-radius:5px 5px 0 0}
-.rw-chart .g{background:#DFE6F2}
-.rw-legend{display:flex;justify-content:space-between;font-size:11px;margin-bottom:8px}
-.rw-legend .a{color:var(--blue);font-weight:600}
-.rw-legend .b{color:var(--muted)}
+/* Gráfica (svg compartido del funnel) */
 .rw-meth{font-size:11px;color:var(--muted);line-height:1.5;margin:0}
 
 /* Herramientas */
@@ -517,6 +512,9 @@ onUnmounted(() => {
 
 .rw-foot{border-top:.5px solid var(--line);padding:16px 18px 90px;text-align:center;font-size:11px;color:#B4BCCB;line-height:1.7}
 
+@media(max-width:719px){
+  .rw-big{text-align:center}
+}
 @media(min-width:720px){
   .rw-sec{padding:30px 32px}
   .rw-h1{font-size:27px}
