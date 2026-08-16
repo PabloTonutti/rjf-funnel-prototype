@@ -14,13 +14,12 @@
       <div class="rw-in">
         <div class="illo" v-html="ILLO.trophy" />
         <h1 class="rw-h1">{{ f.T(['Your plan is ready', 'Tu plan está listo']) }}</h1>
-        <p v-if="goalDate" class="rw-dateline">{{ f.T([`Land your next role before ${goalDate}`, `Consigue tu próximo puesto antes del ${goalDate}`]) }}</p>
+        <p v-if="goalDate" class="rw-dateline">{{ f.T(['Land your next role before', 'Consigue tu próximo puesto antes del']) }} <span class="d">{{ goalDate }}</span></p>
         <p class="rw-sub" v-if="heroLine">{{ heroLine }}</p>
         <!-- Línea de tiempo de la búsqueda (estilo funnel) -->
-        <div class="rw-card rw-journey">
+        <div class="rw-journey">
           <div v-html="journeySvg" />
         </div>
-        <p class="rw-jcap">{{ f.T(['Your job search timeline', 'Tu línea de tiempo de búsqueda']) }}</p>
         <div class="rw-heroGrid">
           <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
         </div>
@@ -415,14 +414,14 @@ const goalDate = computed(() => {
   if (!goalMonths.value) return null
   const d = new Date()
   d.setMonth(d.getMonth() + goalMonths.value)
-  return d.toLocaleDateString(f.lang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+  return d.toLocaleDateString(f.lang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long' })
 })
 
 // Línea de tiempo de la búsqueda (estilo funnel): hoy → candidaturas → entrevistas → ofertas
 const journeySvg = computed(() => {
   const m = matches.value
   const apps = `${Math.round(m * 0.35 / 10) * 10}–${Math.round(m * 0.6 / 10) * 10}`
-  const PTS = [[46, 156], [144, 114], [242, 72], [330, 38]]
+  const PTS = [[84, 158], [172, 116], [256, 76], [332, 40]]
   const path = PTS.map((p, i) => {
     if (i === 0) return `M ${p[0]} ${p[1]}`
     const [x0, y0] = PTS[i - 1]
@@ -430,30 +429,29 @@ const journeySvg = computed(() => {
     return `C ${mx} ${y0}, ${mx} ${p[1]}, ${p[0]} ${p[1]}`
   }).join(' ')
   const labels = [
-    [String(m), f.T(['jobs found', 'empleos encontrados'])],
+    [String(m), f.T(['jobs found', 'empleos'])],
     [apps, f.T(['applications', 'candidaturas'])],
     ['5–10', f.T(['interviews', 'entrevistas'])],
     ['1–2', f.T(['job offers', 'ofertas'])]
   ]
   const xlabs = [f.T(['Today', 'Hoy']), f.T(['Week 2', 'Semana 2']), f.T(['Week 4', 'Semana 4']), f.T(['Week 6', 'Semana 6'])]
-  const guides = PTS.map(p => `<line x1="${p[0]}" y1="${p[1] + 12}" x2="${p[0]}" y2="176" stroke="#D8E0EE" stroke-width="1.5" stroke-dasharray="2 5"/>`).join('')
-  const texts = PTS.map((p, i) => {
-    const anchor = i === 0 ? 'start' : (i === 3 ? 'end' : 'middle')
-    const tx = i === 0 ? p[0] - 12 : (i === 3 ? p[0] + 14 : p[0])
-    return `<text x="${tx}" y="${p[1] - 28}" text-anchor="${anchor}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][0]}</text>
-      <text x="${tx}" y="${p[1] - 14}" text-anchor="${anchor}" font-size="10.5" fill="#5A6478" font-family="Inter,sans-serif">${labels[i][1]}</text>`
-  }).join('')
+  const guides = PTS.map(p => `<line x1="${p[0]}" y1="${p[1] + 12}" x2="${p[0]}" y2="178" stroke="#CBD9EE" stroke-width="1.5" stroke-dasharray="2 5"/>`).join('')
+  // Etiquetas SIEMPRE arriba-izquierda del punto: como la curva asciende, todo lo que queda
+  // a la izquierda de un punto está más abajo que él → el texto nunca pisa la línea.
+  const texts = PTS.map((p, i) => `
+    <text x="${p[0] - 15}" y="${p[1] - 20}" text-anchor="end" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][0]}</text>
+    <text x="${p[0] - 15}" y="${p[1] - 7}" text-anchor="end" font-size="10.5" fill="#5A6478" font-family="Inter,sans-serif">${labels[i][1]}</text>`).join('')
   const dots = PTS.map((p, i) => i === 0
     ? `<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="#88AB75"/><path d="M${p[0] - 4.5} ${p[1]}l3.2 3.4 6-6.6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
     : `<circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#F2C037" stroke="#fff" stroke-width="2.5"/>`).join('')
-  const xtexts = xlabs.map((t, i) => `<text x="${PTS[i][0]}" y="196" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="11.5" fill="#02112D">${t}</text>`).join('')
-  return `<svg viewBox="0 0 370 204" style="width:100%;display:block">
+  const xtexts = xlabs.map((t, i) => `<text x="${PTS[i][0]}" y="200" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="11.5" fill="#02112D">${t}</text>`).join('')
+  return `<svg viewBox="0 0 380 212" style="width:100%;display:block">
     <defs><linearGradient id="jwline" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#88AB75"/><stop offset=".35" stop-color="#3E9BFF"/><stop offset=".8" stop-color="#007AFF"/><stop offset="1" stop-color="#007AFF" stop-opacity=".25"/>
     </linearGradient></defs>
     ${guides}
-    <line x1="18" y1="176" x2="352" y2="176" stroke="#E7EBF3" stroke-width="1.5"/>
-    <path d="${path} L 356 36" fill="none" stroke="url(#jwline)" stroke-width="7" stroke-linecap="round"/>
+    <line x1="20" y1="178" x2="360" y2="178" stroke="#DCE4F0" stroke-width="1.5"/>
+    <path d="${path} L 358 36" fill="none" stroke="url(#jwline)" stroke-width="7" stroke-linecap="round"/>
     ${dots}${texts}${xtexts}
   </svg>`
 })
@@ -527,9 +525,9 @@ onUnmounted(() => {
 /* Hero */
 .rw-hero{text-align:center}
 .rw-hero .illo{margin:2px 0 10px}
-.rw-dateline{font-family:var(--pjs);font-size:16.5px;font-weight:800;color:var(--blue);margin:8px 0 0;line-height:1.3}
-.rw-journey{margin-top:18px;padding:20px 14px 12px}
-.rw-jcap{font-size:12.5px;color:var(--muted);text-align:center;margin:10px 0 0}
+.rw-dateline{font-family:var(--pjs);font-size:16.5px;font-weight:800;color:var(--ink);margin:8px 0 0;line-height:1.3}
+.rw-dateline .d{color:var(--blue)}
+.rw-journey{margin-top:18px;padding:22px 16px 12px;background:#F4F8FE;border:1px solid #D9E6FA;border-radius:16px}
 .rw-heroGrid{display:grid;gap:12px;text-align:left;margin-top:20px}
 .rw-big{background:var(--blue-bg);border-radius:14px;padding:20px}
 .rw-big b{display:block;font-family:var(--pjs);font-size:42px;font-weight:800;color:var(--blue-dark);line-height:1}
