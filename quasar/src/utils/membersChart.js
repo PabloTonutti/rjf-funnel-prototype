@@ -2,7 +2,7 @@
 // (ChartScreen, '55% of our members find a job within the 1st month') y el paywall.
 // Coherente con el titular: la línea JobWinner pasa EXACTAMENTE por 55% en la
 // semana 4 (= 1er mes), con pendiente suave.
-export function membersChartSvg (f) {
+export function membersChartSvg (f, maxWidth = 430) {
   const M = [9, 24, 40, 55, 63, 71, 78], A = [2, 5, 7, 10, 20, 25, 27]
   const X = i => 52 + i * 44, Y = p => 198 - p * 1.7
   const line = (d, c) => `<polyline points="${d.map((p, i) => X(i) + ',' + Y(p)).join(' ')}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`
@@ -16,7 +16,7 @@ export function membersChartSvg (f) {
   const xlab = M.map((_, i) => `<text x="${X(i)}" y="216" text-anchor="middle" font-size="10" fill="#9AA5B5" font-family="Inter,sans-serif">${i + 1}${w}</text>`).join('')
   const membersLbl = f.T(['JobWinner members', 'Miembros JobWinner'])
   const avgLbl = f.T(['Average candidate', 'Candidato medio'])
-  return `<svg viewBox="0 0 360 226" style="width:100%;max-width:430px">
+  return `<svg viewBox="0 0 360 226" style="width:100%;max-width:${maxWidth}px">
     ${grid}${ylab}${xlab}
     <line x1="48" y1="${Y(55)}" x2="${X(3)}" y2="${Y(55)}" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3 4" opacity=".5"/>
     <line x1="${X(3)}" y1="${Y(55)}" x2="${X(3)}" y2="${Y(0)}" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3 4" opacity=".5"/>

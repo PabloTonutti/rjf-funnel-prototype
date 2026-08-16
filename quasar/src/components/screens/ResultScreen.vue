@@ -14,7 +14,13 @@
       <div class="rw-in">
         <div class="illo" v-html="ILLO.trophy" />
         <h1 class="rw-h1">{{ f.T(['Your plan is ready', 'Tu plan está listo']) }}</h1>
+        <p v-if="goalDate" class="rw-dateline">{{ f.T([`Land your next role before ${goalDate}`, `Consigue tu próximo puesto antes del ${goalDate}`]) }}</p>
         <p class="rw-sub" v-if="heroLine">{{ heroLine }}</p>
+        <!-- Línea de tiempo de la búsqueda (estilo funnel) -->
+        <div class="rw-card rw-journey">
+          <div v-html="journeySvg" />
+        </div>
+        <p class="rw-jcap">{{ f.T(['Your job search timeline', 'Tu línea de tiempo de búsqueda']) }}</p>
         <div class="rw-heroGrid">
           <div class="rw-big"><b>{{ matches }}</b><span>{{ f.T(['jobs match your job search preferences and profile', 'empleos que encajan con tus preferencias de búsqueda y perfil']) }}</span></div>
           <div class="rw-anchor" v-if="monthlyMin">
@@ -53,7 +59,7 @@
           <div class="rw-step">
             <div class="rw-node">1</div>
             <div class="rw-card">
-              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} resume issues`, `${issues} fallos en tu CV`]) }}</span></div>
+              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} issues found`, `${issues} fallos encontrados`]) }}</span></div>
               <h3>{{ f.T(["Fix what's holding your resume back", 'Arregla lo que frena tu CV']) }}</h3>
               <p>{{ f.T(['We found issues in your resume that could be keeping you out of the shortlist.', 'Encontramos fallos en tu CV que podrían estar dejándote fuera de la lista final.']) }}</p>
             </div>
@@ -150,7 +156,7 @@
     <!-- 7 · Todo incluido (25+ herramientas) -->
     <section class="rw-sec rw-tint">
       <div class="rw-in">
-        <h2 class="rw-h2">{{ f.T(['Everything included in your plan', 'Todo lo que incluye tu plan']) }}</h2>
+        <h2 class="rw-h2">{{ f.T(['Everything for your search, in one place — from resume to signed offer', 'Todo para tu búsqueda en un solo sitio: del CV a la oferta firmada']) }}</h2>
         <p class="rw-sub" style="margin:4px 0 20px">{{ f.T([`${5 + MORE_TOOLS.length} AI tools, all unlocked from day one`, `${5 + MORE_TOOLS.length} herramientas de IA, todas desbloqueadas desde el día uno`]) }}</p>
         <div class="rw-tools">
           <div v-for="(t, k) in tools" :key="k" class="rw-tool">
@@ -373,21 +379,18 @@ const revs = [
   [['I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.', 'I stopped wasting hours on job boards. Two weeks in, I had more responses than in three months on my own.'], 'Montse L. · Trustpilot']
 ]
 
+// FAQ ordenadas estratégicamente: primero puntos de venta, el pricing una sola vez y al final
 const faqs = [
-  [['Will I be charged again?', '¿Se me volverá a cobrar?'],
-    ['Weekly and monthly plans renew automatically until you cancel. The exact renewal date and amount are shown before you pay. "Until you\'re hired" is a single payment and never renews.', 'Los planes semanal y mensual se renuevan automáticamente hasta que canceles. La fecha y el importe exactos de renovación se muestran antes de pagar. "Hasta que te contraten" es un pago único y nunca se renueva.']],
-  [['How do I get my refund?', '¿Cómo consigo mi reembolso?'],
-    ['Email support within 7 days of your purchase. We process it in full, no questions asked, usually within two business days.', 'Escribe a soporte en los 7 días siguientes a tu compra. Lo procesamos íntegro, sin preguntas, normalmente en dos días laborables.']],
-  [['What if I find a job next week?', '¿Y si encuentro trabajo la semana que viene?'],
-    ["Cancel in one tap from your account and you won't be charged again. If it's within the first 7 days you also get your money back.", 'Cancela en un toque desde tu cuenta y no se te cobrará de nuevo. Si es dentro de los primeros 7 días, además te devolvemos el dinero.']],
-  [['Does it work for my sector?', '¿Funciona para mi sector?'],
-    ['We aggregate 5M+ listings from 1,000+ sources across every sector. Your matches are scored against the titles, industries and location you selected.', 'Agregamos 5M+ ofertas de 1.000+ fuentes de todos los sectores. Tus matches se puntúan contra los puestos, industrias y ubicación que seleccionaste.']],
-  [['What exactly do I get right after paying?', '¿Qué recibo justo después de pagar?'],
-    ['Instant access to everything: your matched jobs are already waiting, your resume review is ready, and your first tailored application can go out in under five minutes.', 'Acceso inmediato a todo: tus empleos compatibles ya te están esperando, la revisión de tu CV está lista y tu primera candidatura a medida puede salir en menos de cinco minutos.']],
   [['How is this different from LinkedIn or Indeed?', '¿En qué se diferencia de LinkedIn o Indeed?'],
     ["Job boards show you listings and leave the rest to you. JobWinner covers the whole search end to end: it finds verified matches across 5M+ listings, fixes your resume, tailors every application, preps your interviews and tracks it all in one place.", 'Los portales te enseñan ofertas y el resto es cosa tuya. JobWinner cubre toda la búsqueda de principio a fin: encuentra matches verificados entre 5M+ ofertas, arregla tu CV, adapta cada candidatura, te prepara las entrevistas y lo organiza todo en un solo sitio.']],
   [["I've been applying for months with no luck. Why would this work?", 'Llevo meses aplicando sin suerte. ¿Por qué esto sí funcionaría?'],
-    ['Mass-applying with the same resume is what keeps most people stuck. Applying to matched jobs with a resume and cover letter tailored to each listing is how our members get to interviews — 55% within the first month.', 'Aplicar en masa con el mismo CV es lo que mantiene atascada a la mayoría. Aplicar a empleos compatibles con un CV y una carta adaptados a cada oferta es lo que lleva a nuestros miembros a entrevistas: el 55% en el primer mes.']]
+    ['Mass-applying with the same resume is what keeps most people stuck. Applying to matched jobs with a resume and cover letter tailored to each listing is how our members get to interviews — 55% within the first month.', 'Aplicar en masa con el mismo CV es lo que mantiene atascada a la mayoría. Aplicar a empleos compatibles con un CV y una carta adaptados a cada oferta es lo que lleva a nuestros miembros a entrevistas: el 55% en el primer mes.']],
+  [['What exactly do I get right after paying?', '¿Qué recibo justo después de pagar?'],
+    ['Instant access to everything: your matched jobs are already waiting, your resume review is ready, and your first tailored application can go out in under five minutes.', 'Acceso inmediato a todo: tus empleos compatibles ya te están esperando, la revisión de tu CV está lista y tu primera candidatura a medida puede salir en menos de cinco minutos.']],
+  [['Does it work for my sector?', '¿Funciona para mi sector?'],
+    ['We aggregate 5M+ listings from 1,000+ sources across every sector. Your matches are scored against the titles, industries and location you selected.', 'Agregamos 5M+ ofertas de 1.000+ fuentes de todos los sectores. Tus matches se puntúan contra los puestos, industrias y ubicación que seleccionaste.']],
+  [['How does the pricing work?', '¿Cómo funciona el precio?'],
+    ['Pick weekly, monthly, or a single payment until you\'re hired. Renewal date and amount are always shown before you pay, you can cancel in one tap from your account, and every plan comes with a 7-day full money-back guarantee.', 'Elige semanal, mensual o un pago único hasta que te contraten. La fecha y el importe de renovación se muestran siempre antes de pagar, puedes cancelar en un toque desde tu cuenta y todos los planes incluyen garantía de devolución total de 7 días.']]
 ]
 
 // Checkout REAL. 1º intento: sesión de Checkout creada por el worker con customer_email
@@ -410,7 +413,55 @@ async function goCheckout () {
   window.location.href = p.link + (email ? `?prefilled_email=${encodeURIComponent(email)}` : '')
 }
 
-const chartSvg = computed(() => membersChartSvg(f))
+const chartSvg = computed(() => membersChartSvg(f, 800))
+
+// Fecha objetivo: día de hoy (cuando se completa el funnel) + los meses que eligió el usuario
+const goalDate = computed(() => {
+  if (!goalMonths.value) return null
+  const d = new Date()
+  d.setMonth(d.getMonth() + goalMonths.value)
+  return d.toLocaleDateString(f.lang === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+})
+
+// Línea de tiempo de la búsqueda (estilo funnel): hoy → candidaturas → entrevistas → ofertas
+const journeySvg = computed(() => {
+  const m = matches.value
+  const apps = `${Math.round(m * 0.35 / 10) * 10}–${Math.round(m * 0.6 / 10) * 10}`
+  const PTS = [[46, 156], [144, 114], [242, 72], [330, 38]]
+  const path = PTS.map((p, i) => {
+    if (i === 0) return `M ${p[0]} ${p[1]}`
+    const [x0, y0] = PTS[i - 1]
+    const mx = (x0 + p[0]) / 2
+    return `C ${mx} ${y0}, ${mx} ${p[1]}, ${p[0]} ${p[1]}`
+  }).join(' ')
+  const labels = [
+    [String(m), f.T(['jobs found', 'empleos encontrados'])],
+    [apps, f.T(['applications', 'candidaturas'])],
+    ['5–10', f.T(['interviews', 'entrevistas'])],
+    ['1–2', f.T(['job offers', 'ofertas'])]
+  ]
+  const xlabs = [f.T(['Today', 'Hoy']), f.T(['Week 2', 'Semana 2']), f.T(['Week 4', 'Semana 4']), f.T(['Week 6', 'Semana 6'])]
+  const guides = PTS.map(p => `<line x1="${p[0]}" y1="${p[1] + 12}" x2="${p[0]}" y2="176" stroke="#D8E0EE" stroke-width="1.5" stroke-dasharray="2 5"/>`).join('')
+  const texts = PTS.map((p, i) => {
+    const anchor = i === 0 ? 'start' : (i === 3 ? 'end' : 'middle')
+    const tx = i === 0 ? p[0] - 12 : (i === 3 ? p[0] + 14 : p[0])
+    return `<text x="${tx}" y="${p[1] - 28}" text-anchor="${anchor}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][0]}</text>
+      <text x="${tx}" y="${p[1] - 14}" text-anchor="${anchor}" font-size="10.5" fill="#5A6478" font-family="Inter,sans-serif">${labels[i][1]}</text>`
+  }).join('')
+  const dots = PTS.map((p, i) => i === 0
+    ? `<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="#88AB75"/><path d="M${p[0] - 4.5} ${p[1]}l3.2 3.4 6-6.6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+    : `<circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#F2C037" stroke="#fff" stroke-width="2.5"/>`).join('')
+  const xtexts = xlabs.map((t, i) => `<text x="${PTS[i][0]}" y="196" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="11.5" fill="#02112D">${t}</text>`).join('')
+  return `<svg viewBox="0 0 370 204" style="width:100%;display:block">
+    <defs><linearGradient id="jwline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#88AB75"/><stop offset=".35" stop-color="#3E9BFF"/><stop offset=".8" stop-color="#007AFF"/><stop offset="1" stop-color="#007AFF" stop-opacity=".25"/>
+    </linearGradient></defs>
+    ${guides}
+    <line x1="18" y1="176" x2="352" y2="176" stroke="#E7EBF3" stroke-width="1.5"/>
+    <path d="${path} L 356 36" fill="none" stroke="url(#jwline)" stroke-width="7" stroke-linecap="round"/>
+    ${dots}${texts}${xtexts}
+  </svg>`
+})
 
 const countdown = computed(() => {
   const fmt = n => String(n).padStart(2, '0')
@@ -464,8 +515,8 @@ onUnmounted(() => {
 .rw-in{max-width:845px;margin:0 auto;width:100%}
 .rw-tint{background:var(--surface)}
 .rw-tint2{background:var(--surface2);border-top:.5px solid #EDF1F8;border-bottom:.5px solid #EDF1F8}
-.rw-h1{font-family:var(--pjs);font-size:24px;font-weight:800;line-height:1.2;text-align:center;color:var(--ink);margin:0}
-.rw-h2{font-family:var(--pjs);font-size:20px;font-weight:800;line-height:1.25;text-align:center;color:var(--ink);margin:0}
+.rw-h1{font-family:var(--pjs);font-size:26px;font-weight:800;line-height:1.2;text-align:center;color:var(--ink);margin:0}
+.rw-h2{font-family:var(--pjs);font-size:22px;font-weight:800;line-height:1.25;text-align:center;color:var(--ink);margin:0}
 .rw-sub{font-size:14px;color:var(--body);text-align:center;line-height:1.5;margin:6px 0 0}
 .rw-card{background:#fff;border:.5px solid var(--line);border-radius:14px;padding:16px}
 .rw-btn{display:block;width:100%;background:var(--blue);color:#fff;border:0;border-radius:14px;padding:17px 16px;font-size:15px;font-weight:700;letter-spacing:.06em;text-align:center;cursor:pointer;font-family:var(--inter)}
@@ -481,6 +532,9 @@ onUnmounted(() => {
 /* Hero */
 .rw-hero{text-align:center}
 .rw-hero .illo{margin:2px 0 10px}
+.rw-dateline{font-family:var(--pjs);font-size:16.5px;font-weight:800;color:var(--blue);margin:8px 0 0;line-height:1.3}
+.rw-journey{margin-top:18px;padding:20px 14px 12px}
+.rw-jcap{font-size:12.5px;color:var(--muted);text-align:center;margin:10px 0 0}
 .rw-heroGrid{display:grid;gap:12px;text-align:left;margin-top:20px}
 .rw-big{background:var(--blue-bg);border-radius:14px;padding:20px}
 .rw-big b{display:block;font-family:var(--pjs);font-size:42px;font-weight:800;color:var(--blue-dark);line-height:1}
@@ -577,8 +631,8 @@ onUnmounted(() => {
 }
 @media(min-width:720px){
   .rw-sec{padding:30px 32px}
-  .rw-h1{font-size:27px}
-  .rw-h2{font-size:23px}
+  .rw-h1{font-size:28px}
+  .rw-h2{font-size:24px}
   .rw-heroGrid{grid-template-columns:1fr 1fr}
   .rw-stats{grid-template-columns:repeat(4,1fr)}
   .rw-tools{grid-template-columns:repeat(3,1fr)}
@@ -586,11 +640,6 @@ onUnmounted(() => {
   .rw-quotes{grid-template-columns:repeat(3,1fr)}
   .rw-faqs{grid-template-columns:repeat(2,1fr)}
   .rw-foot{padding-bottom:16px}
-  /* Timeline en desktop: grid 2x2 a ancho completo (la columna estrecha desperdiciaba el espacio) */
-  .rw-rail{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .rw-rail:before{display:none}
-  .rw-step{margin-bottom:0}
-  .rw-step:last-child{grid-column:1/-1;max-width:560px;justify-self:center;width:100%}
-  .rw-step h3{font-size:16.5px}
+  .rw-rail{max-width:560px}
 }
 </style>
