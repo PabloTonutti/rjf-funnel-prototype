@@ -59,7 +59,7 @@
           <div class="rw-step">
             <div class="rw-node">1</div>
             <div class="rw-card">
-              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T(['Resume issues', 'Fallos en tu CV']) }}</span></div>
+              <div class="rw-meta"><span class="day">{{ f.T(['DAY 1', 'DÍA 1']) }}</span><span class="rw-chip warn">{{ f.T([`${issues} resume issues`, `${issues} fallos en tu CV`]) }}</span></div>
               <h3>{{ f.T(["Fix what's holding your resume back", 'Arregla lo que frena tu CV']) }}</h3>
               <p>{{ f.T(['We found issues in your resume that could be keeping you out of the shortlist.', 'Encontramos fallos en tu CV que podrían estar dejándote fuera de la lista final.']) }}</p>
             </div>
@@ -92,7 +92,7 @@
             <div class="rw-node end"><span v-html="ic('trophy', 20)" /></div>
             <div class="rw-end">
               <b>{{ f.T(['Offer signed', 'Oferta firmada']) }}</b>
-              <span v-if="goalMonths">{{ f.T([`Your target: ${goalMonths} months from today`, `Tu objetivo: ${goalMonths} meses desde hoy`]) }}</span>
+              <span>{{ f.T(['Your target: 30 days from today', 'Tu objetivo: 30 días desde hoy']) }}</span>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { ILLO, duo, ic } from 'assets/graphics'
-import { PLANS } from 'src/data/screens'
+import { PLANS, CATEGORIES } from 'src/data/screens'
 import { membersChartSvg } from 'src/utils/membersChart'
 
 defineProps({ screen: { type: Object, required: true } })
@@ -276,6 +276,21 @@ const pctOfMonth = computed(() => Math.max(1, Math.ceil(PLANS[1].price / monthly
 const goalMonths = computed(() => f.answers.PSPEED ? f.answers.PSPEED.months : null)
 const modes = computed(() => (f.answers.P9 || []).map(o => f.T(o.t)).join(', '))
 
+// Nº de fallos del CV: dimensiones del análisis de IA por debajo de 90 (fallback: estáticas del ScoreScreen)
+const issues = computed(() => {
+  const s = f.aiScore
+  const dims = s ? [s.structure, s.details, s.summary, s.employment, s.education, s.skills] : [90, 90, 90, 79, 87, 90]
+  return Math.min(6, Math.max(1, dims.filter(v => Number(v) < 90).length))
+})
+
+// Categorías: si están todas seleccionadas, "All categories" en lugar de la lista completa
+const catsText = computed(() => {
+  const sel = f.answers.P13 || []
+  if (!sel.length) return ''
+  if (sel.length >= CATEGORIES.length - 1) return f.T(['All categories', 'Todas las categorías'])
+  return sel.map(o => f.T(o.t)).join(', ')
+})
+
 const heroLine = computed(() => {
   // La modalidad NO va aquí: ya aparece en el tile "Work mode" (evita el duplicado).
   const parts = []
@@ -290,7 +305,7 @@ const ansRows = computed(() => {
   const rows = []
   const add = (l, v) => { if (v) rows.push([l, v]) }
   add(['Job titles', 'Puestos'], (f.answers.P19T || []).join(', '))
-  add(['Categories', 'Categorías'], (f.answers.P13 || []).map(o => f.T(o.t)).join(', '))
+  add(['Categories', 'Categorías'], catsText.value)
   add(['Career level', 'Nivel profesional'], f.answers.P16 && f.T(f.answers.P16.t))
   add(['Type of work', 'Tipo de trabajo'], (f.answers.P7 || []).map(o => f.T(o.t)).join(', '))
   add(['Work mode', 'Modalidad'], modes.value)
