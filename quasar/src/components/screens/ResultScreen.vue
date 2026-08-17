@@ -505,7 +505,6 @@ function checkSticky () {
 }
 let timer = null
 onMounted(() => {
-  document.body.classList.add('pw-decor') // fondo decorativo azul (solo mientras esta pantalla está montada)
   f.persistPlan() // el usuario llegó a su plan: recordarlo para próximas visitas
   timer = setInterval(() => { if (f.secondsLeft > 0) f.secondsLeft-- }, 1000)
   window.addEventListener('scroll', checkSticky, { passive: true })
@@ -514,7 +513,6 @@ onMounted(() => {
   checkSticky()
 })
 onUnmounted(() => {
-  document.body.classList.remove('pw-decor')
   clearInterval(timer)
   window.removeEventListener('scroll', checkSticky)
   const m = document.getElementById('main')
@@ -674,7 +672,7 @@ onUnmounted(() => {
   .rw-faqs{grid-template-columns:repeat(2,1fr)}
   .rw-foot{padding-bottom:16px}
 }
-/* Desktop ancho: el fondo decorativo azul vive en app.scss (body.pw-decor, activado al montar) */
+/* Desktop ancho (el fondo decorativo azul es global, vive en app.scss) */
 @media(min-width:1000px){
   .pw-banner{border-radius:22px 22px 0 0}
   .rw-foot{border-radius:0 0 22px 22px}
