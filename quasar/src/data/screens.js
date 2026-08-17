@@ -47,7 +47,7 @@ const S = [
 {id:'P3',phase:0,type:'single',icons:false,title:['How long have you been job hunting?','¿Cuánto tiempo llevas buscando empleo?'],
  opts:[{t:['Just started (<1 month)','Acabo de empezar (menos de 1 mes)']},{t:['1–3 months','1-3 meses']},{t:['3–6 months','3-6 meses']},{t:['6+ months','Más de 6 meses']},{t:["I'm not actively looking right now",'No estoy buscando activamente ahora']}]},
 {id:'P3b',phase:0,type:'chart',
- title:['55% of our members find a job within the 1st month','El 55% de nuestros miembros encuentra empleo en el primer mes'],
+ title:['55% of our members interview within the 1st month','El 55% de nuestros miembros consigue entrevista en el primer mes'],
  sub:["We'll help you get there too",'Te ayudaremos a conseguirlo también'],
  note:['Based on JobWinner users who track their job search on our platform','Basado en usuarios de JobWinner que registran su búsqueda de empleo en la plataforma']},
 
@@ -135,13 +135,13 @@ const S = [
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
 // "old" = precio de referencia del 60% OFF. El símbolo de moneda mostrado se decide por país en ResultScreen.
 const PLANS=[
-  {key:'weekly', name:['Weekly Access','Acceso semanal'], price:9.00, days:7, old:22.50,
+  {key:'weekly', name:['1 Week Plan','Plan Semanal'], price:9.00, days:7, old:22.50,
    link:'https://buy.stripe.com/8x2bJ1cOvesG4DJe1z5ZC0s',
    bill:['Billed weekly, cancel anytime.','Facturación semanal, cancela cuando quieras.']},
-  {key:'monthly', name:['Monthly Access','Acceso mensual'], price:29.00, days:30, old:72.50, popular:true,
+  {key:'monthly', name:['One Month Plan','Plan Mensual'], price:29.00, days:30, old:72.50, popular:true,
    link:'https://buy.stripe.com/8x28wPdSzacqb279Lj5ZC0t',
    bill:['Billed monthly, cancel anytime.','Facturación mensual, cancela cuando quieras.']},
-  {key:'lifetime', name:['Until you\'re hired','Hasta que te contraten'], price:145.00, days:365, old:362.50, once:true,
+  {key:'lifetime', name:['Lifetime Plan','Plan de por vida'], price:145.00, days:365, old:362.50, once:true,
    link:'https://buy.stripe.com/3cI5kD7ubesGdaf1eN5ZC0u',
    bill:['One-time payment — yours forever.','Pago único: tuyo para siempre.']}
 ];

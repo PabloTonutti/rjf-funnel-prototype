@@ -277,6 +277,7 @@ import { useFunnel } from 'stores/funnel'
 import { ILLO, duo, ic } from 'assets/graphics'
 import { PLANS, CATEGORIES } from 'src/data/screens'
 import { membersChartSvg } from 'src/utils/membersChart'
+import { currencySymbol } from 'src/utils/currency'
 
 defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
@@ -287,14 +288,8 @@ const buyEl = ref(null)
 const buy2El = ref(null)
 const showSticky = ref(false)
 
-// ---- Moneda por ubicación: eurozona €, Reino Unido £, resto $ ----
-const EUROZONE = ['Spain', 'France', 'Germany', 'Italy', 'Portugal', 'Netherlands', 'Belgium', 'Austria', 'Ireland', 'Finland', 'Greece', 'Slovakia', 'Slovenia', 'Lithuania', 'Latvia', 'Estonia', 'Luxembourg', 'Malta', 'Cyprus', 'Croatia']
-const currency = computed(() => {
-  const c = f.answers.P11
-  if (c === 'United Kingdom') return '£'
-  if (EUROZONE.includes(c)) return '€'
-  return '$'
-})
+// ---- Moneda por ubicación (util compartido con la pantalla de salario y /preferences) ----
+const currency = computed(() => currencySymbol(f.answers.P11))
 const sym = computed(() => currency.value)
 const money = n => `${Number(n).toFixed(2)} ${currency.value}`
 const perDay = p => p.price / p.days

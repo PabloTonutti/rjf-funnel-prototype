@@ -5,6 +5,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { SCREENS, CATEGORIES, COUNTRIES, flagOf, TITLE_SUGGESTIONS } from 'src/data/screens'
 import { suggestCities } from 'src/utils/cities'
+import { currencySymbol } from 'src/utils/currency'
 
 export const GROUPS = [
   ['Target role', 'Puesto objetivo'],
@@ -155,7 +156,11 @@ export function usePrefs () {
   }
   const filled = n => !!summary(n)
 
+  // Moneda por ubicación del usuario
+  const sym = computed(() => currencySymbol(a.P11))
+
   return reactive({
+    sym,
     f, T, a, CK, GROUPS, FIELDS, CATEGORIES, COUNTRIES, flagOf,
     optsOf, same, hasMulti, toggleMulti, hasCat, toggleCat,
     titleDraft, titleOpen, titleSugs, addTitle,

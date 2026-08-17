@@ -50,7 +50,7 @@
       </div>
       <div class="pref-addrow">
         <input type="number" min="0" :value="p.a.P8 ? String(p.a.P8.amount).replace(/[^0-9]/g, '') : ''" :placeholder="p.T(['Amount', 'Cantidad'])" @input="p.setSalaryAmount($event.target.value)">
-        <span class="pref-unit">$</span>
+        <span class="pref-unit">{{ p.sym }}</span>
       </div>
     </template>
 
