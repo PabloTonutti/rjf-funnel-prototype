@@ -670,6 +670,14 @@ onUnmounted(() => {
   .rw-quotes{grid-template-columns:repeat(3,1fr)}
   .rw-faqs{grid-template-columns:repeat(2,1fr)}
   .rw-foot{padding-bottom:16px}
+}
+/* Desktop ancho: fondo azul decorativo detrás de la tarjeta (#shell hace de tarjeta)
+   — base azul muy claro + gran curva azul, como la referencia pero en tonos azules */
+@media(min-width:1000px){
+  .rw::before{content:'';position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,#EDF4FF 0%,#E3EEFF 55%,#DFEAFE 100%)}
+  .rw::after{content:'';position:fixed;left:50%;transform:translateX(-50%);bottom:-62vh;width:185vw;height:105vh;border-radius:50%;background:linear-gradient(180deg,#4A93FF 0%,#0A5BDB 70%);z-index:-1}
+  .pw-banner{border-radius:22px 22px 0 0}
+  .rw-foot{border-radius:0 0 22px 22px}
   /* Timeline: tarjetas más anchas con icono duotone a la derecha (solo desktop) */
   .rw-rail{max-width:660px}
   .rw-cic{display:block;width:48px;height:48px;flex:none;margin-right:4px}

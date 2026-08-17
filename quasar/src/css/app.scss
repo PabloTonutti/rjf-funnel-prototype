@@ -467,6 +467,10 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 /* ============ paywall ============ */
 /* paywall gets a clean, unpadded scroll container so the sticky banner sits flush */
 #main.pwmode{padding:0}
+/* En el paywall el scroller real es la ventana: liberar los overflow intermedios
+   para que la barra de oferta (position:sticky) se fije de verdad al viewport */
+main.pwmode{overflow:visible}
+#shell:has(main.pwmode){overflow:visible}
 .pw-screen{margin:0;padding:0}
 .pw-h1{text-align:center;max-width:520px;margin:0 auto 8px}
 .pw-body{padding-top:36px !important}
