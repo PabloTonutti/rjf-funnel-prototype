@@ -320,11 +320,12 @@ const marketHi = computed(() => Math.round(annualK.value * 2.05))
 const goalMonths = computed(() => f.answers.PSPEED ? f.answers.PSPEED.months : null)
 const modes = computed(() => (f.answers.P9 || []).map(o => f.T(o.t)).join(', '))
 
-// Nº de fallos del CV: dimensiones del análisis de IA por debajo de 90 (fallback: estáticas del ScoreScreen)
+// Nº de fallos del CV: dimensiones del análisis de IA por debajo de 70
+// (misma regla y mismo fallback que los badges del ScoreScreen)
 const issues = computed(() => {
   const s = f.aiScore
-  const dims = s ? [s.structure, s.details, s.summary, s.employment, s.education, s.skills] : [90, 90, 90, 79, 87, 90]
-  return Math.min(6, Math.max(1, dims.filter(v => Number(v) < 90).length))
+  const dims = s ? [s.structure, s.details, s.summary, s.employment, s.education, s.skills] : [72, 64, 61, 75, 78, 70]
+  return Math.min(6, Math.max(1, dims.filter(v => Number(v) < 70).length))
 })
 
 // Categorías: si están todas seleccionadas, "All categories" en lugar de la lista completa
@@ -504,6 +505,7 @@ function checkSticky () {
 }
 let timer = null
 onMounted(() => {
+  document.body.classList.add('pw-decor') // fondo decorativo azul (solo mientras esta pantalla está montada)
   f.persistPlan() // el usuario llegó a su plan: recordarlo para próximas visitas
   timer = setInterval(() => { if (f.secondsLeft > 0) f.secondsLeft-- }, 1000)
   window.addEventListener('scroll', checkSticky, { passive: true })
@@ -512,6 +514,7 @@ onMounted(() => {
   checkSticky()
 })
 onUnmounted(() => {
+  document.body.classList.remove('pw-decor')
   clearInterval(timer)
   window.removeEventListener('scroll', checkSticky)
   const m = document.getElementById('main')
@@ -671,11 +674,8 @@ onUnmounted(() => {
   .rw-faqs{grid-template-columns:repeat(2,1fr)}
   .rw-foot{padding-bottom:16px}
 }
-/* Desktop ancho: fondo azul decorativo detrás de la tarjeta (#shell hace de tarjeta)
-   — base azul muy claro + gran curva azul, como la referencia pero en tonos azules */
+/* Desktop ancho: el fondo decorativo azul vive en app.scss (body.pw-decor, activado al montar) */
 @media(min-width:1000px){
-  .rw::before{content:'';position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,#EDF4FF 0%,#E3EEFF 55%,#DFEAFE 100%)}
-  .rw::after{content:'';position:fixed;left:50%;transform:translateX(-50%);bottom:-62vh;width:185vw;height:105vh;border-radius:50%;background:linear-gradient(180deg,#4A93FF 0%,#0A5BDB 70%);z-index:-1}
   .pw-banner{border-radius:22px 22px 0 0}
   .rw-foot{border-radius:0 0 22px 22px}
   /* Timeline: tarjetas más anchas con icono duotone a la derecha (solo desktop) */

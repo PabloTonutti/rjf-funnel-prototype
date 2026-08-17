@@ -12,7 +12,7 @@ const PROMPT = `You are a career assistant and expert ATS resume reviewer. Below
   * Avoid non-searchable titles like "Founder", "CEO", "Owner" or "Freelancer" — translate entrepreneurial or internal roles into the closest employable market titles instead.
   * Short titles, in English.
 - "industries": ONLY the categories that clearly fit the candidate — often just 1 or 2, maximum 3. Do NOT pad the list to reach 3. Chosen ONLY from this exact list (copy the strings verbatim): "Data Entry / Typing Jobs", "Customer Service", "Sales & Partnerships", "Marketing & PR", "IT & Software", "Design (Graphic, UX, Product)", "Content, Writing & Media", "Admin & Operations", "Data & Analytics", "Finance", "HR & Recruitment", "Legal", "Healthcare", "Education & Training", "Research".
-- "score": integers 0-100 rating the resume's quality for ATS systems and recruiters. Be realistic and slightly strict: most decent resumes score 55-85 overall. Score each dimension on structure/formatting, quantified details, professional summary, employment history, education section, and skills section.
+- "score": integers 0-100 rating the resume's quality for ATS systems and recruiters. Be STRICT and realistic, like a demanding recruiter: a typical decent resume scores 55-75 overall; only a truly exceptional, flawless resume goes above 85. Never score 90+ on any dimension unless it is genuinely impeccable. Spread the six dimension scores across a realistic range (they must not cluster together): at least two dimensions must be below 70, and the gap between the best and worst dimension should be at least 15 points. Score each dimension on structure/formatting, quantified details, professional summary, employment history, education section, and skills section.
 
 RESUME:
 `
