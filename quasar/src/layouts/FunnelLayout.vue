@@ -1,6 +1,4 @@
 <template>
-  <!-- Desktop: logo por encima de la tarjeta, sobre el fondo decorativo -->
-  <div class="ext-logo"><img :src="logo" alt="JobWinner"></div>
   <div id="shell">
     <!-- En la página del plan (result) no hay header/logo: la barra superior es el countdown -->
     <header id="hdr" v-if="f.screen.type !== 'result'">
