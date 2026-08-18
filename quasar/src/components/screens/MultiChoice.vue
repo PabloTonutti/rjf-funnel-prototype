@@ -28,10 +28,8 @@ const f = useFunnel()
 
 if (!f.answers[props.screen.id]) f.answers[props.screen.id] = []
 const picked = computed(() => f.answers[props.screen.id])
-const contLabel = computed(() => {
-  const n = picked.value.length
-  return f.T(['CONTINUE', 'Continuar']) + (n ? ` (${n})` : '')
-})
+// Sin contador: el botón dice siempre CONTINUE, haya o no selección
+const contLabel = computed(() => f.T(['CONTINUE', 'Continuar']))
 
 function toggle (o) {
   const a = picked.value
