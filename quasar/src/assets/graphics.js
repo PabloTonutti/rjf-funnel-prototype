@@ -71,7 +71,8 @@ docdash:`<path d="M13 6.5A2.5 2.5 0 0 1 15.5 4H28l8 8v29.5a2.5 2.5 0 0 1-2.5 2.5
 liD:`<rect x="8" y="8" width="32" height="32" rx="8" fill="${BLUE}"/><text x="24" y="31.5" text-anchor="middle" font-family="Inter,sans-serif" font-weight="800" font-size="17" fill="#fff" stroke="none">in</text>`,
 mic:`<rect x="18" y="5" width="12" height="22" rx="6" fill="${BLUE}"/><path d="M11 21a13 13 0 0 0 26 0M24 34v8M16 42h16" fill="none"/>`,
 medal:`<circle cx="24" cy="18" r="11" fill="${BLUE}"/><path d="M24 12.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.6z" fill="#fff" stroke="none"/><path d="M17.5 27L13 41l11-6 11 6-4.5-14" fill="none"/>`,
-crown:`<path d="M9 33l-3.5-17 10.5 7 8-12 8 12 10.5-7L39 33z" fill="${GOLD}"/><path d="M9 40h30" fill="none"/>`
+crown:`<path d="M9 33l-3.5-17 10.5 7 8-12 8 12 10.5-7L39 33z" fill="${GOLD}"/><path d="M9 40h30" fill="none"/>`,
+heartD:`<path d="M24 41C14.5 34 6 26.5 6 17.5A9.3 9.3 0 0 1 24 14a9.3 9.3 0 0 1 18 3.5C42 26.5 33.5 34 24 41z" fill="${BLUE}"/><path d="M15 17c0-2.5 2-4.5 4.5-4.5" stroke="#fff" fill="none"/>`
 };
 const ILLO = {
 target:`<svg width="190" height="130" viewBox="0 0 190 130"><circle cx="95" cy="65" r="56" fill="#EAF3FD"/><circle cx="95" cy="65" r="40" fill="#fff" stroke="#007AFF" stroke-width="3"/><circle cx="95" cy="65" r="25" fill="#EAF3FD" stroke="#007AFF" stroke-width="3"/><circle cx="95" cy="65" r="10" fill="#007AFF"/><path d="M95 65L138 22" stroke="#02112D" stroke-width="4" stroke-linecap="round"/><path d="M138 22l4 14M138 22l-14-4" stroke="#02112D" stroke-width="4" stroke-linecap="round"/><circle cx="30" cy="30" r="4" fill="#DE8F6E"/><circle cx="160" cy="95" r="5" fill="#88AB75"/><circle cx="22" cy="95" r="3.5" fill="#F2C037"/><circle cx="165" cy="42" r="3.5" fill="#007AFF"/></svg>`,
