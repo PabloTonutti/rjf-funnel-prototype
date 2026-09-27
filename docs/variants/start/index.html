@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobWinner — Start screens design variants</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap');
+:root{
+  --blue:#007AFF; --hover:#0062D6; --tint:#EAF3FD; --ink:#02112D; --slate:#656F83;
+  --terra:#DE8F6E; --cloud:#F5F9FD; --line:#E3E9F2; --green:#88AB75; --greenbg:#F3F7EE; --gold:#F2C037;
+  --pjs:'Plus Jakarta Sans',sans-serif; --inter:'Inter',sans-serif;
+  --shadow:0 1px 2px rgba(2,17,45,.05), 0 8px 24px rgba(2,17,45,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--inter);color:var(--ink);background:var(--cloud);padding:32px 20px 80px}
+.page{max-width:1200px;margin:0 auto}
+h1{font-family:var(--pjs);font-weight:800;font-size:30px;letter-spacing:-.02em;margin-bottom:6px}
+.sub{color:var(--slate);font-size:15.5px;margin-bottom:30px;max-width:760px;line-height:1.5}
+h2{font-family:var(--pjs);font-weight:800;font-size:21px;margin:42px 0 6px;display:flex;align-items:center;gap:10px}
+h2 .tag{background:var(--tint);color:var(--blue);font-size:11px;letter-spacing:.08em;border-radius:14px;padding:4px 10px;font-weight:700;text-transform:uppercase;font-family:var(--inter)}
+.h2sub{color:var(--slate);font-size:14px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:18px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.tile-h{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.tile-h b{font-family:var(--pjs);font-size:14px}
+.vtag{background:var(--ink);color:#fff;font-weight:800;font-size:11px;border-radius:8px;padding:4px 8px;font-family:var(--pjs)}
+.tile-b{padding:22px 18px;flex:1;background:linear-gradient(180deg,#fff 60%,var(--cloud))}
+.note{font-size:12px;color:var(--slate);padding:10px 16px;border-top:1px solid var(--line);background:#FAFCFF;line-height:1.45}
+.pjs{font-family:var(--pjs)}
+
+/* ===== shared "screen" primitives (funnel look) ===== */
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);text-align:center;margin-bottom:10px}
+.hero-t{font-family:var(--pjs);font-weight:800;font-size:26px;line-height:1.2;letter-spacing:-.02em;text-align:center;text-transform:uppercase}
+.hero-t .b2{color:var(--blue);display:block}
+.hero-s{color:var(--slate);font-size:14.5px;line-height:1.5;text-align:center;margin:10px auto 16px;max-width:330px}
+.hero-s b{color:var(--ink)}
+.cta{display:block;width:100%;padding:15px;border:none;border-radius:10px;background:var(--blue);color:#fff;font-family:var(--inter);font-weight:700;font-size:14.5px;letter-spacing:.04em;box-shadow:0 6px 16px rgba(0,122,255,.28);margin-top:16px;text-align:center;cursor:pointer}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px}
+.trust{display:flex;justify-content:center;margin-bottom:14px}
+.trust span{background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--slate);box-shadow:var(--shadow)}
+.trust b{color:var(--ink)}
+.hot{display:flex;justify-content:center;margin-top:12px}
+.hot span{background:var(--tint);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--blue)}
+.stats{display:flex;gap:0;text-align:center}
+.stats>div{flex:1;padding:4px 6px}
+.stats>div+div{border-left:1px solid var(--line)}
+.stat-ic{width:46px;height:46px;border-radius:13px;background:var(--tint);display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.stat-ic svg{width:24px;height:24px}
+.stats b{font-family:var(--pjs);font-size:19px;display:block}
+.stats small{font-size:11.5px;color:var(--slate)}
+.jobc{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:13px 14px;margin-bottom:10px;text-align:left}
+.jobc .co{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--slate);margin-bottom:4px}
+.jobc .co .lg{width:22px;height:22px;border-radius:6px;color:#fff;font-family:var(--pjs);font-weight:800;font-size:10px;display:flex;align-items:center;justify-content:center;flex:none}
+.newb{margin-left:auto;font-size:9.5px;font-weight:800;letter-spacing:.06em;color:var(--terra)}
+.jobc .role{font-family:var(--pjs);font-weight:800;font-size:15px;color:var(--ink)}
+.jobc .meta{font-size:11.5px;color:var(--slate);margin-top:3px}
+.jobc .foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px}
+.jobc .foot b{font-size:13px}
+.jobc .foot small{color:var(--slate)}
+.mbadge{background:var(--tint);color:var(--blue);font-weight:800;font-family:var(--pjs);border-radius:8px;padding:4px 8px;font-size:12px;text-align:center;line-height:1}
+.mbadge small{display:block;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase}
+.vpill{display:inline-flex;align-items:center;gap:4px;background:var(--greenbg);color:#5B7A4B;font-weight:700;font-size:10.5px;border-radius:12px;padding:3px 8px}
+svg{display:block}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Start screens — variantes de diseño</h1>
+  <p class="sub">Dos pantallas de arranque nuevas: <b>S · START PLAN REMOTE</b> (promesa: tu plan de trabajo remoto personalizado) y <b>J · START JOB</b> (promesa: aquí está el empleo que buscas). Diseñadas con el sistema del funnel — nada aplicado a la app todavía. Elige por código (S1, J3…).</p>
+
+  <!-- ================= S · START PLAN REMOTE ================= -->
+  <h2><span class="tag">S</span> START PLAN REMOTE — "Build your perfect remote work plan"</h2>
+  <p class="h2sub">CTA: <b>Create my personalized plan</b>. ES: "Construye tu plan perfecto de trabajo remoto".</p>
+  <div class="grid">
+
+    <div class="tile"><div class="tile-h"><span class="vtag">S1</span><b>Trío de stats (espejo RJF)</b></div><div class="tile-b">
+      <div class="eyebrow">Welcome — let's build your plan</div>
+      <div class="hero-t">Build your perfect <span class="b2">remote work plan</span></div>
+      <p class="hero-s">Take the quiz to get a <b>personalized</b> remote work plan</p>
+      <div class="card">
+        <div class="trust"><span>🏆 <b>Trusted by 10,000+</b> job seekers</span></div>
+        <div class="stats">
+          <div><span class="stat-ic"><svg viewBox="0 0 48 48" fill="none" stroke="#0B1B3D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="16" width="34" height="23" rx="4" fill="#007AFF"/><path d="M18 16v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3" /><path d="M7 25h13M28 25h13"/><rect x="20" y="22" width="8" height="7" rx="1.5" fill="#fff"/></svg></span><b>5M+</b><small>remote jobs</small></div>
+          <div><span class="stat-ic"><svg viewBox="0 0 48 48" fill="none" stroke="#0B1B3D" stroke-width="2.4"><circle cx="24" cy="24" r="17" fill="#007AFF"/><ellipse cx="24" cy="24" rx="8" ry="17" stroke="#fff"/><path d="M7.5 24h33M10 15.5h28M10 32.5h28" stroke="#fff"/></svg></span><b>50+</b><small>countries</small></div>
+          <div><span class="stat-ic"><svg viewBox="0 0 48 48" fill="none" stroke="#0B1B3D" stroke-width="2.4" stroke-linecap="round"><path d="M27 5L12 27h9l-2 16 15-22h-9z" fill="#F2C037"/></svg></span><b>300+</b><small>new daily</small></div>
+        </div>
+        <div class="hot"><span>🔥 New jobs added every day</span></div>
+      </div>
+      <div class="cta">Create my personalized plan →</div>
+    </div><div class="note">La estructura que ya convierte en RJF, traducida al azul JobWinner. Social proof real (10k+ usuarios). Mi recomendación para S.</div></div>
+
+    <div class="tile"><div class="tile-h"><span class="vtag">S2</span><b>Mini-plan con checks</b></div><div class="tile-b">
+      <div class="hero-t">Your remote work plan, <span class="b2">built for you</span></div>
+      <p class="hero-s">Answer a few questions — we'll assemble the plan that gets you hired</p>
+      <div class="card" style="max-width:300px;margin:0 auto">
+        <div style="display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:9px"><span style="width:26px;height:26px;border-radius:8px;background:var(--tint);display:flex;align-items:center;justify-content:center">📋</span><b class="pjs" style="font-size:13px">Your personalized plan</b></div>
+        <div style="font-size:12.5px;line-height:2.1;font-weight:600">
+          <div>✅ Remote jobs that match you</div>
+          <div>✅ ATS-ready resume &amp; tailoring</div>
+          <div>✅ 5-minute applications</div>
+          <div>✅ AI interview practice</div>
+          <div style="color:var(--slate)">🔒 Unlocks as you answer…</div>
+        </div>
+      </div>
+      <div class="cta">Create my personalized plan →</div>
+    </div><div class="note">Enseña literalmente el entregable: el plan como checklist que se "desbloquea". Conecta con el paso final del funnel.</div></div>
+
+    <div class="tile"><div class="tile-h"><span class="vtag">S3</span><b>Timeline Hoy → Semana 6</b></div><div class="tile-b">
+      <div class="hero-t">From today to hired — <span class="b2">in one plan</span></div>
+      <p class="hero-s">A <b>personalized</b> path to your next remote role</p>
+      <div class="card">
+        <svg viewBox="0 0 300 96" style="width:100%">
+          <path d="M20 66 C90 66 110 26 160 26 S260 46 284 30" fill="none" stroke="#007AFF" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/>
+          <circle cx="20" cy="66" r="9" fill="#007AFF"/><text x="20" y="90" text-anchor="middle" font-size="9" font-family="Inter" fill="#656F83">Today: quiz</text>
+          <circle cx="112" cy="38" r="8" fill="#EAF3FD" stroke="#007AFF" stroke-width="2.5"/><text x="112" y="20" text-anchor="middle" font-size="9" font-family="Inter" fill="#656F83">Wk 2: interviews</text>
+          <circle cx="200" cy="34" r="8" fill="#EAF3FD" stroke="#007AFF" stroke-width="2.5"/><text x="200" y="62" text-anchor="middle" font-size="9" font-family="Inter" fill="#656F83">Wk 4: finalist</text>
+          <circle cx="284" cy="30" r="11" fill="#F2C037"/><text x="284" y="34" text-anchor="middle" font-size="11">🏆</text>
+          <text x="284" y="58" text-anchor="middle" font-size="9" font-weight="700" font-family="Inter" fill="#02112D">Wk 6: offer</text>
+        </svg>
+        <div class="hot" style="margin-top:6px"><span>55% of members land a job in month 1</span></div>
+      </div>
+      <div class="cta">Create my personalized plan →</div>
+    </div><div class="note">Vende el destino, no la herramienta: el camino dibujado hasta la oferta. Reutiliza el claim del 55% que ya está en el funnel.</div></div>
+
+    <div class="tile"><div class="tile-h"><span class="vtag">S4</span><b>Work-from-anywhere</b></div><div class="tile-b">
+      <div class="hero-t">Build your perfect <span class="b2">remote work plan</span></div>
+      <p class="hero-s">Work from anywhere — we'll find the jobs that let you</p>
+      <div class="card" style="text-align:center">
+        <svg viewBox="0 0 300 110" style="width:100%;max-width:300px;margin:0 auto">
+          <ellipse cx="150" cy="55" rx="130" ry="46" fill="none" stroke="#E3E9F2" stroke-width="2"/>
+          <ellipse cx="150" cy="55" rx="90" ry="30" fill="none" stroke="#E3E9F2" stroke-width="2"/>
+          <circle cx="150" cy="55" r="17" fill="#007AFF"/><text x="150" y="60" text-anchor="middle" font-size="13" fill="#fff">🏠</text>
+          <circle cx="62" cy="40" r="12" fill="#fff" stroke="#007AFF" stroke-width="2"/><text x="62" y="44" text-anchor="middle" font-size="10">💼</text>
+          <circle cx="243" cy="36" r="12" fill="#fff" stroke="#007AFF" stroke-width="2"/><text x="243" y="40" text-anchor="middle" font-size="10">💼</text>
+          <circle cx="105" cy="88" r="12" fill="#fff" stroke="#88AB75" stroke-width="2"/><text x="105" y="92" text-anchor="middle" font-size="10">💼</text>
+          <circle cx="210" cy="82" r="12" fill="#fff" stroke="#DE8F6E" stroke-width="2"/><text x="210" y="86" text-anchor="middle" font-size="10">💼</text>
+          <path d="M74 44 L133 52 M231 40 L167 52 M115 80 L138 64 M199 76 L165 62" stroke="#B9D6F8" stroke-width="1.6" stroke-dasharray="2 5"/>
+        </svg>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+          <span class="vpill" style="background:var(--tint);color:var(--blue)">🌍 50+ countries</span>
+          <span class="vpill" style="background:var(--tint);color:var(--blue)">🕐 Any timezone</span>
+          <span class="vpill" style="background:var(--tint);color:var(--blue)">💶 Salary-matched</span>
+        </div>
+      </div>
+      <div class="cta">Create my personalized plan →</div>
+    </div><div class="note">Aspiracional puro: tú en el centro y los empleos conectados a ti desde cualquier lugar. El más emocional de los cuatro.</div></div>
+  </div>
+
+  <!-- ================= J · START JOB ================= -->
+  <h2><span class="tag">J</span> START JOB — "Find your perfect job"</h2>
+  <p class="h2sub">Copy base: <b>Remote jobs that match you · Expert-verified listings</b>. Para el funnel general: "your ideal job" en vez de remote.</p>
+  <div class="grid">
+
+    <div class="tile"><div class="tile-h"><span class="vtag">J1</span><b>Preview de ofertas (espejo RJF)</b></div><div class="tile-b">
+      <div class="eyebrow">Welcome to JobWinner</div>
+      <div class="hero-t">Find your perfect <span class="b2">remote job</span></div>
+      <p class="hero-s"><b>Remote jobs that match you.</b> Expert-verified listings, updated daily</p>
+      <div class="jobc"><div class="co"><span class="lg" style="background:#02112D">N</span>Nordia<span class="newb">NEW</span></div><div class="role">Senior Product Manager</div><div class="meta">🌍 Full Remote 100%</div><div class="foot"><b>85–110k €</b><small>Yesterday</small></div></div>
+      <div class="jobc"><div class="co"><span class="lg" style="background:#007AFF">P</span>Peoplr<span class="newb">NEW</span></div><div class="role">Virtual Assistant</div><div class="meta">🌍 Full Remote 100%</div><div class="foot"><b>Up to $4,800/m</b><small>Yesterday</small></div></div>
+      <div class="jobc" style="opacity:.55;margin-bottom:0"><div class="co"><span class="lg" style="background:#DE8F6E">D</span>Deliveo<span class="newb">NEW</span></div><div class="role">Data Analyst</div><div class="meta">🌍 Full Remote 100%</div></div>
+      <div class="cta">Show me my matches →</div>
+    </div><div class="note">La fórmula de tu captura 2: ofertas reales asomando con NEW + salario. El tercer card cortado invita a seguir. Mi recomendación para J.</div></div>
+
+    <div class="tile"><div class="tile-h"><span class="vtag">J2</span><b>Match-first (con %)</b></div><div class="tile-b">
+      <div class="hero-t">Find your <span class="b2">ideal job</span></div>
+      <p class="hero-s">Not more listings — <b>the ones that match you</b></p>
+      <div class="jobc"><div class="co"><span class="lg" style="background:#02112D">N</span>Nordia<span class="newb">NEW</span></div><div style="display:flex;align-items:center;gap:10px"><div style="flex:1"><div class="role">Senior Product Manager</div><div class="meta">Remote · 85–110k €</div></div><span class="mbadge">96%<small>match</small></span></div></div>
+      <div class="jobc"><div class="co"><span class="lg" style="background:#007AFF">P</span>Peoplr<span class="newb">NEW</span></div><div style="display:flex;align-items:center;gap:10px"><div style="flex:1"><div class="role">Growth Marketer</div><div class="meta">Hybrid · 55–70k €</div></div><span class="mbadge">93%<small>match</small></span></div></div>
+      <div style="text-align:center;margin-top:2px"><span class="vpill" style="background:var(--tint);color:var(--blue)">Take the quiz to unlock your %</span></div>
+      <div class="cta">Find my matches →</div>
+    </div><div class="note">Diferenciador JobWinner: el % de match como gancho — "haz el quiz para desbloquear tu porcentaje". Crea curiosidad accionable.</div></div>
+
+    <div class="tile"><div class="tile-h"><span class="vtag">J3</span><b>Verified-first</b></div><div class="tile-b">
+      <div class="hero-t">Real jobs. <span class="b2">Verified by experts.</span></div>
+      <p class="hero-s">No fakes, no expired listings — <b>every job is checked</b> before you see it</p>
+      <div class="jobc"><div class="co"><span class="lg" style="background:#02112D">N</span>Nordia <span class="vpill">✓ Verified</span><span class="newb">NEW</span></div><div class="role">Customer Success Manager</div><div class="foot"><b>40–55k €</b><small>2h ago</small></div></div>
+      <div class="jobc"><div class="co"><span class="lg" style="background:#007AFF">S</span>Stackly <span class="vpill">✓ Verified</span><span class="newb">NEW</span></div><div class="role">Frontend Developer</div><div class="foot"><b>60–80k €</b><small>5h ago</small></div></div>
+      <div style="background:var(--greenbg);border:1px solid #C4D9B6;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:600;color:#5B7A4B;text-align:center;margin-top:4px">🛡 80% of remote listings online are inactive — we filter them out for you</div>
+      <div class="cta">See verified jobs for me →</div>
+    </div><div class="note">Ataca el dolor #1 (ofertas falsas/caducadas) desde el segundo cero y recicla el dato del 80% que ya usas dentro del funnel.</div></div>
+
+    <div class="tile"><div class="tile-h"><span class="vtag">J4</span><b>Búsqueda viva</b></div><div class="tile-b">
+      <div class="hero-t">Your next job <span class="b2">is already out there</span></div>
+      <p class="hero-s">We scan <b>5M+ open jobs</b> daily to find yours</p>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;border:1.5px solid var(--blue);border-radius:12px;padding:11px 13px;box-shadow:0 0 0 3px rgba(0,122,255,.12)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#656F83" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span style="font-size:13.5px;font-weight:600">Product Manager · Remote<span style="border-right:2px solid var(--blue);margin-left:2px;animation:blink 1s step-end infinite"></span></span>
+        </div>
+        <style>@keyframes blink{50%{opacity:0}}</style>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+          <span class="vpill" style="background:var(--tint);color:var(--blue)">1,532 matches found</span>
+          <span class="vpill">✓ Expert-verified</span>
+          <span class="vpill" style="background:#FEF7E3;color:#9A6B00">🔥 214 added today</span>
+        </div>
+      </div>
+      <div class="cta">Personalize my search →</div>
+    </div><div class="note">La búsqueda escribiéndose sola + contador de matches: sensación de producto vivo. El CTA convierte el quiz en "personalizar la búsqueda".</div></div>
+  </div>
+
+  <p style="margin-top:36px;font-size:13px;color:var(--slate);line-height:1.6"><b style="color:var(--ink)">Mi recomendación como diseñador:</b> S1 + J1 (las fórmulas probadas de tu referencia, en sistema JobWinner) como versión base, y J2 como test A/B — el "% match bloqueado" es el gancho más diferencial que tiene JobWinner frente a un portal genérico. Los títulos en dos líneas con la segunda en azul replican la jerarquía del original sin copiar su estética.</p>
+</div>
+</body>
+</html>
