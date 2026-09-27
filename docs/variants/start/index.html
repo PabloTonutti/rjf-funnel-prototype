@@ -133,7 +133,10 @@ svg{display:block}
       <div class="fbody">
         <h3>Find your perfect remote job</h3>
         <p class="fsub"><b>Remote jobs that match you.</b> Expert-verified listings, updated daily</p>
-        <div id="j1feed"></div>
+        <div style="text-align:center;margin:-6px 0 16px"><span class="bluechip" style="font-size:14px;padding:8px 16px">💼 <u style="text-decoration-color:rgba(0,122,255,.45);text-decoration-thickness:2px;text-underline-offset:3px">300K+ remote jobs waiting</u></span></div>
+        <div class="jobc"><div class="co"><span class="lg" style="background:#02112D">N</span>Nordia<span class="newb">NEW</span></div><div class="role">Senior Product Manager</div><div class="meta">🌍 Full Remote 100%</div><div class="foot2"><b>85–110k €</b><small>Just now</small></div></div>
+        <div class="jobc"><div class="co"><span class="lg" style="background:#007AFF">P</span>Peoplr<span class="newb">NEW</span></div><div class="role">Virtual Assistant</div><div class="meta">🌍 Full Remote 100%</div><div class="foot2"><b>Up to $4,800/m</b><small>2 min ago</small></div></div>
+        <div class="jobc" style="opacity:.5;margin-bottom:0"><div class="co"><span class="lg" style="background:#DE8F6E">S</span>Stackly<span class="newb">NEW</span></div><div class="role">Frontend Developer</div></div>
         <div style="text-align:center;margin-top:12px"><span class="bluechip">📋 We'll build your remote job search plan</span></div>
       </div>
       <div class="ffoot"><button class="fbtn"><span>SHOW ME MY MATCHES</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
@@ -211,35 +214,6 @@ svg{display:block}
 .newb.live{animation:newPulse 1.6s ease-in-out infinite}
 </style>
 <script>
-(function(){
-  const JOBS=[
-    {l:'N',c:'#02112D',co:'Nordia',role:'Senior Product Manager',meta:'🌍 Full Remote 100%',sal:'85–110k €'},
-    {l:'P',c:'#007AFF',co:'Peoplr',role:'Virtual Assistant',meta:'🌍 Full Remote 100%',sal:'Up to $4,800/m'},
-    {l:'S',c:'#DE8F6E',co:'Stackly',role:'Frontend Developer',meta:'🌍 Full Remote 100%',sal:'60–80k €'},
-    {l:'L',c:'#88AB75',co:'Loomly',role:'UX Researcher',meta:'🌍 Full Remote 100%',sal:'55–70k €'},
-    {l:'B',c:'#F2C037',co:'Briq',role:'Customer Success Manager',meta:'🌍 Full Remote 100%',sal:'40–55k €'},
-    {l:'K',c:'#02112D',co:'Kavia',role:'Data Analyst',meta:'🌍 Full Remote 100%',sal:'50–65k €'}
-  ];
-  const feed=document.getElementById('j1feed');
-  if(!feed)return;
-  const TIMES=['Just now','2 min ago','8 min ago'];
-  let head=0;
-  function card(j,i,animate){
-    const d=document.createElement('div');
-    d.className='jobc'+(animate&&i===0?' jin':'');
-    if(i===2){d.style.opacity='.5';d.style.marginBottom='0';}
-    d.innerHTML='<div class="co"><span class="lg" style="background:'+j.c+'">'+j.l+'</span>'+j.co+'<span class="newb'+(i===0?' live':'')+'">NEW</span></div>'
-      +'<div class="role">'+j.role+'</div>'
-      +(i<2?'<div class="meta">'+j.meta+'</div><div class="foot2"><b>'+j.sal+'</b><small>'+TIMES[i]+'</small></div>':'');
-    return d;
-  }
-  function render(animate){
-    feed.innerHTML='';
-    for(let i=0;i<3;i++)feed.appendChild(card(JOBS[(head+i)%JOBS.length],i,animate));
-  }
-  render(false);
-  setInterval(function(){head=(head-1+JOBS.length)%JOBS.length;render(true);},2600);
-})();
 // G frames: reuse the embedded base64 logo from the first frame
 (function(){
   const src=document.querySelector('.flogo:not(.glogo)').src;
