@@ -5,6 +5,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useFunnel } from 'stores/funnel'
+import { SCREENS } from 'src/data/screens'
 
 import SingleChoice from 'components/screens/SingleChoice.vue'
 import MultiChoice from 'components/screens/MultiChoice.vue'
@@ -45,6 +46,13 @@ f.restorePlan()
 
 // Dev-only helper: lets you drive the funnel from the console (window.__funnel)
 if (process.env.DEV) window.__funnel = f
+
+// Deep-link de revisión: #/?step=PJOBS salta directo a esa pantalla (también en prod)
+const stepParam = window.location.hash.match(/step=([A-Za-z0-9]+)/)
+if (stepParam) {
+  const i = SCREENS.findIndex(s => s.id === stepParam[1])
+  if (i >= 0) f.go(i)
+}
 
 const MAP = {
   single: SingleChoice,
