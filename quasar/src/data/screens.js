@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -181,18 +181,18 @@ const S = [
  title:['We prepare a tailored application for every matching job','Preparamos tu solicitud personalizada para cada oferta'],
  body:['Resume and cover letter tailored to each listing in minutes, not hours. Get 3X more quality applications without the repetitive forms.','CV y carta adaptados a cada oferta en minutos, no en horas. Consigue 3X más candidaturas de calidad sin formularios repetitivos.']},
 
-/* -------- NEW START-SCREEN DESIGNS (tras HOW WE HELP, antes del loader) -------- */
-{id:'P1R',phase:5,type:'single',title:["What's your current work status?",'¿Cuál es tu situación laboral actual?'],
+/* ---------------- PHASE 6 · YOUR PLAN (nueva tira propia en la barra) ---------------- */
+{id:'P1R',phase:6,type:'single',title:["What's your current work status?",'¿Cuál es tu situación laboral actual?'],
  opts:[{i:'briefcase',t:["I'm unemployed",'Estoy sin empleo']},{i:'building',t:["I'm employed",'Tengo empleo']},{i:'laptop',t:["I'm self-employed / freelancing",'Trabajo por cuenta propia / freelance']},{i:'gradcap',t:["I'm a student / looking for my first job",'Estudiante / busco mi primer empleo']}]},
-{id:'P8R',phase:5,type:'salary',title:["What's your desired minimum salary?",'¿Cuál es tu salario mínimo deseado?'],
+{id:'P8R',phase:6,type:'salary',title:["What's your desired minimum salary?",'¿Cuál es tu salario mínimo deseado?'],
  sub:["We'll only show you jobs that meet your minimum.",'Solo te mostraremos empleos que cumplan tu mínimo.']},
-{id:'PJOBS',phase:5,type:'jobpreview',
+{id:'PJOBS',phase:6,type:'jobpreview',
  title:['Find your perfect\nremote job','Encuentra tu empleo\nremoto perfecto'],
  sub:['Remote jobs that match you.','Empleos remotos que encajan contigo.'],
  sub2:['Expert-verified listings, updated daily','Ofertas verificadas por expertos, actualizadas a diario'],
  badge:['300K+ remote jobs waiting','300K+ empleos remotos esperando'],
  cta:['SHOW ME MY MATCHES','VER MIS MATCHES']},
-{id:'PPLAN3',phase:5,type:'plansteps',
+{id:'PPLAN3',phase:6,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -202,11 +202,11 @@ const S = [
   {i:'boltcirc',t:['Apply to jobs with AI','Aplica a empleos con IA'],s:['20+ AI tools working for you','20+ herramientas de IA trabajando por ti']}],
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
-/* ---------------- PHASE 6 · RESULTS ---------------- */
-{id:'P48',phase:6,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:6,type:'result'},
-{id:'P50',phase:6,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:6,type:'success'}
+/* ---------------- PHASE 7 · RESULTS ---------------- */
+{id:'P48',phase:7,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:7,type:'result'},
+{id:'P50',phase:7,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:7,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
