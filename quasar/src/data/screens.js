@@ -181,11 +181,30 @@ const S = [
  title:['We prepare a tailored application for every matching job','Preparamos tu solicitud personalizada para cada oferta'],
  body:['Resume and cover letter tailored to each listing in minutes, not hours. Get 3X more quality applications without the repetitive forms.','CV y carta adaptados a cada oferta en minutos, no en horas. Consigue 3X más candidaturas de calidad sin formularios repetitivos.']},
 
-/* ------- PHASES 6-9 · pasos nuevos, cada uno con su propia tira en la barra ------- */
+/* ------- PHASES 6-9 · réplica de las 2 primeras fases de RJF + pantallas nuevas ------- */
+/* GET STARTED (phase 6) — espejo de "Current status" de RJF, 5 subpasos */
 {id:'P1R',phase:6,type:'single',title:["What's your current work status?",'¿Cuál es tu situación laboral actual?'],
  opts:[{i:'briefcase',t:["I'm unemployed",'Estoy sin empleo']},{i:'building',t:["I'm employed",'Tengo empleo']},{i:'laptop',t:["I'm self-employed / freelancing",'Trabajo por cuenta propia / freelance']},{i:'gradcap',t:["I'm a student / looking for my first job",'Estudiante / busco mi primer empleo']}]},
+{id:'P2R',phase:6,type:'single',title:['How are you approaching your job search right now?','¿Cómo estás enfocando tu búsqueda ahora mismo?'],
+ opts:[{i:'search',t:['Actively searching','Buscando activamente']},{i:'eye',t:['Open to opportunities','Abierto a oportunidades']},{i:'compass',t:['Just exploring','Solo explorando']}]},
+{id:'PGOALR',phase:6,type:'multi',title:['What are you looking for?','¿Qué estás buscando?'],
+ opts:[{i:'growth',t:['To move up in my career','Ascender en mi carrera']},{i:'rocket',t:['First full-time job for career start','Mi primer empleo a tiempo completo']},{i:'urgent',t:['Urgent income for my basic needs','Ingresos urgentes para mis necesidades básicas']},{i:'coins',t:['Extra source of income','Una fuente extra de ingresos']},{i:'shieldcheck',t:['Secure, long-term job in my field','Un empleo estable y a largo plazo en mi sector']},{i:'swap',t:['Career switch to something new','Cambiar de carrera a algo nuevo']},{i:'scale',t:['Better work-life balance','Mejor equilibrio entre vida y trabajo']}]},
+{id:'P3R',phase:6,type:'single',icons:false,title:['How long have you been job hunting?','¿Cuánto tiempo llevas buscando empleo?'],
+ opts:[{t:['Just started (<1 month)','Acabo de empezar (menos de 1 mes)']},{t:['1–3 months','1-3 meses']},{t:['3–6 months','3-6 meses']},{t:['6+ months','Más de 6 meses']},{t:["I'm not actively looking right now",'No estoy buscando activamente ahora']}]},
+{id:'PTHR',phase:6,type:'inter',illo:'target',big:true,
+ title:['Thanks for sharing your goals!','¡Gracias por compartir tus objetivos!'],
+ body:['Now, answer a few quick questions and our AI will pick perfect jobs for you.','Ahora responde unas preguntas rápidas y nuestra IA elegirá los empleos perfectos para ti.']},
+/* SALARY (phase 7) — espejo de "Set your salary preference" de RJF, 4 subpasos */
 {id:'P8R',phase:7,type:'salary',title:["What's your desired minimum salary?",'¿Cuál es tu salario mínimo deseado?'],
  sub:["We'll only show you jobs that meet your minimum.",'Solo te mostraremos empleos que cumplan tu mínimo.']},
+{id:'P7R',phase:7,type:'multi',title:['What type of work are you open to?','¿A qué tipo de trabajo estás abierto?'],
+ opts:[{i:'clockfull',t:['Full-time','Full-time']},{i:'clockhalf',t:['Part-time','Part-time']},{i:'pen',t:['Freelance / Contract','Freelance / Contrato']},{i:'book',t:['Internship','Prácticas']}]},
+{id:'PSTARTR',phase:7,type:'single',title:['When would you like to start?','¿Cuándo te gustaría empezar?'],
+ opts:[{i:'urgent',t:['Within the next month','Durante el próximo mes']},{i:'hourglass',t:['Within the next three months','En los próximos tres meses']},{i:'compass',t:['When I find the right opportunity','Cuando encuentre la oportunidad adecuada']}]},
+{id:'P3bR',phase:7,type:'chart',
+ title:['55% of our members interview within the 1st month','El 55% de nuestros miembros consigue entrevista en el primer mes'],
+ sub:["We'll help you get there too",'Te ayudaremos a conseguirlo también'],
+ note:['Based on JobWinner users who track their job search on our platform','Basado en usuarios de JobWinner que registran su búsqueda de empleo en la plataforma']},
 {id:'PJOBS',phase:8,type:'jobpreview',
  title:['Find your perfect\nremote job','Encuentra tu empleo\nremoto perfecto'],
  sub:['Remote jobs that match you.','Empleos remotos que encajan contigo.'],
