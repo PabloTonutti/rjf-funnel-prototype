@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, nextTick } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { SCREENS } from 'src/data/screens'
 
@@ -47,11 +47,13 @@ f.restorePlan()
 // Dev-only helper: lets you drive the funnel from the console (window.__funnel)
 if (process.env.DEV) window.__funnel = f
 
-// Deep-link de revisión: #/?step=PJOBS salta directo a esa pantalla (también en prod)
+// Deep-link de revisión: #/?step=PJOBS salta directo a esa pantalla (también en prod).
+// El salto se hace tras montar el layout: si no, el Teleport del botón CONTINUE
+// no encuentra #foot y la pantalla queda sin botón.
 const stepParam = window.location.hash.match(/step=([A-Za-z0-9]+)/)
 if (stepParam) {
   const i = SCREENS.findIndex(s => s.id === stepParam[1])
-  if (i >= 0) f.go(i)
+  if (i >= 0) onMounted(() => nextTick(() => f.go(i)))
 }
 
 const MAP = {
