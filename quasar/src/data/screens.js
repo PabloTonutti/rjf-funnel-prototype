@@ -181,7 +181,26 @@ const S = [
  title:['We prepare a tailored application for every matching job','Preparamos tu solicitud personalizada para cada oferta'],
  body:['Resume and cover letter tailored to each listing in minutes, not hours. Get 3X more quality applications without the repetitive forms.','CV y carta adaptados a cada oferta en minutos, no en horas. Consigue 3X más candidaturas de calidad sin formularios repetitivos.']},
 
-/* -------- PHASE 7 · RESULTS -------- */
+/* -------- NEW START-SCREEN DESIGNS (tras HOW WE HELP, antes del loader) -------- */
+{id:'P1R',phase:5,type:'single',title:["What's your current work status?",'¿Cuál es tu situación laboral actual?'],
+ opts:[{i:'briefcase',t:["I'm unemployed",'Estoy sin empleo']},{i:'building',t:["I'm employed",'Tengo empleo']},{i:'laptop',t:["I'm self-employed / freelancing",'Trabajo por cuenta propia / freelance']},{i:'gradcap',t:["I'm a student / looking for my first job",'Estudiante / busco mi primer empleo']}]},
+{id:'P8R',phase:5,type:'salary',title:["What's your desired minimum salary?",'¿Cuál es tu salario mínimo deseado?'],
+ sub:["We'll only show you jobs that meet your minimum.",'Solo te mostraremos empleos que cumplan tu mínimo.']},
+{id:'PJOBS',phase:5,type:'jobpreview',
+ title:['Find your perfect\nremote job','Encuentra tu empleo\nremoto perfecto'],
+ sub:['Remote jobs that match you.','Empleos remotos que encajan contigo.'],
+ sub2:['Expert-verified listings, updated daily','Ofertas verificadas por expertos, actualizadas a diario'],
+ badge:['300K+ remote jobs waiting','300K+ empleos remotos esperando'],
+ cta:['SHOW ME MY MATCHES','VER MIS MATCHES']},
+{id:'PPLAN3',phase:5,type:'plansteps',
+ title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
+ sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
+ badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
+ steps:[
+  {i:'search',t:['Answer a 3-minute quiz','Responde un quiz de 3 minutos'],s:['Role, salary, location, preferences','Puesto, salario, ubicación, preferencias']},
+  {i:'doccheck',t:['Get your job matches','Recibe tus matches'],s:['Picked from 4M+ verified remote jobs','Elegidos entre 4M+ empleos remotos verificados']},
+  {i:'boltcirc',t:['Apply to jobs with AI','Aplica a empleos con IA'],s:['20+ AI tools working for you','20+ herramientas de IA trabajando por ti']}],
+ cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 6 · RESULTS ---------------- */
 {id:'P48',phase:6,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
