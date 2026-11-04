@@ -5,7 +5,7 @@
 export function membersChartSvg (f, maxWidth = 430) {
   // VALORES PROVISIONALES hasta tener datos reales. Solo el 65% en el mes 3 (M[2]) es el dato del titular.
   const M = [22, 45, 65, 76, 83, 88] // miembros JobWinner
-  const A = [8, 16, 24, 32, 39, 45] // candidato medio
+  const A = [8, 21, 32, 38, 42, 45] // candidato medio: misma forma curva que M (subida rápida y luego se aplana)
   const K = 2 // índice del mes 3
   const last = M.length - 1
   const X = i => 52 + i * 52, Y = p => 198 - p * 1.7

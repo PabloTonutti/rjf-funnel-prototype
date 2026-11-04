@@ -474,8 +474,9 @@ const journeySvg = computed(() => {
     ? `
     <text x="${p[0] - 15}" y="${p[1] - 20}" text-anchor="end" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][0]}</text>
     <text x="${p[0] - 15}" y="${p[1] - 7}" text-anchor="end" font-size="10.5" fill="#5A6478" font-family="Inter,sans-serif">${labels[i][1]}</text>`
+    // Hito sin cifra: etiqueta centrada ENCIMA del punto (se desplaza a la izquierda solo si no cabe en el borde derecho)
     : `
-    <text x="${p[0] - 15}" y="${p[1] - 10}" text-anchor="end" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][1]}</text>`).join('')
+    <text x="${Math.min(p[0], 374 - labels[i][1].length * 4.4)}" y="${p[1] - 17}" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][1]}</text>`).join('')
   const dots = PTS.map((p, i) => i === 0
     ? `<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="#88AB75"/><path d="M${p[0] - 4.5} ${p[1]}l3.2 3.4 6-6.6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
     : `<circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#F2C037" stroke="#fff" stroke-width="2.5"/>`).join('')
