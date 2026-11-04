@@ -122,13 +122,14 @@
             @click="f.selectedPlan = k"
           >
             <div v-if="p.popular" class="pop-pill">{{ f.T(['Most popular', 'Most popular']) }}</div>
+            <div v-if="p.best" class="pop-pill best-pill">{{ f.T(['Best deal', 'Mejor oferta']) }}</div>
             <div class="radio" />
             <div>
               <div class="plan-name">{{ f.T(p.name) }}</div>
               <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
               <div class="plan-bill">{{ f.T(whyOf(p)) }}</div>
             </div>
-            <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
+            <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(dayLabel(p)) }}</div></div>
           </div>
         </div>
         <div class="rw-cta">
@@ -239,17 +240,18 @@
             @click="f.selectedPlan = k"
           >
             <div v-if="p.popular" class="pop-pill">{{ f.T(['Most popular', 'Most popular']) }}</div>
+            <div v-if="p.best" class="pop-pill best-pill">{{ f.T(['Best deal', 'Mejor oferta']) }}</div>
             <div class="radio" />
             <div>
               <div class="plan-name">{{ f.T(p.name) }}</div>
               <div><span class="plan-old">{{ money(p.old) }}</span><span class="chip">60% OFF</span></div>
               <div class="plan-bill">{{ f.T(whyOf(p)) }}</div>
             </div>
-            <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(['per day', 'por día']) }}</div></div>
+            <div class="plan-day"><div class="n">{{ money(perDay(p)) }}</div><div class="u">{{ f.T(dayLabel(p)) }}</div></div>
           </div>
         </div>
         <div class="rw-cta">
-          <button ref="buy2El" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }} · {{ money(perDay(PLANS[f.selectedPlan] || PLANS[1])) }}/{{ f.T(['DAY', 'DÍA']) }}</button>
+          <button ref="buy2El" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }} · {{ ctaPrice(PLANS[f.selectedPlan] || PLANS[1]) }}</button>
         </div>
         <div class="rw-guar" style="margin-top:20px">
           <span class="gic" v-html="ic('refresh', 30)" />
@@ -365,8 +367,12 @@ const ansRows = computed(() => {
 const whyOf = p => {
   if (p.key === 'weekly') return ['Billed weekly', 'Facturación semanal']
   if (p.key === 'monthly') return goalMonths.value ? [`Matches your ${goalMonths.value}-month goal`, `Encaja con tu objetivo de ${goalMonths.value} meses`] : ['Our members\' favorite', 'El favorito de nuestros miembros']
-  return ['One payment, no renewal', 'Un solo pago, sin renovación']
+  return [`${total(p.price)} once, no renewal`, `${total(p.price)} una vez, sin renovación`]
 }
+// Plan de pago único: el precio/día se calcula sobre el primer año (p.days=365) y se dice explícitamente
+const dayLabel = p => p.once ? ['per day in year 1', 'por día el primer año'] : ['per day', 'por día']
+const total = n => `${Number.isInteger(Number(n)) ? Number(n) : Number(n).toFixed(2)} ${currency.value}`
+const ctaPrice = p => p.once ? `${total(p.price)} ${f.T(['ONCE', 'PAGO ÚNICO'])}` : `${money(perDay(p))}/${f.T(['DAY', 'DÍA'])}`
 
 const tools = [
   { i: 'search', b: ['Jobs that truly fit you', 'Empleos que encajan de verdad'], tool: ['AI Job Match', 'AI Job Match'] },
