@@ -34,7 +34,7 @@
       <div class="rw-in">
         <div class="rw-stats">
           <!-- 4 tarjetas, todas sacadas de las respuestas del usuario; si falta la respuesta, la tarjeta no se muestra -->
-          <div class="rw-stat" v-if="roleMain"><span class="rw-lbl">{{ f.T(['Target role', 'Puesto objetivo']) }}<em v-if="roleMore" class="rw-more" :title="roleList.slice(1).join(', ')">+{{ roleMore }}</em></span><b class="rw-clamp" :class="{ 'rw-long': roleMain.length > 20 }">{{ roleMain }}</b></div>
+          <div class="rw-stat" v-if="roleMain"><span class="rw-lbl">{{ f.T(['Target roles', 'Puestos objetivo']) }}<em v-if="roleHidden" class="rw-more" :title="roleList.slice(roleShown).join(', ')">+{{ roleHidden }}</em></span><b ref="roleEl" class="rw-roles" :class="{ 'rw-clamp': roleShown === 1 }">{{ roleText }}</b></div>
           <div class="rw-stat" v-if="annualK"><span>{{ f.T(['Minimum salary', 'Salario mínimo']) }}</span><b>{{ sym }}{{ annualK }}k+<small class="rw-per">/{{ f.T(['year', 'año']) }}</small></b></div>
           <div class="rw-stat" v-if="modeLine"><span>{{ f.T(['Work mode', 'Modalidad']) }}</span><b>{{ modeLine }}</b></div>
           <div class="rw-stat" v-if="level"><span>{{ f.T(['Career level', 'Nivel profesional']) }}</span><b>{{ level }}</b></div>
@@ -144,7 +144,7 @@
     <section class="rw-sec" style="padding-top:0">
       <div class="rw-in">
         <div class="rw-guar">
-          <span class="gic" v-html="ic('refresh', 30)" />
+          <span class="g-seal" v-html="sealSvg" />
           <div>
             <b>{{ f.T(['7-day money-back guarantee', 'Garantía de devolución de 7 días']) }}</b>
             <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
@@ -255,7 +255,7 @@
           <button ref="buy2El" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }} · {{ ctaPrice(PLANS[f.selectedPlan] || PLANS[1]) }}</button>
         </div>
         <div class="rw-guar" style="margin-top:20px">
-          <span class="gic" v-html="ic('refresh', 30)" />
+          <span class="g-seal" v-html="sealSvg" />
           <div>
             <b>{{ f.T(['7-day money-back guarantee', 'Garantía de devolución de 7 días']) }}</b>
             <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
@@ -275,7 +275,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { ILLO, duo, ic } from 'assets/graphics'
 import { PLANS, CATEGORIES } from 'src/data/screens'
@@ -319,9 +319,59 @@ const monthlyMin = computed(() => {
 })
 const annualK = computed(() => monthlyMin.value ? Math.round(monthlyMin.value * 12 / 1000) : null)
 // Tarjetas del plan: puesto (P19T; si no hay, títulos detectados en el CV), modalidad (+ ciudad si no es solo remoto) y nivel (P16)
+// Sello "money back guarantee" (SVG propio): borde dentado dorado, anillo navy con texto curvo y "7 DAYS" en el centro
+const sealSvg = computed(() => {
+  const teeth = Array.from({ length: 64 }, (_, i) => {
+    const r = i % 2 ? 54 : 60, a = i * Math.PI / 32
+    return `${(60 + r * Math.cos(a)).toFixed(1)},${(60 + r * Math.sin(a)).toFixed(1)}`
+  }).join(' ')
+  const top = f.T(['MONEY BACK', 'DEVOLUCIÓN'])
+  const bot = f.T(['GUARANTEE', 'GARANTIZADA'])
+  const mid = f.T(['DAYS', 'DÍAS'])
+  const star = (x, y) => `<path transform="translate(${x} ${y})" d="M0-3.2l.9 2.1 2.3.2-1.7 1.5.5 2.3L0 1.6l-2 1.2.5-2.3-1.7-1.5 2.3-.2z" fill="#F2C94C"/>`
+  return `<svg viewBox="0 0 120 120" aria-hidden="true">
+    <defs><path id="sealTop" d="M23 60a37 37 0 0 1 74 0"/><path id="sealBot" d="M19 60a41 41 0 0 0 82 0"/></defs>
+    <polygon points="${teeth}" fill="#D9A62B"/>
+    <circle cx="60" cy="60" r="51" fill="#F2C94C"/>
+    <circle cx="60" cy="60" r="48" fill="#C8921C"/>
+    <circle cx="60" cy="60" r="46" fill="#02112D"/>
+    <circle cx="60" cy="60" r="28" fill="#F2C94C"/><circle cx="60" cy="60" r="25.5" fill="none" stroke="#C8921C" stroke-width="1.2"/>
+    <text font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="10.5" letter-spacing="1.2" fill="#fff"><textPath href="#sealTop" startOffset="50%" text-anchor="middle">${top}</textPath></text>
+    <text font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="10.5" letter-spacing="1.2" fill="#fff" dominant-baseline="hanging"><textPath href="#sealBot" startOffset="50%" text-anchor="middle">${bot}</textPath></text>
+    ${star(22, 60)}${star(98, 60)}
+    <text x="60" y="64" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="22" fill="#02112D">7</text>
+    <text x="60" y="76" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="7.5" letter-spacing=".8" fill="#02112D">${mid}</text>
+  </svg>`
+})
 const roleList = computed(() => ((f.answers.P19T && f.answers.P19T.length) ? f.answers.P19T : (f.aiTitles || [])).filter(Boolean))
 const roleMain = computed(() => roleList.value[0] || '')
-const roleMore = computed(() => Math.max(0, roleList.value.length - 1))
+// Se muestran tantos puestos como quepan en 2 líneas; el "+N" cuenta SOLO los que no se ven
+const roleEl = ref(null)
+const roleShown = ref(99)
+const roleText = computed(() => roleList.value.slice(0, roleShown.value).join(', '))
+const roleHidden = computed(() => Math.max(0, roleList.value.length - roleShown.value))
+async function fitRoles () {
+  const el = roleEl.value
+  const n = roleList.value.length
+  if (!el || !n) return
+  const max = parseFloat(getComputedStyle(el).lineHeight) * 2 + 1
+  for (let k = n; k >= 1; k--) {
+    roleShown.value = k
+    await nextTick()
+    if (k === 1 || el.scrollHeight <= max) return
+  }
+}
+let roleRO = null
+watch(roleList, () => nextTick(fitRoles))
+onMounted(() => {
+  nextTick(fitRoles)
+  if (window.ResizeObserver) {
+    let w = 0
+    roleRO = new ResizeObserver(([e]) => { if (Math.round(e.contentRect.width) !== w) { w = Math.round(e.contentRect.width); fitRoles() } })
+    nextTick(() => { if (roleEl.value) roleRO.observe(roleEl.value.parentElement) })
+  }
+})
+onUnmounted(() => roleRO && roleRO.disconnect())
 const modeLine = computed(() => {
   const sel = f.answers.P9 || []
   if (!sel.length) return ''
@@ -591,8 +641,10 @@ onUnmounted(() => {
 .rw-stat span{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
 .rw-stat b{font-size:18px;font-weight:700;line-height:1.25;display:block;color:var(--ink)}
 /* Textos largos (varios puestos, varias modalidades): máximo 2 líneas con puntos suspensivos */
-.rw-stat .rw-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word}
-.rw-stat .rw-long{font-size:16px}
+.rw-stat .rw-roles{font-size:16px;line-height:1.3;max-height:2.6em;overflow:hidden}
+.rw-stat .rw-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:break-word}
+.rw-stat .rw-lbl{display:flex;align-items:center;gap:6px}
+.rw-more{font-style:normal;font-size:13px;font-weight:800;line-height:1;color:#fff;background:var(--jw-blue);border-radius:999px;padding:4px 8px;white-space:nowrap}
 .rw-per{font-size:13px;font-weight:600;color:var(--muted);margin-left:2px}
 .rw-stat .rw-lbl{display:flex;align-items:center;gap:6px}
 .rw-more{font-style:normal;font-size:11px;font-weight:700;line-height:1;color:var(--jw-blue);background:var(--jw-tint);border-radius:999px;padding:3px 7px;white-space:nowrap}
@@ -631,10 +683,21 @@ onUnmounted(() => {
 .rw .plans{max-width:600px;margin:16px auto 18px}
 
 /* Garantía */
-.rw-guar{background:var(--green-bg);border-radius:14px;padding:20px;display:flex;gap:16px;align-items:center}
-.rw-guar .gic{color:var(--green-ico);flex-shrink:0;display:flex}
-.rw-guar b{display:block;font-family:var(--pjs);font-size:18px;font-weight:800;color:var(--green-ink);line-height:1.3;margin-bottom:4px}
-.rw-guar>div>span{font-size:13px;color:var(--green-body);line-height:1.55}
+.rw-guar{position:relative;overflow:hidden;background:var(--green-bg);border-radius:24px;padding:22px 22px 22px 16px;display:flex;gap:18px;align-items:center}
+/* círculo claro detrás del sello, cortado por el borde izquierdo de la tarjeta */
+.rw-guar::before{content:'';position:absolute;left:-58px;top:50%;width:210px;height:210px;margin-top:-105px;border-radius:50%;background:#DCEBDD}
+.rw-guar .g-seal{position:relative;flex:none;width:92px;height:92px;display:flex}
+.rw-guar .g-seal svg{width:100%;height:100%}
+.rw-guar>div{position:relative}
+.rw-guar b{display:block;font-family:var(--pjs);font-size:19px;font-weight:800;color:var(--green-body);line-height:1.2;margin-bottom:6px;text-wrap:balance}
+.rw-guar>div>span{font-size:13.5px;color:var(--green-ico);line-height:1.5}
+@media (min-width:700px){
+  .rw-guar{padding:28px 32px 28px 22px;gap:32px}
+  .rw-guar::before{left:-50px;width:300px;height:300px;margin-top:-150px}
+  .rw-guar .g-seal{width:130px;height:130px}
+  .rw-guar b{font-size:26px;margin-bottom:8px}
+  .rw-guar>div>span{font-size:15px}
+}
 
 /* Gráfica (svg compartido del funnel) */
 .rw-meth{font-size:11px;color:var(--muted);line-height:1.5;margin:0}
