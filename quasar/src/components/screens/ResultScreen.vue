@@ -27,7 +27,8 @@
           </div>
           <!-- CV o LinkedIn que ha alimentado los matches (solo si el usuario lo añadió) -->
           <div v-if="upFile" class="rw-file">
-            <span class="rw-fic" v-html="duo(upFile.li ? 'liD' : 'doccheck')" />
+            <span v-if="upFile.li" class="rw-fic" v-html="duo('liD')" />
+            <span v-else class="rw-fic rw-fic-cv" v-html="cvIcon" />
             <div class="rw-ftx">
               <b>{{ upFile.name }}</b>
               <span>{{ f.T(['Date added:', 'Añadido el']) }} <span class="nw">{{ upFile.date }}</span></span>
@@ -331,7 +332,20 @@ const upFile = computed(() => {
   const date = f.lang === 'en'
     ? d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
-  return { name: u.name, date, li: u.kind === 'linkedin' }
+  const ext = (u.name.match(/\.([a-z0-9]{2,4})$/i) || [])[1]
+  return { name: u.name, date, li: u.kind === 'linkedin', ext: ext ? ext.toUpperCase() : 'CV' }
+})
+// Icono de CV: hoja con esquina doblada, líneas de texto y etiqueta con la extensión (PDF, DOCX…)
+const cvIcon = computed(() => {
+  const ext = upFile.value ? upFile.value.ext : 'CV'
+  const w = ext.length > 3 ? 26 : 22
+  return `<svg viewBox="0 0 40 44" fill="none" aria-hidden="true">
+    <path d="M8 3h16l9 9v27a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z" fill="#fff" stroke="#007AFF" stroke-width="2"/>
+    <path d="M24 3v6a3 3 0 0 0 3 3h6" fill="#EAF3FD" stroke="#007AFF" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="13" cy="14" r="3" fill="#F2C037"/><path d="M19 13h4M10 20h16M10 24.5h12" stroke="#B9CCE6" stroke-width="2" stroke-linecap="round"/>
+    <rect x="${20 - w / 2}" y="29" width="${w}" height="10" rx="3" fill="#007AFF"/>
+    <text x="20" y="36.6" text-anchor="middle" font-family="Inter,sans-serif" font-size="7" font-weight="800" fill="#fff" letter-spacing=".3">${ext}</text>
+  </svg>`
 })
 
 // ---- Nº de matches: estable por usuario (mismas respuestas → mismo número exacto) ----
@@ -681,6 +695,7 @@ onUnmounted(() => {
 .rw-file{display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid var(--jw-line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
 .rw-fic{width:48px;height:48px;flex:none;border-radius:12px;background:var(--jw-tint);display:flex;align-items:center;justify-content:center}
 .rw-fic :deep(svg){width:32px;height:32px}
+.rw-fic-cv :deep(svg){width:30px;height:33px}
 .rw-ftx{flex:1;min-width:0}
 .rw-ftx b{display:block;font-family:var(--pjs);font-size:16px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rw-ftx .nw{white-space:nowrap}
