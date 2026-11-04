@@ -262,13 +262,6 @@
         <div class="rw-cta">
           <button ref="buy2El" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }} · {{ ctaPrice(PLANS[f.selectedPlan] || PLANS[1]) }}</button>
         </div>
-        <div class="rw-guar" style="margin-top:20px">
-          <span class="g-seal" v-html="sealSvg" />
-          <div>
-            <b>{{ f.T(['7-day money-back guarantee', 'Garantía de devolución de 7 días']) }}</b>
-            <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
-          </div>
-        </div>
         <!-- Métodos que acepta de verdad el checkout de Stripe (verificado 2026-11-04: tarjetas, Revolut Pay, Link; NO PayPal) -->
         <div class="rw-pay" :aria-label="f.T(['Accepted payment methods', 'Métodos de pago aceptados'])">
           <span class="pm pm-visa">VISA</span>
@@ -278,6 +271,13 @@
           <span class="pm pm-link">link</span>
         </div>
         <p class="rw-note rw-secure"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with', 'Pago seguro con']) }} <b class="pm-stripe">stripe</b></p>
+        <div class="rw-guar" style="margin-top:20px">
+          <span class="g-seal" v-html="sealSvg" />
+          <div>
+            <b>{{ f.T(['7-day money-back guarantee', 'Garantía de devolución de 7 días']) }}</b>
+            <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
+          </div>
+        </div>
       </div>
     </section>
 
