@@ -135,7 +135,15 @@
         </div>
         <div class="rw-cta">
           <button ref="buyEl" class="rw-btn" @click="goCheckout">{{ f.T(['GET MY PLAN', 'OBTENER MI PLAN']) }}</button>
-          <p class="rw-note"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with Stripe · Cancel in one tap', 'Pago seguro con Stripe · Cancela en un toque']) }}</p>
+          <!-- Métodos que acepta de verdad el checkout de Stripe (verificado 2026-11-04: tarjetas, Revolut Pay, Link; NO PayPal) -->
+        <div class="rw-pay" :aria-label="f.T(['Accepted payment methods', 'Métodos de pago aceptados'])">
+          <span class="pm pm-visa">VISA</span>
+          <span class="pm" aria-label="Mastercard"><i class="pm-mc" /></span>
+          <span class="pm pm-amex">AMEX</span>
+          <span class="pm pm-rev">Revolut Pay</span>
+          <span class="pm pm-link">link</span>
+        </div>
+        <p class="rw-note rw-secure"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with', 'Pago seguro con']) }} <b class="pm-stripe">stripe</b></p>
         </div>
       </div>
     </section>
@@ -261,7 +269,15 @@
             <span>{{ f.T(["Try everything for 7 days. If it's not for you, send us one email and we refund you in full. No questions asked.", 'Pruébalo todo durante 7 días. Si no es para ti, mándanos un email y te devolvemos el importe completo. Sin preguntas.']) }}</span>
           </div>
         </div>
-        <p class="rw-note"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with Stripe · Cancel in one tap', 'Pago seguro con Stripe · Cancela en un toque']) }}</p>
+        <!-- Métodos que acepta de verdad el checkout de Stripe (verificado 2026-11-04: tarjetas, Revolut Pay, Link; NO PayPal) -->
+        <div class="rw-pay" :aria-label="f.T(['Accepted payment methods', 'Métodos de pago aceptados'])">
+          <span class="pm pm-visa">VISA</span>
+          <span class="pm" aria-label="Mastercard"><i class="pm-mc" /></span>
+          <span class="pm pm-amex">AMEX</span>
+          <span class="pm pm-rev">Revolut Pay</span>
+          <span class="pm pm-link">link</span>
+        </div>
+        <p class="rw-note rw-secure"><span v-html="ic('lock', 13)" /> {{ f.T(['Secure checkout with', 'Pago seguro con']) }} <b class="pm-stripe">stripe</b></p>
       </div>
     </section>
 
@@ -614,6 +630,17 @@ onUnmounted(() => {
 .rw-btn:hover{background:var(--jw-blue-hover)}
 .rw-note{font-size:12px;color:var(--muted);text-align:center;line-height:1.6;margin-top:12px}
 .rw-note :deep(svg){vertical-align:-2px;margin-right:2px}
+.rw-pay{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.rw-pay .pm{height:24px;min-width:38px;padding:0 6px;border-radius:5px;background:#fff;border:1px solid #E1E6EF;display:inline-flex;align-items:center;justify-content:center;font-family:var(--inter);font-size:10.5px;font-weight:800;color:var(--jw-ink);line-height:1}
+.rw-pay .pm-visa{color:#1A1F71;font-style:italic;font-size:11.5px;letter-spacing:.3px}
+.rw-pay .pm-amex{background:#2E77BB;border-color:#2E77BB;color:#fff;letter-spacing:.3px}
+.rw-pay .pm-link{background:#011E0F;border-color:#011E0F;color:#00D66F;font-size:11.5px}
+.rw-pay .pm-mc{position:relative;width:24px;height:15px;display:block}
+.rw-pay .pm-mc::before,.rw-pay .pm-mc::after{content:'';position:absolute;top:0;width:15px;height:15px;border-radius:50%}
+.rw-pay .pm-mc::before{left:0;background:#EB001B}
+.rw-pay .pm-mc::after{left:9px;background:#F79E1B;mix-blend-mode:multiply}
+.rw-secure{margin-top:8px}
+.rw-secure .pm-stripe{color:#635BFF;font-weight:800;letter-spacing:-.2px;font-size:13px}
 .rw-cta{max-width:380px;margin:0 auto}
 
 /* Barra de oferta (usa .pw-banner global; aquí solo la variante de 2 líneas + reloj dorado) */
