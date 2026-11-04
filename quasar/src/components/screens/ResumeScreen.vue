@@ -29,7 +29,7 @@ const fileEl = ref(null)
 function onFile (e) {
   const file = e.target.files[0]
   if (!file) return
-  f.upload = { kind: 'file', name: file.name, size: (file.size / 1024).toFixed(0) + ' KB', file }
+  f.upload = { kind: 'file', name: file.name, size: (file.size / 1024).toFixed(0) + ' KB', at: Date.now(), file }
   f.answers.P19 = 'uploaded'
   f.analyzeResume()
   f.next()

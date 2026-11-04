@@ -25,6 +25,15 @@
           <div class="rw-big2">
             <h3>💼 {{ f.T(['We found', 'Hemos encontrado']) }} <span class="hl">{{ matches }} {{ f.T(['jobs', 'empleos']) }}</span> {{ f.T(['that match your profile', 'que encajan con tu perfil']) }}</h3>
           </div>
+          <!-- CV o LinkedIn que ha alimentado los matches (solo si el usuario lo añadió) -->
+          <div v-if="upFile" class="rw-file">
+            <span class="rw-fic" v-html="duo(upFile.li ? 'liD' : 'doccheck')" />
+            <div class="rw-ftx">
+              <b>{{ upFile.name }}</b>
+              <span>{{ f.T(['Date added:', 'Añadido el']) }} <span class="nw">{{ upFile.date }}</span></span>
+            </div>
+            <span class="rw-fok"><span v-html="ic('check', 12)" />{{ f.T(['Used for matching', 'Usado en tus matches']) }}</span>
+          </div>
         </div>
       </div>
     </section>
@@ -313,6 +322,17 @@ const sym = computed(() => currency.value)
 const money = n => `${Number(n).toFixed(2)} ${currency.value}`
 const perDay = p => p.price / p.days
 const fmt0 = n => Number(n).toLocaleString(f.lang === 'es' ? 'es-ES' : 'en-US', { maximumFractionDigits: 0 })
+
+// ---- CV / LinkedIn subido: nombre + fecha en que se añadió ----
+const upFile = computed(() => {
+  const u = f.upload
+  if (!u || !u.name) return null
+  const d = new Date(u.at || Date.now())
+  const date = f.lang === 'en'
+    ? d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    : d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+  return { name: u.name, date, li: u.kind === 'linkedin' }
+})
 
 // ---- Nº de matches: estable por usuario (mismas respuestas → mismo número exacto) ----
 const matches = computed(() => {
@@ -658,6 +678,16 @@ onUnmounted(() => {
 .rw-big b{display:block;font-family:var(--pjs);font-size:42px;font-weight:800;color:var(--blue-dark);line-height:1}
 .rw-big span{display:block;font-size:14px;color:var(--blue-dark);margin-top:6px;line-height:1.4}
 /* Variante titular con resaltado (estilo marcador, en azul) */
+.rw-file{display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid var(--jw-line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
+.rw-fic{width:48px;height:48px;flex:none;border-radius:12px;background:var(--jw-tint);display:flex;align-items:center;justify-content:center}
+.rw-fic :deep(svg){width:32px;height:32px}
+.rw-ftx{flex:1;min-width:0}
+.rw-ftx b{display:block;font-family:var(--pjs);font-size:16px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rw-ftx .nw{white-space:nowrap}
+.rw-ftx > span{display:block;font-size:13px;color:var(--jw-slate);margin-top:3px}
+.rw-fok{display:none;align-items:center;gap:5px;flex:none;font-size:12px;font-weight:700;color:#4E7A3A;background:var(--jw-success-bg);border-radius:999px;padding:5px 10px}
+.rw-fok :deep(svg){width:12px;height:12px}
+@media(min-width:520px){.rw-fok{display:inline-flex}}
 .rw-big2{background:var(--blue-bg);border-radius:14px;text-align:center;padding:24px 20px}
 .rw-big2 h3{font-family:var(--pjs);font-size:23px;font-weight:800;color:var(--ink);line-height:1.45;margin:0}
 .rw-big2 .hl{background:var(--blue);color:#fff;padding:2px 11px;border-radius:10px;white-space:nowrap;box-decoration-break:clone;-webkit-box-decoration-break:clone}

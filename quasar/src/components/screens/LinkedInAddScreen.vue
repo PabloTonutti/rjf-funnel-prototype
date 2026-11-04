@@ -48,7 +48,7 @@ function add () {
   if (u.length < 3) { err.value = true; return }
   const h = extractHandle(u)
   if (!h || h.length < 2) { err.value = true; return }
-  f.upload = { kind: 'linkedin', name: '@' + h, handle: h }
+  f.upload = { kind: 'linkedin', name: '@' + h, handle: h, at: Date.now() }
   f.answers.P19 = 'linkedin'
   f.analyzeResume()
   f.next()

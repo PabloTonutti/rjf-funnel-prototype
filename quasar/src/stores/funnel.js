@@ -98,7 +98,7 @@ export const useFunnel = defineStore('funnel', {
           aiScore: this.aiScore,
           selectedPlan: this.selectedPlan,
           secondsLeft: this.secondsLeft,
-          upload: this.upload ? { kind: this.upload.kind, name: this.upload.name, handle: this.upload.handle || null } : null
+          upload: this.upload ? { kind: this.upload.kind, name: this.upload.name, handle: this.upload.handle || null, at: this.upload.at || null } : null
         }
         localStorage.setItem('jw_plan_state', JSON.stringify(snap))
       } catch (e) { /* almacenamiento bloqueado → sin persistencia, el funnel sigue */ }
