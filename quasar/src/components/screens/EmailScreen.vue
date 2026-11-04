@@ -1,6 +1,6 @@
 <template>
   <div class="wrap"><div class="screen"><div class="inter">
-    <h1>{{ f.T(screen.title) }}</h1>
+    <h1 class="h1-balance">{{ f.T(screen.title) }}</h1>
     <div class="illo illo-after-title" v-html="ILLO.mailmedal" />
     <div class="input-wrap" style="max-width:420px;margin:0 auto;width:100%;text-align:left">
       <label class="sal-label" for="pemail">Email</label>
