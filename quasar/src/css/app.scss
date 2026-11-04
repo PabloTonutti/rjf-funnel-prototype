@@ -48,6 +48,8 @@ footer{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,2
 footer .finner{width:100%;max-width:600px;margin:0 auto}
 footer:empty{display:none}
 h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter-spacing:-.02em;margin-bottom:6px}
+/* Todos los títulos (actuales y futuros): líneas equilibradas, sin palabras sueltas. Si un corte queda mal, unir palabras con \u00A0 en el texto */
+h1,h2,h3,.pw-sec-title{text-wrap:balance}
 .subtitle{color:var(--jw-slate);font-size:15.5px;line-height:1.55;margin-bottom:18px}
 .qtitle{text-align:center}
 .qsub{text-align:center}
@@ -91,7 +93,6 @@ h1{font-family:var(--pjs);font-weight:800;font-size:24px;line-height:1.28;letter
 .legal-note{font-size:11.5px;line-height:1.45;color:#A9B2C0;text-align:center;margin-top:10px}
 .legal-note a{color:inherit;text-decoration:underline}
 .illo-after-title{margin:22px 0 22px}
-.h1-balance{text-wrap:balance}
 
 /* ============ interstitial ============ */
 .inter{display:flex;flex-direction:column;flex:1;text-align:center;justify-content:center;padding-bottom:10px}
