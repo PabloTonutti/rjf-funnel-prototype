@@ -319,7 +319,8 @@ const monthlyMin = computed(() => {
 })
 const annualK = computed(() => monthlyMin.value ? Math.round(monthlyMin.value * 12 / 1000) : null)
 // Tarjetas del plan: puesto (P19T; si no hay, títulos detectados en el CV), modalidad (+ ciudad si no es solo remoto) y nivel (P16)
-// Sello "money back guarantee" (SVG propio): borde dentado dorado, anillo navy con texto curvo y "7 DAYS" en el centro
+// Sello "money back guarantee" (SVG propio): borde dentado dorado, anillo navy con texto curvo y "7 DAYS" en el centro.
+// El texto curvo va DENTRO del anillo navy (r 28–46): arriba línea base r33.5, abajo r40.5 (las letras crecen hacia el centro)
 const sealSvg = computed(() => {
   const teeth = Array.from({ length: 64 }, (_, i) => {
     const r = i % 2 ? 54 : 60, a = i * Math.PI / 32
@@ -330,14 +331,14 @@ const sealSvg = computed(() => {
   const mid = f.T(['DAYS', 'DÍAS'])
   const star = (x, y) => `<path transform="translate(${x} ${y})" d="M0-3.2l.9 2.1 2.3.2-1.7 1.5.5 2.3L0 1.6l-2 1.2.5-2.3-1.7-1.5 2.3-.2z" fill="#F2C94C"/>`
   return `<svg viewBox="0 0 120 120" aria-hidden="true">
-    <defs><path id="sealTop" d="M23 60a37 37 0 0 1 74 0"/><path id="sealBot" d="M19 60a41 41 0 0 0 82 0"/></defs>
+    <defs><path id="sealTop" d="M26.5 60a33.5 33.5 0 0 1 67 0"/><path id="sealBot" d="M19.5 60a40.5 40.5 0 0 0 81 0"/></defs>
     <polygon points="${teeth}" fill="#D9A62B"/>
     <circle cx="60" cy="60" r="51" fill="#F2C94C"/>
     <circle cx="60" cy="60" r="48" fill="#C8921C"/>
     <circle cx="60" cy="60" r="46" fill="#02112D"/>
     <circle cx="60" cy="60" r="28" fill="#F2C94C"/><circle cx="60" cy="60" r="25.5" fill="none" stroke="#C8921C" stroke-width="1.2"/>
-    <text font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="10.5" letter-spacing="1.2" fill="#fff"><textPath href="#sealTop" startOffset="50%" text-anchor="middle">${top}</textPath></text>
-    <text font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="10.5" letter-spacing="1.2" fill="#fff" dominant-baseline="hanging"><textPath href="#sealBot" startOffset="50%" text-anchor="middle">${bot}</textPath></text>
+    <text font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="${top.length > 10 ? 9 : 10}" letter-spacing="1" fill="#fff"><textPath href="#sealTop" startOffset="50%" text-anchor="middle">${top}</textPath></text>
+    <text font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="${bot.length > 10 ? 9 : 10}" letter-spacing="1" fill="#fff"><textPath href="#sealBot" startOffset="50%" text-anchor="middle">${bot}</textPath></text>
     ${star(22, 60)}${star(98, 60)}
     <text x="60" y="64" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="22" fill="#02112D">7</text>
     <text x="60" y="76" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="7.5" letter-spacing=".8" fill="#02112D">${mid}</text>
