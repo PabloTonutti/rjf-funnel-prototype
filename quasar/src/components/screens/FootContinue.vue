@@ -2,6 +2,7 @@
   <Teleport to="#foot">
     <div class="finner">
       <button id="cont" class="btn btn-primary" :disabled="disabled" v-html="inner" @click="$emit('go')" />
+      <slot />
     </div>
   </Teleport>
 </template>

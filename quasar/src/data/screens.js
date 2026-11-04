@@ -126,8 +126,7 @@ const S = [
  body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
  cta:['CREATE PLAN','Crear plan']},
 {id:'PEMAIL',phase:4,type:'email',
- title:['Where should we send your personalized plan?','¿Dónde te enviamos tu plan personalizado?'],
- sub:["We'll save your plan and your job matches to this email.",'Guardaremos tu plan y tus empleos compatibles en este email.']},
+ title:['Set up your account to get your remote search plan','Crea tu cuenta y obtén tu plan de búsqueda remota']},
 
 /* ---------------- PHASE 5 · HOW WE HELP (RJF pre-suasion block) ---------------- */
 {id:'P21',phase:5,type:'inter',illo:'brutal',title:['The job market got brutal','El mercado se ha vuelto brutal'],
