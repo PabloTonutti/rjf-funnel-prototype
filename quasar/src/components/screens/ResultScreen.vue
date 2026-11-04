@@ -33,10 +33,11 @@
     <section class="rw-sec" style="padding-top:0">
       <div class="rw-in">
         <div class="rw-stats">
-          <div class="rw-stat" v-if="annualK"><span>{{ f.T(['Market salary, your profile', 'Salario de mercado, tu perfil']) }}</span><b>{{ sym }}{{ marketLo }}k–{{ marketHi }}k</b></div>
-          <div class="rw-stat" v-if="annualK"><span>{{ f.T(['Your stated minimum', 'Tu mínimo indicado']) }}</span><b>{{ sym }}{{ annualK }}k</b></div>
-          <div class="rw-stat"><span>{{ f.T(['Estimated first interview', 'Primera entrevista estimada']) }}</span><b>{{ f.T(['Week 3', 'Semana 3']) }}</b></div>
-          <div class="rw-stat" v-if="modes"><span>{{ f.T(['Work mode', 'Modalidad']) }}</span><b>{{ modes }}</b></div>
+          <!-- 4 tarjetas, todas sacadas de las respuestas del usuario; si falta la respuesta, la tarjeta no se muestra -->
+          <div class="rw-stat" v-if="roleMain"><span class="rw-lbl">{{ f.T(['Target role', 'Puesto objetivo']) }}<em v-if="roleMore" class="rw-more" :title="roleList.slice(1).join(', ')">+{{ roleMore }}</em></span><b class="rw-clamp" :class="{ 'rw-long': roleMain.length > 20 }">{{ roleMain }}</b></div>
+          <div class="rw-stat" v-if="annualK"><span>{{ f.T(['Minimum salary', 'Salario mínimo']) }}</span><b>{{ sym }}{{ annualK }}k+<small class="rw-per">/{{ f.T(['year', 'año']) }}</small></b></div>
+          <div class="rw-stat" v-if="modeLine"><span>{{ f.T(['Work mode', 'Modalidad']) }}</span><b>{{ modeLine }}</b></div>
+          <div class="rw-stat" v-if="level"><span>{{ f.T(['Career level', 'Nivel profesional']) }}</span><b>{{ level }}</b></div>
         </div>
         <button class="rw-reveal" :aria-expanded="String(showAns)" aria-controls="rw-answers" @click="showAns = !showAns">
           {{ showAns ? f.T(['Hide your answers', 'Ocultar tus respuestas']) : f.T([`See the ${ansRows.length} answers you gave`, `Ver las ${ansRows.length} respuestas que diste`]) }}
@@ -317,8 +318,18 @@ const monthlyMin = computed(() => {
   return n
 })
 const annualK = computed(() => monthlyMin.value ? Math.round(monthlyMin.value * 12 / 1000) : null)
-const marketLo = computed(() => Math.round(annualK.value * 1.6))
-const marketHi = computed(() => Math.round(annualK.value * 2.05))
+// Tarjetas del plan: puesto (P19T; si no hay, títulos detectados en el CV), modalidad (+ ciudad si no es solo remoto) y nivel (P16)
+const roleList = computed(() => ((f.answers.P19T && f.answers.P19T.length) ? f.answers.P19T : (f.aiTitles || [])).filter(Boolean))
+const roleMain = computed(() => roleList.value[0] || '')
+const roleMore = computed(() => Math.max(0, roleList.value.length - 1))
+const modeLine = computed(() => {
+  const sel = f.answers.P9 || []
+  if (!sel.length) return ''
+  const onlyRemote = sel.length === 1 && sel[0].t[0] === 'Fully remote'
+  // guion no separable: 'In-office' no se parte en 'In-' / 'office'
+  return [modes.value.replace(/-/g, '\u2011'), !onlyRemote && f.answers.PCITY].filter(Boolean).join(' · ')
+})
+const level = computed(() => f.answers.P16 ? f.T(f.answers.P16.t) : '')
 const goalMonths = computed(() => f.answers.PSPEED ? f.answers.PSPEED.months : null)
 const modes = computed(() => (f.answers.P9 || []).map(o => f.T(o.t)).join(', '))
 
@@ -579,6 +590,14 @@ onUnmounted(() => {
 .rw-stat{background:var(--surface);border-radius:12px;padding:14px 16px}
 .rw-stat span{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
 .rw-stat b{font-size:18px;font-weight:700;line-height:1.25;display:block;color:var(--ink)}
+/* Textos largos (varios puestos, varias modalidades): máximo 2 líneas con puntos suspensivos */
+.rw-stat .rw-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word}
+.rw-stat .rw-long{font-size:16px}
+.rw-per{font-size:13px;font-weight:600;color:var(--muted);margin-left:2px}
+.rw-stat .rw-lbl{display:flex;align-items:center;gap:6px}
+.rw-more{font-style:normal;font-size:11px;font-weight:700;line-height:1;color:var(--jw-blue);background:var(--jw-tint);border-radius:999px;padding:3px 7px;white-space:nowrap}
+/* Si falta una respuesta y quedan 3 tarjetas, la última ocupa toda la fila en móvil */
+.rw-stat:last-child:nth-child(odd){grid-column:1/-1}
 .rw-reveal{display:block;width:100%;background:none;border:0;color:var(--blue);font-size:13px;font-weight:600;text-align:center;padding:14px 0 0;cursor:pointer;font-family:var(--inter)}
 .rw-reveal .chev{display:inline-block;vertical-align:-2px;margin-left:3px;transition:transform .15s}
 .rw-reveal .chev.up{transform:rotate(180deg)}
@@ -675,7 +694,8 @@ onUnmounted(() => {
   .rw-sec{padding:30px 32px}
   .rw-h1{font-size:28px}
   .rw-h2{font-size:24px}
-  .rw-stats{grid-template-columns:repeat(4,1fr)}
+  .rw-stats{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)} /* en escritorio, todas en una fila aunque falte alguna */
+  .rw-stat:last-child:nth-child(odd){grid-column:auto}
   .rw-tools{grid-template-columns:repeat(3,1fr)}
   .rw-tlist{grid-template-columns:repeat(3,1fr)}
   .rw-quotes{grid-template-columns:repeat(3,1fr)}
