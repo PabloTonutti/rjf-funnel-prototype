@@ -291,7 +291,9 @@
       </div>
     </section>
 
-    <div class="rw-foot">{{ f.T(['Terms · Refund policy · Privacy · Contact', 'Términos · Política de reembolso · Privacidad · Contacto']) }}<br>{{ f.T(['Prices include VAT. Renewal terms shown before payment.', 'Precios con IVA incluido. Las condiciones de renovación se muestran antes del pago.']) }}</div>
+    <div class="rw-foot">
+      <!-- Páginas legales reales de jobwinner.ai (verificadas 2026-11-04); se abren en pestaña nueva para no perder el paywall -->
+      <nav class="rw-legal"><template v-for="(l, i) in LEGAL" :key="l.u"><span v-if="i" aria-hidden="true"> · </span><a :href="l.u" target="_blank" rel="noopener">{{ f.T(l.t) }}</a></template></nav>{{ f.T(['Prices include VAT. Renewal terms shown before payment.', 'Precios con IVA incluido. Las condiciones de renovación se muestran antes del pago.']) }}</div>
 
     <!-- Mobile: CTA fija → lleva a la vista de precios (no directo a Stripe) -->
     <div class="pw-sticky" :class="{ show: showSticky }">
@@ -323,6 +325,13 @@ const sym = computed(() => currency.value)
 const money = n => `${Number(n).toFixed(2)} ${currency.value}`
 const perDay = p => p.price / p.days
 const fmt0 = n => Number(n).toLocaleString(f.lang === 'es' ? 'es-ES' : 'en-US', { maximumFractionDigits: 0 })
+
+const LEGAL = [
+  { u: 'https://jobwinner.ai/terms-of-service/', t: ['Terms', 'Términos'] },
+  { u: 'https://jobwinner.ai/refund-policy/', t: ['Refund policy', 'Política de reembolso'] },
+  { u: 'https://jobwinner.ai/privacy-policy/', t: ['Privacy', 'Privacidad'] },
+  { u: 'https://jobwinner.ai/contact/', t: ['Contact', 'Contacto'] }
+]
 
 // ---- CV / LinkedIn subido: nombre + fecha en que se añadió ----
 const upFile = computed(() => {
@@ -822,6 +831,8 @@ onUnmounted(() => {
 .rw-faq p{font-size:13px;color:var(--body);line-height:1.6;padding:0 0 14px;margin:0}
 
 .rw-foot{border-top:.5px solid var(--line);padding:16px 18px 90px;text-align:center;font-size:11px;color:#B4BCCB;line-height:1.7}
+.rw-legal a{color:var(--jw-slate);text-decoration:underline;text-underline-offset:2px;text-decoration-color:#C9D2E0;padding:4px 0}
+.rw-legal a:hover{color:var(--jw-blue);text-decoration-color:currentColor}
 
 @media(max-width:719px){
   .rw-big{text-align:center}
