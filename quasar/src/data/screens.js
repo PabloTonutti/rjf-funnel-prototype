@@ -47,7 +47,7 @@ const S = [
 {id:'P3',phase:0,type:'single',icons:false,title:['How long have you been job hunting?','¿Cuánto tiempo llevas buscando empleo?'],
  opts:[{t:['Just started (<1 month)','Acabo de empezar (menos de 1 mes)']},{t:['1–3 months','1-3 meses']},{t:['3–6 months','3-6 meses']},{t:['6+ months','Más de 6 meses']},{t:["I'm not actively looking right now",'No estoy buscando activamente ahora']}]},
 {id:'P3b',phase:0,type:'chart',
- title:['55% of our members interview within the 1st month','El 55% de nuestros miembros consigue entrevista en el primer mes'],
+ title:['65% of our members land a job within the first 3 months','El 65% de nuestros miembros consigue empleo en los primeros 3 meses'],
  sub:["We'll help you get there too",'Te ayudaremos a conseguirlo también'],
  note:['Based on JobWinner users who track their job search on our platform','Basado en usuarios de JobWinner que registran su búsqueda de empleo en la plataforma']},
 
@@ -201,7 +201,7 @@ const S = [
 {id:'PSTARTR',phase:7,type:'single',title:['When would you like to start?','¿Cuándo te gustaría empezar?'],
  opts:[{i:'urgent',t:['Within the next month','Durante el próximo mes']},{i:'hourglass',t:['Within the next three months','En los próximos tres meses']},{i:'compass',t:['When I find the right opportunity','Cuando encuentre la oportunidad adecuada']}]},
 {id:'P3bR',phase:7,type:'chart',
- title:['55% of our members interview within the 1st month','El 55% de nuestros miembros consigue entrevista en el primer mes'],
+ title:['65% of our members land a job within the first 3 months','El 65% de nuestros miembros consigue empleo en los primeros 3 meses'],
  sub:["We'll help you get there too",'Te ayudaremos a conseguirlo también'],
  note:['Based on JobWinner users who track their job search on our platform','Basado en usuarios de JobWinner que registran su búsqueda de empleo en la plataforma']},
 {id:'PJOBS',phase:8,type:'jobpreview',

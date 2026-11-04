@@ -155,8 +155,8 @@
     <!-- 6 · Gráfica de resultados -->
     <section class="rw-sec">
       <div class="rw-in">
-        <h2 class="rw-h2" style="margin-bottom:18px">{{ f.T(['55% of members interview in the first month', 'El 55% de los miembros consigue entrevista el primer mes']) }}</h2>
-        <!-- Misma gráfica que la pantalla '55%...' de los primeros pasos del funnel -->
+        <h2 class="rw-h2" style="margin-bottom:18px">{{ f.T(['65% of our members land a job within the first 3 months', 'El 65% de nuestros miembros consigue empleo en los primeros 3 meses']) }}</h2>
+        <!-- Misma gráfica que la pantalla '65%...' de los primeros pasos del funnel -->
         <div class="rw-card">
           <div style="display:flex;justify-content:center" v-html="chartSvg" />
           <p class="rw-meth" style="margin-top:8px">{{ f.T(['Based on 4,182 members who tracked applications between Jan and Jun 2026.', 'Basado en 4.182 miembros que registraron sus candidaturas entre enero y junio de 2026.']) }}</p>
@@ -410,7 +410,7 @@ const faqs = [
   [['How is this different from LinkedIn or Indeed?', '¿En qué se diferencia de LinkedIn o Indeed?'],
     ["Job boards show you listings and leave the rest to you. JobWinner covers the whole search end to end: it finds verified matches across 5M+ listings, fixes your resume, tailors every application, preps your interviews and tracks it all in one place.", 'Los portales te enseñan ofertas y el resto es cosa tuya. JobWinner cubre toda la búsqueda de principio a fin: encuentra matches verificados entre 5M+ ofertas, arregla tu CV, adapta cada candidatura, te prepara las entrevistas y lo organiza todo en un solo sitio.']],
   [["I've been applying for months with no luck. Why would this work?", 'Llevo meses aplicando sin suerte. ¿Por qué esto sí funcionaría?'],
-    ['Mass-applying with the same resume is what keeps most people stuck. Applying to matched jobs with a resume and cover letter tailored to each listing is how our members get to interviews — 55% within the first month.', 'Aplicar en masa con el mismo CV es lo que mantiene atascada a la mayoría. Aplicar a empleos compatibles con un CV y una carta adaptados a cada oferta es lo que lleva a nuestros miembros a entrevistas: el 55% en el primer mes.']],
+    ['Mass-applying with the same resume is what keeps most people stuck. Applying to matched jobs with a resume and cover letter tailored to each listing is how our members get to interviews — 65% land a job within the first 3 months.', 'Aplicar en masa con el mismo CV es lo que mantiene atascada a la mayoría. Aplicar a empleos compatibles con un CV y una carta adaptados a cada oferta es lo que lleva a nuestros miembros a entrevistas: el 65% consigue empleo en los primeros 3 meses.']],
   [['What exactly do I get right after paying?', '¿Qué recibo justo después de pagar?'],
     ['Instant access to everything: your matched jobs are already waiting, your resume review is ready, and your first tailored application can go out in under five minutes.', 'Acceso inmediato a todo: tus empleos compatibles ya te están esperando, la revisión de tu CV está lista y tu primera candidatura a medida puede salir en menos de cinco minutos.']],
   [['Does it work for my sector?', '¿Funciona para mi sector?'],
@@ -464,15 +464,18 @@ const journeySvg = computed(() => {
     [String(m), f.T(['jobs found', 'empleos'])],
     [apps, f.T(['applications', 'candidaturas'])],
     ['5–10', f.T(['interviews', 'entrevistas'])],
-    ['1–2', f.T(['job offers', 'ofertas'])]
+    ['', f.T(['First offers', 'Primeras ofertas'])] // hito sin cifra: se pinta solo la etiqueta, en grande
   ]
   const xlabs = [f.T(['Today', 'Hoy']), f.T(['Week 2', 'Semana 2']), f.T(['Week 4', 'Semana 4']), f.T(['Week 6', 'Semana 6'])]
   const guides = PTS.map(p => `<line x1="${p[0]}" y1="${p[1] + 12}" x2="${p[0]}" y2="178" stroke="#CBD9EE" stroke-width="1.5" stroke-dasharray="2 5"/>`).join('')
   // Etiquetas SIEMPRE arriba-izquierda del punto: como la curva asciende, todo lo que queda
   // a la izquierda de un punto está más abajo que él → el texto nunca pisa la línea.
-  const texts = PTS.map((p, i) => `
+  const texts = PTS.map((p, i) => labels[i][0]
+    ? `
     <text x="${p[0] - 15}" y="${p[1] - 20}" text-anchor="end" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][0]}</text>
-    <text x="${p[0] - 15}" y="${p[1] - 7}" text-anchor="end" font-size="10.5" fill="#5A6478" font-family="Inter,sans-serif">${labels[i][1]}</text>`).join('')
+    <text x="${p[0] - 15}" y="${p[1] - 7}" text-anchor="end" font-size="10.5" fill="#5A6478" font-family="Inter,sans-serif">${labels[i][1]}</text>`
+    : `
+    <text x="${p[0] - 15}" y="${p[1] - 10}" text-anchor="end" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="15" fill="#02112D">${labels[i][1]}</text>`).join('')
   const dots = PTS.map((p, i) => i === 0
     ? `<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="#88AB75"/><path d="M${p[0] - 4.5} ${p[1]}l3.2 3.4 6-6.6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
     : `<circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#F2C037" stroke="#fff" stroke-width="2.5"/>`).join('')

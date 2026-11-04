@@ -19,6 +19,7 @@
         <span :class="{ on: val >= 5 }" @click="val = 6">{{ f.T(['6+ months', '6+ meses']) }}</span>
       </div>
       <div v-if="val === 3" class="speed-reco">{{ f.T(['Recommended', 'Recomendado']) }}</div>
+      <p v-if="val === 3" class="speed-help">{{ f.T(['First interviews usually come around week\u00A02\u00A0or\u00A03. Most members land an offer within 3\u00A0months.', 'Las primeras entrevistas suelen llegar hacia la semana\u00A02\u00A0o\u00A03. La mayoría de los miembros consigue una oferta en 3\u00A0meses.']) }}</p>
     </div>
   </div></div>
   <FootContinue :label="f.T(['CONTINUE', 'Continuar'])" @go="go" />

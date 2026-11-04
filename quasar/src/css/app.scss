@@ -361,6 +361,7 @@ input:focus{border-color:var(--jw-blue);box-shadow:0 0 0 3px rgba(0,122,255,.12)
 .speed-labels span{cursor:pointer}
 .speed-labels .on{color:var(--jw-ink);font-weight:700}
 .speed-reco{background:var(--jw-tint);color:var(--jw-blue);font-weight:700;border-radius:12px;padding:11px;font-size:14px;margin-top:22px}
+.speed-help{font-size:13px;line-height:1.45;color:var(--jw-slate);text-align:center;margin:12px auto 0;max-width:360px;text-wrap:balance}
 
 /* 3x comparison */
 .x3-card{background:var(--jw-tint);border-radius:var(--r-card);padding:22px;max-width:440px;margin:16px auto 0;width:100%}
