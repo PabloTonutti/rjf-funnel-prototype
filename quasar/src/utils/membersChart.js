@@ -5,7 +5,7 @@
 export function membersChartSvg (f, maxWidth = 430) {
   // VALORES PROVISIONALES hasta tener datos reales. Solo el 65% en el mes 3 (M[2]) es el dato del titular.
   const M = [22, 45, 65, 76, 83, 88] // miembros JobWinner
-  const A = [8, 21, 32, 38, 42, 45] // candidato medio: misma forma curva que M (subida rápida y luego se aplana)
+  const A = [6, 16, 24, 29, 33, 36] // candidato medio: curva como M y 24% en el mes 3 (brecha 65 vs 24 en el punto del titular)
   const K = 2 // índice del mes 3
   const last = M.length - 1
   const X = i => 52 + i * 52, Y = p => 198 - p * 1.7
@@ -27,6 +27,6 @@ export function membersChartSvg (f, maxWidth = 430) {
     ${line(A, '#DE8F6E')}${dots(A, '#DE8F6E')}
     ${line(M, '#007AFF')}${dots(M, '#007AFF')}
     <g><rect x="56" y="30" width="152" height="26" rx="13" fill="#007AFF"/><text x="132" y="47" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" font-family="Inter,sans-serif">${membersLbl}</text></g>
-    <g><rect x="212" y="154" width="136" height="26" rx="13" fill="#fff" stroke="#DE8F6E" stroke-width="1.5"/><text x="280" y="171" text-anchor="middle" font-size="11.5" font-weight="700" fill="#C06B45" font-family="Inter,sans-serif">${avgLbl}</text></g>
+    <g><rect x="212" y="158" width="136" height="26" rx="13" fill="#fff" stroke="#DE8F6E" stroke-width="1.5"/><text x="280" y="175" text-anchor="middle" font-size="11.5" font-weight="700" fill="#C06B45" font-family="Inter,sans-serif">${avgLbl}</text></g>
   </svg>`
 }
