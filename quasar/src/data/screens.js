@@ -110,10 +110,12 @@ const S = [
 {id:'P13',phase:4,type:'catchips',title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?']},
 {id:'P16',phase:4,type:'single',title:["What's your career level?",'¿Cuál es tu nivel profesional?'],
  opts:[
-  {i:'user1',t:['Entry / Junior','Entry / Junior'],sub:['0–2 years of experience','0-2 años de experiencia']},
-  {i:'growth',t:['Mid-level','Mid-level'],sub:['2–5 years of experience','2-5 años de experiencia']},
+  {i:'book',t:['Intern','Prácticas'],sub:['Internship or student role','Prácticas o puesto de estudiante']},
+  {i:'user1',t:['Entry level','Nivel inicial'],sub:['0–2 years of experience','0-2 años de experiencia']},
+  {i:'growth',t:['Mid level','Nivel intermedio'],sub:['2–5 years of experience','2-5 años de experiencia']},
   {i:'medal',t:['Senior','Senior'],sub:['5–10 years of experience','5-10 años de experiencia']},
-  {i:'crown',t:['Lead / Manager','Lead / Manager'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']}
+  {i:'crown',t:['Lead','Lead'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']},
+  {i:'shieldcheck',t:['Executive','Directivo'],sub:['Director / VP / C-level','Director / VP / C-level']}
  ]},
 {id:'P7',phase:4,type:'multi',title:['What type of work are you open to?','¿A qué tipo de trabajo estás abierto?'],
  opts:[{i:'clockfull',t:['Full-time','Full-time']},{i:'clockhalf',t:['Part-time','Part-time']},{i:'pen',t:['Freelance / Contract','Freelance / Contrato']},{i:'book',t:['Internship','Prácticas']}]},
@@ -249,10 +251,12 @@ const S = [
 {id:'P13A',phase:12,type:'catchips',title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?']},
 {id:'P16A',phase:12,ans:'P16',type:'single',title:["What's your career level?",'¿Cuál es tu nivel profesional?'],
  opts:[
-  {i:'user1',t:['Entry / Junior','Entry / Junior'],sub:['0–2 years of experience','0-2 años de experiencia']},
-  {i:'growth',t:['Mid-level','Mid-level'],sub:['2–5 years of experience','2-5 años de experiencia']},
+  {i:'book',t:['Intern','Prácticas'],sub:['Internship or student role','Prácticas o puesto de estudiante']},
+  {i:'user1',t:['Entry level','Nivel inicial'],sub:['0–2 years of experience','0-2 años de experiencia']},
+  {i:'growth',t:['Mid level','Nivel intermedio'],sub:['2–5 years of experience','2-5 años de experiencia']},
   {i:'medal',t:['Senior','Senior'],sub:['5–10 years of experience','5-10 años de experiencia']},
-  {i:'crown',t:['Lead / Manager','Lead / Manager'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']}
+  {i:'crown',t:['Lead','Lead'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']},
+  {i:'shieldcheck',t:['Executive','Directivo'],sub:['Director / VP / C-level','Director / VP / C-level']}
  ]},
 {id:'PLOWA',phase:12,type:'single',ans:'PLOW',title:['Are you open to lower-level roles?','¿Estás abierto a puestos de menor nivel?'],
  opts:[{i:'yes',t:['Yes, if needed','Sí, si hace falta']},{i:'notsure',t:["Maybe, if it's a good fit",'Quizá, si encaja bien']},{i:'no',t:['No, only my level or higher','No, solo mi nivel o superior']}]},
@@ -276,10 +280,12 @@ const S = [
 {id:'P13B',phase:13,type:'catchips',title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?']},
 {id:'P16B',phase:13,ans:'P16',type:'single',title:["What's your career level?",'¿Cuál es tu nivel profesional?'],
  opts:[
-  {i:'user1',t:['Entry / Junior','Entry / Junior'],sub:['0–2 years of experience','0-2 años de experiencia']},
-  {i:'growth',t:['Mid-level','Mid-level'],sub:['2–5 years of experience','2-5 años de experiencia']},
+  {i:'book',t:['Intern','Prácticas'],sub:['Internship or student role','Prácticas o puesto de estudiante']},
+  {i:'user1',t:['Entry level','Nivel inicial'],sub:['0–2 years of experience','0-2 años de experiencia']},
+  {i:'growth',t:['Mid level','Nivel intermedio'],sub:['2–5 years of experience','2-5 años de experiencia']},
   {i:'medal',t:['Senior','Senior'],sub:['5–10 years of experience','5-10 años de experiencia']},
-  {i:'crown',t:['Lead / Manager','Lead / Manager'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']}
+  {i:'crown',t:['Lead','Lead'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']},
+  {i:'shieldcheck',t:['Executive','Directivo'],sub:['Director / VP / C-level','Director / VP / C-level']}
  ]},
 {id:'PLOWB',phase:13,type:'single',ans:'PLOW',title:['Are you open to lower-level roles?','¿Estás abierto a puestos de menor nivel?'],
  opts:[{i:'yes',t:['Yes, if needed','Sí, si hace falta']},{i:'notsure',t:["Maybe, if it's a good fit",'Quizá, si encaja bien']},{i:'no',t:['No, only my level or higher','No, solo mi nivel o superior']}]},
