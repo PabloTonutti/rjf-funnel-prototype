@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -220,7 +220,18 @@ const S = [
   {i:'doccheck',t:['Get your job matches','Recibe tus matches'],s:['Picked from verified remote jobs','Elegidos entre empleos remotos verificados']},
   {i:'boltcirc',t:['Apply to jobs with AI','Aplica a empleos con IA'],s:['20+ AI tools working for you','20+ herramientas de IA trabajando por ti']}],
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
-{id:'PPLAN3',phase:10,type:'plansteps',
+/* AI EXPERIENCE (phase 10) — paso nuevo (2026-11-05): la pregunta de P6 (copia, con su propio id para no pisar la respuesta original) + beneficios de la IA con tarjetas que aparecen una a una */
+{id:'P6N',phase:10,type:'single',title:['Have you ever tried smart tools like AI to make your job search easier?','¿Has probado herramientas inteligentes como la IA para facilitar tu búsqueda de empleo?'],
+ opts:[{i:'yes',t:['Yes','Sí']},{i:'notsure',t:['Not sure','No estoy seguro']},{i:'no',t:['No','No']}]},
+{id:'PAIBEN',phase:10,type:'aibenefits',fillDesk:true,
+ chip:['AI-powered job search','Búsqueda de empleo con IA'],
+ title:['AI can make your job search easier — and\u00A0faster','La IA puede hacer tu búsqueda de empleo más fácil y más\u00A0rápida'],
+ items:[
+  {i:'search',c:'b',t:["Discover <em>hidden jobs</em> you'd never see on popular job\u00A0sites",'Descubre <em>empleos ocultos</em> que nunca verías en los portales\u00A0habituales']},
+  {i:'doccheck',c:'g',t:['Turn your resume into the <em>perfect match</em> for every\u00A0role','Convierte tu CV en el <em>match perfecto</em> para cada\u00A0puesto']},
+  {i:'boltcirc',c:'y',t:['<em>Save time</em> in each application — our AI creates all you\u00A0need','<em>Ahorra tiempo</em> en cada candidatura: nuestra IA crea todo lo que\u00A0necesitas']},
+  {i:'rocket',c:'t',t:['Get hired in <em>weeks, not months</em>','Consigue empleo en <em>semanas, no meses</em>']}]},
+{id:'PPLAN3',phase:11,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -231,10 +242,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:11,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:11,type:'result'},
-{id:'P50',phase:11,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:11,type:'success'}
+{id:'P48',phase:12,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:12,type:'result'},
+{id:'P50',phase:12,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:12,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
