@@ -1,5 +1,5 @@
 <template>
-  <div id="shell" :class="{ compact: f.screen.compactDesk }">
+  <div id="shell" :class="{ fill: f.screen.fillDesk }">
     <!-- En la página del plan (result) no hay header/logo: la barra superior es el countdown -->
     <header id="hdr" v-if="f.screen.type !== 'result'">
       <div class="hdr-row">

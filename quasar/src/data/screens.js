@@ -210,8 +210,8 @@ const S = [
  sub2:['Expert-verified listings, updated daily','Ofertas verificadas por expertos, actualizadas a diario'],
  badge:['300K+ remote jobs waiting','300K+ empleos remotos esperando'],
  cta:['SHOW ME MY MATCHES','VER MIS MATCHES']},
-/* WELCOME (phase 9) — paso nuevo (2026-11-05): bienvenida con el titular nuevo. Los pasos nuevos van siempre aquí, antes del plan. compactDesk: en ordenador la tarjeta mide lo que el contenido y el botón va justo debajo de los pasos */
-{id:'PWELCOME',phase:9,type:'plansteps',compactDesk:true,
+/* WELCOME (phase 9) — paso nuevo (2026-11-05): bienvenida con el titular nuevo. Los pasos nuevos van siempre aquí, antes del plan. fillDesk: en ordenador el contenido crece y se centra para llenar la tarjeta (misma altura que el resto de slides) */
+{id:'PWELCOME',phase:9,type:'plansteps',fillDesk:true,
  title:['We help you land a remote job that fits your life','Te ayudamos a encontrar un trabajo en remoto que encaje con tu vida'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['200K+ verified remote jobs','+200K empleos en remoto verificados'],
