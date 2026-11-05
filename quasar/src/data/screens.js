@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -210,7 +210,17 @@ const S = [
  sub2:['Expert-verified listings, updated daily','Ofertas verificadas por expertos, actualizadas a diario'],
  badge:['300K+ remote jobs waiting','300K+ empleos remotos esperando'],
  cta:['SHOW ME MY MATCHES','VER MIS MATCHES']},
-{id:'PPLAN3',phase:9,type:'plansteps',
+/* WELCOME (phase 9) — paso nuevo (2026-11-05): bienvenida con el titular nuevo. Los pasos nuevos van siempre aquí, antes del plan. compactDesk: en ordenador la tarjeta mide lo que el contenido y el botón va justo debajo de los pasos */
+{id:'PWELCOME',phase:9,type:'plansteps',compactDesk:true,
+ title:['We help you land a remote job that fits your life','Te ayudamos a encontrar un trabajo en remoto que encaje con tu vida'],
+ sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
+ badge:['200K+ verified remote jobs','+200K empleos en remoto verificados'],
+ steps:[
+  {i:'search',t:['Answer a 3-minute quiz','Responde un quiz de 3 minutos'],s:['Role, salary, location, preferences','Puesto, salario, ubicación, preferencias']},
+  {i:'doccheck',t:['Get your job matches','Recibe tus matches'],s:['Picked from verified remote jobs','Elegidos entre empleos remotos verificados']},
+  {i:'boltcirc',t:['Apply to jobs with AI','Aplica a empleos con IA'],s:['20+ AI tools working for you','20+ herramientas de IA trabajando por ti']}],
+ cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
+{id:'PPLAN3',phase:10,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -221,10 +231,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:10,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:10,type:'result'},
-{id:'P50',phase:10,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:10,type:'success'}
+{id:'P48',phase:11,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:11,type:'result'},
+{id:'P50',phase:11,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:11,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
