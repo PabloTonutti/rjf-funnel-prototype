@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -231,7 +231,13 @@ const S = [
   {i:'doccheck',c:'g',t:['Turn your resume into the <em>perfect match</em> for every\u00A0role','Convierte tu CV en el <em>match perfecto</em> para cada\u00A0puesto']},
   {i:'boltcirc',c:'y',t:['<em>Save time</em> in each application — our AI creates all you\u00A0need','<em>Ahorra tiempo</em> en cada candidatura: nuestra IA crea todo lo que\u00A0necesitas']},
   {i:'rocket',c:'t',t:['Get hired in <em>weeks, not months</em>','Consigue empleo en <em>semanas, no meses</em>']}]},
-{id:'PPLAN3',phase:11,type:'plansteps',
+/* YOUR GOALS (phase 11) — paso nuevo (2026-11-05): PSPEED (copia) → entrevistas por semana → qué te frena → 3× (copia de P3X). Las copias tienen id propio; PSPEEDN guarda en answers.PSPEED (SpeedScreen), así el paywall usa el último plazo elegido */
+{id:'PSPEEDN',phase:11,type:'speed',title:['How fast do you want to find a job?','¿Cómo de rápido quieres encontrar empleo?']},
+{id:'PWEEK',phase:11,type:'perweek',title:['How many interviews do you want per week?','¿Cuántas entrevistas quieres por semana?']},
+{id:'PSTOP',phase:11,type:'single',title:["What's stopping you from reaching your goals?",'¿Qué te impide alcanzar tus objetivos?'],
+ opts:[{i:'meh',t:['Lack of great job postings','Faltan buenas ofertas de empleo']},{i:'hourglass',t:['Not applying enough','No aplico lo suficiente']},{i:'no',t:["Can't land interviews",'No consigo entrevistas']}]},
+{id:'P3XN',phase:11,type:'x3',title:['With JobWinner, landing 3× more interviews is realistic.','Con JobWinner, conseguir 3× más entrevistas es realista.']},
+{id:'PPLAN3',phase:12,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -242,10 +248,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:12,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:12,type:'result'},
-{id:'P50',phase:12,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:12,type:'success'}
+{id:'P48',phase:13,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:13,type:'result'},
+{id:'P50',phase:13,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:13,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
