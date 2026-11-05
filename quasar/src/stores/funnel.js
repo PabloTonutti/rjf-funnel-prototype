@@ -104,7 +104,7 @@ export const useFunnel = defineStore('funnel', {
       } catch (e) { /* almacenamiento bloqueado → sin persistencia, el funnel sigue */ }
     },
     // Si el usuario YA llegó a su plan, restaurarlo y saltar directo a la página del plan.
-    restorePlan () {
+    restorePlan (jump = true) {
       try {
         const raw = localStorage.getItem('jw_plan_state')
         if (!raw) return false
@@ -119,7 +119,7 @@ export const useFunnel = defineStore('funnel', {
         if (typeof s.secondsLeft === 'number' && s.secondsLeft > 0) this.secondsLeft = s.secondsLeft
         this.upload = s.upload || null
         const i = SCREENS.findIndex(x => x.id === 'P49')
-        if (i >= 0) this.currentI = i
+        if (jump && i >= 0) this.currentI = i
         return true
       } catch (e) { return false }
     },
@@ -147,6 +147,21 @@ export const useFunnel = defineStore('funnel', {
       if (this.history[this.history.length - 1] === i) this.history.pop()
       else this.history.push(this.currentI)
       this.currentI = i
+      window.scrollTo(0, 0)
+    },
+    // Deep-link (#/?step=ID): ir a esa slide con el historial de las anteriores en orden del funnel,
+    // para que Atrás vaya a la slide anterior (no al plan guardado ni a la primera pantalla)
+    jumpTo (i) {
+      const prev = []
+      for (let k = 0; k < i; k++) {
+        const sc = SCREENS[k]
+        if (['loader', 'uploading'].includes(sc.type)) continue
+        if (sc.cond && !sc.cond(this)) continue
+        prev.push(k)
+      }
+      this.history = prev
+      this.currentI = i
+      try { window.history.replaceState({ funnelI: i }, '') } catch (e) {}
       window.scrollTo(0, 0)
     },
     next () { this.go(this.nextIndex(this.currentI)) },
