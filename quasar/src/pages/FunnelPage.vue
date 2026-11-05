@@ -39,6 +39,7 @@ import JobPreviewScreen from 'components/screens/JobPreviewScreen.vue'
 import PlanStepsScreen from 'components/screens/PlanStepsScreen.vue'
 import AiBenefitsScreen from 'components/screens/AiBenefitsScreen.vue'
 import PerWeekScreen from 'components/screens/PerWeekScreen.vue'
+import ProfileDoneScreen from 'components/screens/ProfileDoneScreen.vue'
 
 const f = useFunnel()
 
@@ -91,7 +92,8 @@ const MAP = {
   jobpreview: JobPreviewScreen,
   plansteps: PlanStepsScreen,
   aibenefits: AiBenefitsScreen,
-  perweek: PerWeekScreen
+  perweek: PerWeekScreen,
+  profiledone: ProfileDoneScreen
 }
 
 const comp = computed(() => MAP[f.screen.type])

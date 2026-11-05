@@ -237,7 +237,7 @@ const S = [
 {id:'PSTOP',phase:11,type:'single',title:["What's stopping you from reaching your goals?",'¿Qué te impide alcanzar tus objetivos?'],
  opts:[{i:'meh',t:['Lack of great job postings','Faltan buenas ofertas de empleo']},{i:'hourglass',t:['Not applying enough','No aplico lo suficiente']},{i:'no',t:["Can't land interviews",'No consigo entrevistas']}]},
 {id:'P3XN',phase:11,type:'x3',title:['With JobWinner, landing 3× more interviews is realistic.','Con JobWinner, conseguir 3× más entrevistas es realista.']},
-/* JOB PREFERENCES A (phase 12) — paso nuevo (2026-11-05): copia de JOB PREFERENCES con «lower-level roles» en lugar de «What type of work are you open to?». Las copias de P9/P16 comparten respuesta con el original (ans) */
+/* JOB PREFERENCES A (phase 12) — paso nuevo (2026-11-05): copia de JOB PREFERENCES con «lower-level roles» en lugar de «What type of work are you open to?», cierre PDONEA (opción T3) y sin email. Las copias de P9/P16 comparten respuesta con el original (ans) */
 {id:'P9A',phase:12,ans:'P9',type:'multi',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
  opts:[{i:'house',t:['Fully remote','100% remoto']},{i:'hybrid',t:['Hybrid','Híbrido']},{i:'towers',t:['In-office','Presencial']}]},
 {id:'P11A',phase:12,type:'country',title:['Which country are you based in?','¿En qué país resides?'],
@@ -260,15 +260,11 @@ const S = [
  title:['You have great potential to reach your goal with us','You have great potential to reach your goal with us']},
 {id:'PREVA',phase:12,type:'reviews',
  title:['Thanks for trusting us','Gracias por confiar en nosotros']},
-{id:'PTHANKSA',phase:12,type:'inter',illo:'target',big:true,
- title:['Time to create a personalized plan for you!','¡Hora de crear un plan personalizado para ti!'],
- body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
- cta:['CREATE PLAN','Crear plan']},
-{id:'PEMAILA',phase:12,type:'email',
- title:['Set up your account to get your remote search plan','Crea tu cuenta y obtén tu plan de búsqueda remota']},
-
-/* ---------------- PHASE 5 · HOW WE HELP (RJF pre-suasion block) ---------------- */
-/* JOB PREFERENCES B (phase 13) — paso nuevo (2026-11-05): igual que A, pero sin «great potential» ni «Thanks for trusting us»; en su lugar PPROFB */
+{id:'PDONEA',phase:12,type:'profiledone',variant:'list',fillDesk:true,
+ title:["We've got everything we need",'Ya tenemos todo lo que necesitamos'],
+ items:[['Your job preferences','Tus preferencias de empleo'],['Your experience and level','Tu experiencia y tu nivel'],['Your goals and timeline','Tus objetivos y tus plazos']],
+ cta:['CREATE PLAN','CREAR PLAN']},
+/* JOB PREFERENCES B (phase 13) — paso nuevo (2026-11-05): igual que A, pero sin «great potential» ni «Thanks for trusting us»; en su lugar PPROFB (opción T4). Sin email */
 {id:'P9B',phase:13,ans:'P9',type:'multi',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
  opts:[{i:'house',t:['Fully remote','100% remoto']},{i:'hybrid',t:['Hybrid','Híbrido']},{i:'towers',t:['In-office','Presencial']}]},
 {id:'P11B',phase:13,type:'country',title:['Which country are you based in?','¿En qué país resides?'],
@@ -287,18 +283,13 @@ const S = [
  ]},
 {id:'PLOWB',phase:13,type:'single',ans:'PLOW',title:['Are you open to lower-level roles?','¿Estás abierto a puestos de menor nivel?'],
  opts:[{i:'yes',t:['Yes, if needed','Sí, si hace falta']},{i:'notsure',t:["Maybe, if it's a good fit",'Quizá, si encaja bien']},{i:'no',t:['No, only my level or higher','No, solo mi nivel o superior']}]},
-{id:'PPROFB',phase:13,type:'inter',illo:'profileok',big:true,
+{id:'PPROFB',phase:13,type:'profiledone',variant:'pill',fillDesk:true,
  title:['Thanks for sharing your details','Gracias por compartir tus datos'],
- body:['We now have a good understanding of your profile and goals.','Ya entendemos bien tu perfil y tus objetivos.'],
- cta:['CONTINUE','CONTINUAR']},
+ body:['We now have a good understanding of your <b>profile</b> and <b>goals</b>.','Ya entendemos bien tu <b>perfil</b> y tus <b>objetivos</b>.']},
 {id:'PTHANKSB',phase:13,type:'inter',illo:'target',big:true,
  title:['Time to create a personalized plan for you!','¡Hora de crear un plan personalizado para ti!'],
  body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
  cta:['CREATE PLAN','Crear plan']},
-{id:'PEMAILB',phase:13,type:'email',
- title:['Set up your account to get your remote search plan','Crea tu cuenta y obtén tu plan de búsqueda remota']},
-
-/* ---------------- PHASE 5 · HOW WE HELP (RJF pre-suasion block) ---------------- */
 {id:'PPLAN3',phase:14,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],

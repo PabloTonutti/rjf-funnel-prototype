@@ -593,6 +593,11 @@ main.pwmode{overflow:visible}
   #shell.fill .ai-row{flex-direction:column;align-items:flex-start;padding:20px;gap:12px}
   #shell.fill .ai-row b{font-size:17px}
   #shell.fill .ai-ic{width:56px;height:56px}
+  #shell.fill .pd-illo svg{width:230px}
+  #shell.fill .pd-list{max-width:480px;gap:14px}
+  #shell.fill .pd-row{padding:16px 20px;font-size:17px}
+  #shell.fill .pd-box{max-width:520px;font-size:18px;padding:20px 26px}
+  #shell.fill .pd-pill{font-size:14px;padding:7px 16px}
   header{padding:16px 40px 0}
   .logo-wrap img{height:31px}
   #progWrap{max-width:600px;margin:0 auto}
@@ -664,3 +669,15 @@ main.pwmode{overflow:visible}
 .ai-ic.g{background:var(--jw-success-bg)}.ai-ic.y{background:#FDF3D6}.ai-ic.t{background:#FBEDE6}
 .ai-ic svg{width:64%;height:64%}
 @media (prefers-reduced-motion:reduce){.ai-row{transition:none}}
+
+/* Cierre JOB PREFERENCES (PDONEA lista / PPROFB etiqueta) */
+.pd{align-items:center}
+.pd-illo{margin:4px 0 14px}
+.pd-pill{background:var(--jw-success-bg);color:#4E7A3A;border-radius:999px;padding:5px 13px;font-size:13px;font-weight:700;margin-bottom:10px}
+.pd-list{display:grid;gap:10px;width:100%;max-width:440px;margin:14px auto 0;text-align:left}
+.pd-row{display:flex;align-items:center;gap:12px;border:1.5px solid var(--jw-line);border-radius:14px;padding:12px 16px;font-size:15px;background:#fff}
+.pd-ck{display:flex;flex:none}
+.pd-next{border-style:dashed;border-color:#9EC5F8;background:var(--jw-cloud)}
+.pd-next i{width:22px;height:22px;border-radius:50%;border:2px dashed var(--jw-blue);flex:none}
+.pd-box{margin:12px auto 0;max-width:440px;background:var(--jw-cloud);border-radius:14px;padding:16px 20px;font-size:16px;line-height:1.5;color:var(--jw-ink);text-wrap:balance}
+.pd-box b{color:var(--jw-blue);font-weight:700}
