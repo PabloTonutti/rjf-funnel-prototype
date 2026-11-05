@@ -5,7 +5,7 @@
     <div class="options">
       <button
         v-for="(o, k) in screen.opts" :key="k"
-        class="opt radio" :class="{ sel: f.answers[screen.id] === o }"
+        class="opt radio" :class="{ sel: f.answers[screen.ans || screen.id] === o }"
         @click="pick(o)"
       >
         <span v-if="screen.icons !== false && o.i" class="duo" v-html="duo(o.i)" />
@@ -51,13 +51,13 @@ const title = computed(() => {
 function pick (o) {
   if (advancing.value) return
   advancing.value = true
-  f.answers[props.screen.id] = o
+  f.answers[props.screen.ans || props.screen.id] = o
   setTimeout(() => f.next(), 280)
 }
 function skip () {
   if (advancing.value) return
   advancing.value = true
-  f.answers[props.screen.id] = null
+  f.answers[props.screen.ans || props.screen.id] = null
   f.next()
 }
 </script>

@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -237,7 +237,69 @@ const S = [
 {id:'PSTOP',phase:11,type:'single',title:["What's stopping you from reaching your goals?",'¿Qué te impide alcanzar tus objetivos?'],
  opts:[{i:'meh',t:['Lack of great job postings','Faltan buenas ofertas de empleo']},{i:'hourglass',t:['Not applying enough','No aplico lo suficiente']},{i:'no',t:["Can't land interviews",'No consigo entrevistas']}]},
 {id:'P3XN',phase:11,type:'x3',title:['With JobWinner, landing 3× more interviews is realistic.','Con JobWinner, conseguir 3× más entrevistas es realista.']},
-{id:'PPLAN3',phase:12,type:'plansteps',
+/* JOB PREFERENCES A (phase 12) — paso nuevo (2026-11-05): copia de JOB PREFERENCES con «lower-level roles» en lugar de «What type of work are you open to?». Las copias de P9/P16 comparten respuesta con el original (ans) */
+{id:'P9A',phase:12,ans:'P9',type:'multi',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
+ opts:[{i:'house',t:['Fully remote','100% remoto']},{i:'hybrid',t:['Hybrid','Híbrido']},{i:'towers',t:['In-office','Presencial']}]},
+{id:'P11A',phase:12,type:'country',title:['Which country are you based in?','¿En qué país resides?'],
+ micro:["If you're a digital nomad, select your tax home.",'Si eres nómada digital, elige tu residencia fiscal.']},
+{id:'PCITYA',phase:12,type:'city',title:['',''],
+ sub:['City, region or "anywhere"','Ciudad, zona o "cualquier lugar"']},
+{id:'P19TA',phase:12,type:'titles',
+ title:['Tell us what job title(s) you have in mind.','Dinos qué puesto(s) tienes en mente.']},
+{id:'P13A',phase:12,type:'catchips',title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?']},
+{id:'P16A',phase:12,ans:'P16',type:'single',title:["What's your career level?",'¿Cuál es tu nivel profesional?'],
+ opts:[
+  {i:'user1',t:['Entry / Junior','Entry / Junior'],sub:['0–2 years of experience','0-2 años de experiencia']},
+  {i:'growth',t:['Mid-level','Mid-level'],sub:['2–5 years of experience','2-5 años de experiencia']},
+  {i:'medal',t:['Senior','Senior'],sub:['5–10 years of experience','5-10 años de experiencia']},
+  {i:'crown',t:['Lead / Manager','Lead / Manager'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']}
+ ]},
+{id:'PLOWA',phase:12,type:'single',ans:'PLOW',title:['Are you open to lower-level roles?','¿Estás abierto a puestos de menor nivel?'],
+ opts:[{i:'yes',t:['Yes, if needed','Sí, si hace falta']},{i:'notsure',t:["Maybe, if it's a good fit",'Quizá, si encaja bien']},{i:'no',t:['No, only my level or higher','No, solo mi nivel o superior']}]},
+{id:'PPOTA',phase:12,type:'potential',
+ title:['You have great potential to reach your goal with us','You have great potential to reach your goal with us']},
+{id:'PREVA',phase:12,type:'reviews',
+ title:['Thanks for trusting us','Gracias por confiar en nosotros']},
+{id:'PTHANKSA',phase:12,type:'inter',illo:'target',big:true,
+ title:['Time to create a personalized plan for you!','¡Hora de crear un plan personalizado para ti!'],
+ body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
+ cta:['CREATE PLAN','Crear plan']},
+{id:'PEMAILA',phase:12,type:'email',
+ title:['Set up your account to get your remote search plan','Crea tu cuenta y obtén tu plan de búsqueda remota']},
+
+/* ---------------- PHASE 5 · HOW WE HELP (RJF pre-suasion block) ---------------- */
+/* JOB PREFERENCES B (phase 13) — paso nuevo (2026-11-05): igual que A, pero sin «great potential» ni «Thanks for trusting us»; en su lugar PPROFB */
+{id:'P9B',phase:13,ans:'P9',type:'multi',title:['What type of jobs do you prefer?','¿Qué tipo de empleos prefieres?'],
+ opts:[{i:'house',t:['Fully remote','100% remoto']},{i:'hybrid',t:['Hybrid','Híbrido']},{i:'towers',t:['In-office','Presencial']}]},
+{id:'P11B',phase:13,type:'country',title:['Which country are you based in?','¿En qué país resides?'],
+ micro:["If you're a digital nomad, select your tax home.",'Si eres nómada digital, elige tu residencia fiscal.']},
+{id:'PCITYB',phase:13,type:'city',title:['',''],
+ sub:['City, region or "anywhere"','Ciudad, zona o "cualquier lugar"']},
+{id:'P19TB',phase:13,type:'titles',
+ title:['Tell us what job title(s) you have in mind.','Dinos qué puesto(s) tienes en mente.']},
+{id:'P13B',phase:13,type:'catchips',title:['Which job categories interest you?','¿Qué categorías de empleo te interesan?']},
+{id:'P16B',phase:13,ans:'P16',type:'single',title:["What's your career level?",'¿Cuál es tu nivel profesional?'],
+ opts:[
+  {i:'user1',t:['Entry / Junior','Entry / Junior'],sub:['0–2 years of experience','0-2 años de experiencia']},
+  {i:'growth',t:['Mid-level','Mid-level'],sub:['2–5 years of experience','2-5 años de experiencia']},
+  {i:'medal',t:['Senior','Senior'],sub:['5–10 years of experience','5-10 años de experiencia']},
+  {i:'crown',t:['Lead / Manager','Lead / Manager'],sub:['10+ years · Leadership role','10+ años · Rol de liderazgo']}
+ ]},
+{id:'PLOWB',phase:13,type:'single',ans:'PLOW',title:['Are you open to lower-level roles?','¿Estás abierto a puestos de menor nivel?'],
+ opts:[{i:'yes',t:['Yes, if needed','Sí, si hace falta']},{i:'notsure',t:["Maybe, if it's a good fit",'Quizá, si encaja bien']},{i:'no',t:['No, only my level or higher','No, solo mi nivel o superior']}]},
+{id:'PPROFB',phase:13,type:'inter',illo:'profileok',big:true,
+ title:['Thanks for sharing your details','Gracias por compartir tus datos'],
+ body:['We now have a good understanding of your profile and goals.','Ya entendemos bien tu perfil y tus objetivos.'],
+ cta:['CONTINUE','CONTINUAR']},
+{id:'PTHANKSB',phase:13,type:'inter',illo:'target',big:true,
+ title:['Time to create a personalized plan for you!','¡Hora de crear un plan personalizado para ti!'],
+ body:["We now have a clear picture of where you're at. Let's find the jobs that truly fit you.",'Ya tenemos una idea clara de dónde estás. Vamos a por los empleos que de verdad encajan contigo.'],
+ cta:['CREATE PLAN','Crear plan']},
+{id:'PEMAILB',phase:13,type:'email',
+ title:['Set up your account to get your remote search plan','Crea tu cuenta y obtén tu plan de búsqueda remota']},
+
+/* ---------------- PHASE 5 · HOW WE HELP (RJF pre-suasion block) ---------------- */
+{id:'PPLAN3',phase:14,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -248,10 +310,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:13,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:13,type:'result'},
-{id:'P50',phase:13,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:13,type:'success'}
+{id:'P48',phase:15,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:15,type:'result'},
+{id:'P50',phase:15,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:15,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).

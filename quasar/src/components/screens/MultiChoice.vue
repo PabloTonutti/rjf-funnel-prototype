@@ -26,8 +26,8 @@ import FootContinue from './FootContinue.vue'
 const props = defineProps({ screen: { type: Object, required: true } })
 const f = useFunnel()
 
-if (!f.answers[props.screen.id]) f.answers[props.screen.id] = []
-const picked = computed(() => f.answers[props.screen.id])
+if (!f.answers[props.screen.ans || props.screen.id]) f.answers[props.screen.ans || props.screen.id] = []
+const picked = computed(() => f.answers[props.screen.ans || props.screen.id])
 // Sin contador: el botón dice siempre CONTINUE, haya o no selección
 const contLabel = computed(() => f.T(['CONTINUE', 'Continuar']))
 
