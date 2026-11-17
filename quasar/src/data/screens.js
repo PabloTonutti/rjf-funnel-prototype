@@ -292,7 +292,7 @@ const S = [
 {id:'PPROFB',phase:13,type:'profiledone',variant:'pill',fillDesk:true,
  title:['Thanks for sharing your details','Gracias por compartir tus datos'],
  body:['We now have a good understanding of your <b>profile</b> and <b>goals</b>.','Ya entendemos bien tu <b>perfil</b> y tus <b>objetivos</b>.']},
-/* HOW WE HELP (phase 14) — paso nuevo (2026-11-17): pre-suasión recortada a 13 pantallas (copias de las de la fase 5, que se mantienen). Textos nuevos en P25H, P30H, P42H y P47H. La primera slide es PSTRATH (estrategias probadas) en lugar de P46 */
+/* HOW WE HELP (phase 14) — paso nuevo (2026-11-17): pre-suasión recortada (copias de las de la fase 5, que se mantienen). Textos nuevos en P25H, P30H, P42H y P47H. La primera slide es PSTRATH (estrategias probadas) en lugar de P46 */
 {id:'PSTRATH',phase:14,type:'multi',title:['Which job search strategies have you tried before?','¿Qué estrategias de búsqueda de empleo has probado antes?'],
  opts:[{i:'laptop',t:['Job boards / direct applications (LinkedIn, Indeed, etc.)','Portales de empleo / candidaturas directas (LinkedIn, Indeed, etc.)']},{i:'family',t:['Employee referral (friend or colleague)','Recomendación de un empleado (amigo o compañero)']},{i:'building',t:['Recruitment agencies','Agencias de reclutamiento']},{i:'globe',t:['Networking (events, communities)','Networking (eventos, comunidades)']},{i:'pen',t:['Personal blog / social media','Blog personal / redes sociales']},{i:'notsure',t:['Other','Otra']}]},
 {id:'P21H',phase:14,type:'inter',illo:'crowd',listV2:true,fillDesk:true,title:['The job market got brutal','El mercado se ha vuelto brutal'],
@@ -308,7 +308,6 @@ const S = [
  title:['Access 750k+ hidden jobs monthly','Accede a más de 750k empleos ocultos al mes'],
  sub:['Get access to private roles and exclusive listings not found on public job boards','Accede a puestos privados y ofertas exclusivas que no aparecen en los portales de empleo públicos'],
  note:['Most job seekers only see 1/4 of opportunities','La mayoría de candidatos solo ve 1/4 de las oportunidades']},
-{id:'P26H',phase:14,type:'relate',v2:true,quote:["I'm afraid my resume disappears into a black hole",'Me da miedo que mi CV desaparezca en un agujero negro']},
 {id:'P35H',phase:14,type:'relate',v2:true,quote:['I worry ATS filters out my resume before a recruiter sees it','Me preocupa que el ATS filtre mi CV antes de que lo vea un reclutador']},
 {id:'P29H',phase:14,fillDesk:true,bigVis:true,type:'stat',pct:75,eyebrow:['What really happens','Lo que realmente pasa'],
  title:['Most resumes never reach a human','La mayoría de CV nunca llegan a un humano'],
@@ -320,9 +319,6 @@ const S = [
 {id:'P42H',phase:14,type:'compare',v2:true,title:['A smarter way to search with JobWinner','Una forma más inteligente de buscar con JobWinner'],
  body:["80% of listings aren't actively hiring. JobWinner only shows you verified jobs that are, and that fit you.",'El 80% de las ofertas no están contratando. JobWinner solo te muestra ofertas verificadas que sí lo están y que encajan contigo.']},
 {id:'P43H',phase:14,type:'relate',v2:true,quote:["I'm sick of filling out the same job application forms over and over again",'Estoy harto de rellenar los mismos formularios de solicitud una y otra vez']},
-{id:'P47H',phase:14,fillDesk:true,bigVis:true,type:'inter',illo:'x3',
- title:['JobWinner prepares a tailored application for every matching job','JobWinner prepara una solicitud a medida para cada oferta que encaja contigo'],
- body:['Resume and cover letter tailored to each listing in minutes, not hours. Get 3X more quality applications without the repetitive forms.','CV y carta adaptados a cada oferta en minutos, no en horas. Consigue 3X más candidaturas de calidad sin formularios repetitivos.']},
 {id:'PCHARTH',phase:14,type:'barchart',mult:'10X',
  title:['Apply to 10X more jobs with AI','Aplica a 10X más ofertas con IA'],
  body:['JobWinner prepares each application for you. You review it and send it.','JobWinner te prepara cada candidatura. Tú la revisas y la envías.']},
