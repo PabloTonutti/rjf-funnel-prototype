@@ -152,7 +152,7 @@ const S = [
  body:['75% of resumes never reach a human recruiter. ATS systems auto-reject them, often by mistake.','El 75% de los CV nunca llegan a un reclutador humano. Los sistemas ATS los rechazan automáticamente, a menudo por error.']},
 {id:'P30',phase:5,type:'inter',illo:'mailflow',title:['From black holes to responses','De agujeros negros a respuestas'],
  body:['We optimize your resume for ATS and make sure it gets to the humans who actually make decisions.','Optimizamos tu CV para el ATS y nos aseguramos de que llegue a las personas que de verdad deciden.']},
-{id:'P31',phase:5,type:'single',title:['What schedule do you prefer?','¿Qué horario prefieres?'],
+{id:'P31',phase:5,type:'multi',title:['What schedule do you prefer?','¿Qué horario prefieres?'],
  opts:[{i:'sun',t:['Flexible hours','Horario flexible']},{i:'clockfull',t:['9 to 5 fixed schedule','Horario fijo de 9 a 5']}]},
 {id:'P32',phase:5,type:'single',title:['What team size do you prefer?','¿Qué tamaño de equipo prefieres?'],
  opts:[{i:'users3',t:['Big teams','Equipos grandes']},{i:'users2',t:['Small teams','Equipos pequeños']},{i:'user1',t:['Independent','Independiente']}]},
