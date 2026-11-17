@@ -1,6 +1,14 @@
 <template>
   <div class="wrap"><div class="screen">
-    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+    <!-- v2 (paso HOW WE HELP nuevo): la pregunta pasa a ser el título y la cita va en una tarjeta con comillas grandes -->
+    <div v-if="screen.v2" class="rel2">
+      <h1 class="qtitle">{{ $t('relateQ') }}</h1>
+      <div class="rel2-card">
+        <span class="rel2-q" aria-hidden="true">&ldquo;</span>
+        <p>{{ f.T(screen.quote) }}</p>
+      </div>
+    </div>
+    <div v-else style="flex:1;display:flex;flex-direction:column;justify-content:center">
       <div class="relate-label">{{ $t('relateQ') }}</div>
       <div class="quote-card">
         <div class="qico" v-html="ic('messagecircle')" />

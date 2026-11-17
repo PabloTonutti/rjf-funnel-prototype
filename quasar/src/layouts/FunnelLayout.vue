@@ -25,12 +25,17 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useFunnel } from 'stores/funnel'
 import { SCREENS, PHASES } from 'src/data/screens'
 import logo from 'assets/jobwinner-logo.png'
 
 const f = useFunnel()
+
+// Los textos de i18n ($t: «Do you relate…», Yes/No, «Select all that apply») siguen el idioma del funnel
+const { locale } = useI18n({ useScope: 'global' })
+watch(() => f.lang, l => { locale.value = l }, { immediate: true })
 
 // Enter advances when a Continue button is enabled (same as the prototype)
 function onKey (e) {

@@ -690,3 +690,41 @@ main.pwmode{overflow:visible}
 .icon-list.il-v2 .row.hide{opacity:0;transform:translateY(12px)}
 .icon-list.il-v2 .row p{margin:0}
 @media (prefers-reduced-motion:reduce){.icon-list.il-v2 .row{transition:none}}
+
+/* Relate v2 (paso HOW WE HELP nuevo) */
+.rel2{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:6px}
+.rel2 .qtitle{margin-bottom:18px}
+.rel2-card{background:var(--jw-tint);border:1.5px solid #CFE2FB;border-radius:24px;padding:22px 26px 34px;max-width:460px;margin:0 auto;width:100%}
+.rel2-q{display:block;font-family:Georgia,'Times New Roman',serif;font-size:84px;line-height:.9;height:52px;color:var(--jw-blue);font-weight:700}
+.rel2-card p{font-family:var(--pjs);font-weight:700;font-size:23px;line-height:1.35;color:var(--jw-ink);text-wrap:balance;margin:0}
+/* Compare v2 */
+.cmp2{justify-content:flex-start;padding-top:4px}
+.cmp2-sub b{color:var(--jw-ink)}
+.cmp2-box{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--jw-line);border-radius:20px;overflow:hidden;margin:16px auto 0;width:100%;max-width:480px;box-shadow:var(--shadow)}
+.cmp2-col{padding:14px 10px 12px;display:grid;gap:8px;align-content:start;background:#fff}
+.cmp2-col.jw{background:#EEF6EA}
+.cmp2-hd{font-size:12.5px;font-weight:800;color:var(--jw-slate);text-align:center;padding:2px 0 6px;display:flex;align-items:center;justify-content:center;gap:5px}
+.cmp2-col.jw .cmp2-hd{color:var(--jw-ink)}
+.cmp2-cup{display:flex;color:var(--jw-blue)}
+.cmp2-job{display:flex;align-items:center;gap:7px;border-radius:12px;padding:8px;color:#fff}
+.cmp2-job.good{background:#5FAE7F}.cmp2-job.mid{background:#F2C037;color:var(--jw-ink)}.cmp2-job.bad{background:#E07A6E}
+.cmp2-logo{flex:none;width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.55)}
+.cmp2-lines{flex:1;display:grid;gap:4px;min-width:0}.cmp2-lines i{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.6)}.cmp2-lines i+i{width:65%}
+.cmp2-job b{font-family:var(--pjs);font-size:14px;line-height:1;text-align:right;display:grid}.cmp2-job b small{font-size:9.5px;font-weight:700;opacity:.9}
+/* Bar chart (paso HOW WE HELP nuevo) */
+.bc{justify-content:flex-start;padding-top:4px}
+.bc-chart{position:relative;width:100%;max-width:440px;height:300px;margin:20px auto 0;border-left:2px solid #B9C6DA;border-bottom:2px solid #B9C6DA}
+.bc-axis{position:absolute;top:-6px;left:10px;font-size:12px;color:var(--jw-slate)}
+.bc-grid{position:absolute;inset:24px 0 0 0;display:grid;grid-template-rows:repeat(7,1fr)}.bc-grid i{border-top:1px solid #E3E9F2}
+.bc-bars{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:6%;padding:0 8% 0 10%;align-items:end}
+.bc-col{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end}
+.bc-bar{border-radius:12px 12px 0 0}
+.bc-bar.low{height:12%;background:#D5DEEA}
+.bc-bar.high{height:12%;background:var(--jw-blue);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:22px;overflow:hidden;transition:height 1s cubic-bezier(.2,.8,.3,1)}
+.bc-bar.high.grow{height:92%}
+.bc-bar.high b{font-family:var(--pjs);font-size:48px;line-height:1;font-weight:800}
+.bc-bar.high small{font-size:14px;font-weight:700;margin-top:4px;text-align:center;line-height:1.25;padding:0 6px}
+.bc-lbl{position:absolute;bottom:-34px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--jw-slate)}
+.bc-note{margin-top:48px}
+@media (prefers-reduced-motion:reduce){.bc-bar.high{transition:none}}
+@media (min-width:700px){.rel2-card p{font-size:27px}.rel2-card{max-width:560px;padding:26px 36px 40px}.cmp2-box{max-width:560px}.cmp2-job{padding:10px}.bc-chart{height:340px}}
