@@ -42,6 +42,7 @@ import PerWeekScreen from 'components/screens/PerWeekScreen.vue'
 import ProfileDoneScreen from 'components/screens/ProfileDoneScreen.vue'
 import BarChartScreen from 'components/screens/BarChartScreen.vue'
 import TimelineScreen from 'components/screens/TimelineScreen.vue'
+import HubScreen from 'components/screens/HubScreen.vue'
 
 const f = useFunnel()
 
@@ -97,7 +98,8 @@ const MAP = {
   perweek: PerWeekScreen,
   profiledone: ProfileDoneScreen,
   barchart: BarChartScreen,
-  timeline: TimelineScreen
+  timeline: TimelineScreen,
+  hub: HubScreen
 }
 
 const comp = computed(() => MAP[f.screen.type])

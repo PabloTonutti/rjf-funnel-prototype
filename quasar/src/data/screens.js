@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','HOW WE HELP','ALL IN ONE','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','heart','grid','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','HOW WE HELP','ALL IN ONE','WHY JOBWINNER','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','heart','grid','award','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -322,34 +322,29 @@ const S = [
 {id:'PCHARTH',phase:14,type:'barchart',mult:'10X',
  title:['Apply to 10X more jobs with AI','Aplica a 10X más ofertas con IA'],
  body:['JobWinner prepares each application for you. You review it and send it.','JobWinner te prepara cada candidatura. Tú la revisas y la envías.']},
-/* ALL IN ONE (phase 15) — paso nuevo (2026-11-17): resumen de todo lo que hace JobWinner (CV, ofertas, candidaturas, entrevistas), mismo diseño que PAIBEN */
-{id:'PALLIN',phase:15,type:'aibenefits',fillDesk:true,
- chip:['All-in-one job search','Búsqueda de empleo todo en uno'],
- title:['Everything you need to land your next job, in one\u00A0place','Todo lo que necesitas para conseguir tu próximo empleo, en un solo\u00A0sitio'],
+/* ALL IN ONE (phase 15) — hub «todo en uno» (opción C5, 2026-11-17); sustituye a PALLIN/PALLIN2/PHOWTL */
+{id:'PALLIN',phase:15,type:'hub',fillDesk:true,
+ chip:['Everything in one place','Todo en un solo sitio'],
+ title:['<span class="hlb">JobWinner.ai</span> helps you in your job search journey, from start to finish','<span class="hlb">JobWinner.ai</span> te ayuda en tu búsqueda de empleo, de principio a fin'],
+ pill:['25+ AI tools in one platform','+25 herramientas de IA en una plataforma'],
  items:[
-  {i:'doccheck',c:'b',t:['<em>Optimize your resume</em> to get past ATS filters','<em>Optimiza tu CV</em> para superar los filtros ATS']},
-  {i:'search',c:'g',t:['<em>Find jobs</em> that truly match you','<em>Encuentra ofertas</em> que de verdad encajan contigo']},
-  {i:'pen',c:'y',t:['<em>Tailor every application</em> with AI','<em>Personaliza cada candidatura</em> con IA']},
-  {i:'mic',c:'t',t:['<em>Prepare for interviews</em> with AI','<em>Prepárate las entrevistas</em> con IA']}]},
-/* Alternativas a PALLIN (2026-11-17), para comparar: PALLIN2 (25+ herramientas, 2 columnas + ilustración) y PHOWTL (timeline de cómo funciona JobWinner) */
-{id:'PALLIN2',phase:15,type:'aibenefits',cols2:true,illo:'allinone',
- title:['25+ AI tools to land your next remote job','Más de 25 herramientas de IA para conseguir tu próximo empleo en remoto'],
+  {i:'doccheck',c:'b',t:['Optimize your resume','Optimiza tu CV']},
+  {i:'search',c:'g',t:['Find matching jobs','Encuentra tus ofertas']},
+  {i:'pen',c:'y',t:['Tailor every application','Personaliza cada candidatura']},
+  {i:'mic',c:'t',t:['Prepare for interviews','Prepara las entrevistas']}]},
+/* WHY JOBWINNER (phase 16) — paso nuevo (2026-11-17): reseñas («Thanks for trusting us», copia de PREV) + hub C5 */
+{id:'PREVW',phase:16,type:'reviews',
+ title:['Thanks for trusting us','Gracias por confiar en nosotros']},
+{id:'PHUBW',phase:16,type:'hub',fillDesk:true,
+ chip:['Everything in one place','Todo en un solo sitio'],
+ title:['<span class="hlb">JobWinner.ai</span> helps you in your job search journey, from start to finish','<span class="hlb">JobWinner.ai</span> te ayuda en tu búsqueda de empleo, de principio a fin'],
+ pill:['25+ AI tools in one platform','+25 herramientas de IA en una plataforma'],
  items:[
-  {i:'doccheck',c:'b',t:['<em>Resume</em> optimized for ATS','<em>CV</em> optimizado para el ATS']},
-  {i:'search',c:'g',t:['<em>Job matches</em> picked for you','<em>Ofertas</em> elegidas para ti']},
-  {i:'pen',c:'y',t:['<em>Applications</em> tailored with AI','<em>Candidaturas</em> adaptadas con IA']},
-  {i:'mic',c:'t',t:['<em>Interview</em> practice with AI','<em>Entrevistas</em> practicadas con IA']}]},
-{id:'PHOWTL',phase:15,type:'timeline',
- chip:['How JobWinner works','Cómo funciona JobWinner'],
- title:['From resume to job offer, step by step','Del CV a la oferta, paso a paso'],
- items:[
-  {i:'doccheck',t:['Upload and <em>optimize your resume</em>','Sube y <em>optimiza tu CV</em>']},
-  {i:'search',t:['Find matching jobs from <em>200K+ remote listings</em>','Encuentra ofertas que encajan entre <em>+200K empleos en remoto</em>']},
-  {i:'pen',t:['<em>Tailor your resume and cover letter</em> to each job','<em>Adapta tu CV y tu carta</em> a cada oferta']},
-  {i:'users2',t:['<em>Start getting interviews</em>','<em>Empieza a conseguir entrevistas</em>']},
-  {i:'mic',t:['<em>Prepare for interviews</em> with AI','<em>Prepara las entrevistas</em> con IA']},
-  {i:'medal',t:['<em>Land your next role</em>','<em>Consigue tu próximo empleo</em>']}]},
-{id:'PPLAN3',phase:16,type:'plansteps',
+  {i:'doccheck',c:'b',t:['Optimize your resume','Optimiza tu CV']},
+  {i:'search',c:'g',t:['Find matching jobs','Encuentra tus ofertas']},
+  {i:'pen',c:'y',t:['Tailor every application','Personaliza cada candidatura']},
+  {i:'mic',c:'t',t:['Prepare for interviews','Prepara las entrevistas']}]},
+{id:'PPLAN3',phase:17,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -360,10 +355,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:17,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:17,type:'result'},
-{id:'P50',phase:17,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:17,type:'success'}
+{id:'P48',phase:18,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:18,type:'result'},
+{id:'P50',phase:18,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:18,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).

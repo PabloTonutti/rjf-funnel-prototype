@@ -766,3 +766,19 @@ main.pwmode{overflow:visible}
 .tl2-step.last .tl2-n{color:#4E7A3A}
 @media (prefers-reduced-motion:reduce){.tl2-step{transition:none}}
 @media (min-width:700px){.tl2-list{max-width:520px}.tl2-tx b{font-size:17px}.tl2-ic{width:54px;height:54px}.tl2-list::before{left:26px}.ai-list.ai-cols2 .ai-row b{font-size:16px}}
+
+/* Hub «todo en uno» (C5): PALLIN y PHUBW */
+.hub{justify-content:flex-start;padding-top:4px}
+.hub h1 .hlb{color:var(--jw-blue)}
+.hub-orb{position:relative;width:300px;max-width:100%;height:300px;margin:12px auto 4px}
+.hub-orb::before{content:'';position:absolute;inset:40px;border-radius:50%;border:2px dashed #CFE2FB}
+.hub-core{position:absolute;left:50%;top:50%;width:104px;height:104px;margin:-52px 0 0 -52px;border-radius:50%;background:#DCEBFE;border:2px solid #BBD7FB;display:grid;place-items:center;box-shadow:0 0 0 12px #F1F7FE,0 10px 24px rgba(0,122,255,.15)}
+.hub-core svg{width:66%;height:auto}
+.hub-sat{position:absolute;width:118px;display:grid;justify-items:center;gap:6px;background:#fff;border:1.5px solid var(--jw-line);border-radius:14px;padding:10px 6px;box-shadow:0 6px 16px rgba(2,17,45,.06);opacity:0;transform:scale(.92);transition:opacity .4s ease,transform .4s cubic-bezier(.2,.8,.3,1)}
+.hub-sat.show{opacity:1;transform:none}
+.hub-sat b{font-size:12.5px;line-height:1.25;font-weight:700}
+.hub-sat .ai-ic{width:40px;height:40px}
+.hub-sat.s0{left:0;top:6px}.hub-sat.s1{right:0;top:6px}.hub-sat.s2{left:0;bottom:6px}.hub-sat.s3{right:0;bottom:6px}
+.hub-pill{align-self:center;background:var(--jw-tint);color:var(--jw-blue);font-weight:800;font-size:13px;border-radius:999px;padding:6px 14px;margin-top:6px}
+@media (prefers-reduced-motion:reduce){.hub-sat{transition:none}}
+@media (min-width:700px){.hub-orb{width:400px;height:350px}.hub-sat{width:150px;padding:12px 8px}.hub-sat b{font-size:14px}.hub-core{width:128px;height:128px;margin:-64px 0 0 -64px}.hub-orb::before{inset:44px 70px}}
