@@ -304,7 +304,7 @@ const S = [
 {id:'P25H',phase:14,fillDesk:true,bigVis:true,type:'inter',illo:'radar',eyebrow:['Good news for you','Buenas noticias para ti'],
  title:['New jobs appear on JobWinner first','Las ofertas nuevas aparecen antes en JobWinner'],
  body:['We scan 1,000+ job sources every day. New jobs appear here first. Apply before others see these listings.','Escaneamos 1.000+ fuentes de empleo cada día. Los nuevos empleos aparecen aquí primero. Aplica antes de que otros vean estas ofertas.']},
-{id:'PB1bH',phase:14,type:'iceberg',v2:true,
+{id:'PB1bH',phase:14,type:'iceberg',v2:true,fillDesk:true,bigVis:true,
  title:['Access 750k+ hidden jobs monthly','Accede a más de 750k empleos ocultos al mes'],
  sub:['Get access to private roles and exclusive listings not found on public job boards','Accede a puestos privados y ofertas exclusivas que no aparecen en los portales de empleo públicos'],
  note:['Most job seekers only see 1/4 of opportunities','La mayoría de candidatos solo ve 1/4 de las oportunidades']},
