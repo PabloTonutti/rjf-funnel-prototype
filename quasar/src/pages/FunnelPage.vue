@@ -41,6 +41,7 @@ import AiBenefitsScreen from 'components/screens/AiBenefitsScreen.vue'
 import PerWeekScreen from 'components/screens/PerWeekScreen.vue'
 import ProfileDoneScreen from 'components/screens/ProfileDoneScreen.vue'
 import BarChartScreen from 'components/screens/BarChartScreen.vue'
+import TimelineScreen from 'components/screens/TimelineScreen.vue'
 
 const f = useFunnel()
 
@@ -95,7 +96,8 @@ const MAP = {
   aibenefits: AiBenefitsScreen,
   perweek: PerWeekScreen,
   profiledone: ProfileDoneScreen,
-  barchart: BarChartScreen
+  barchart: BarChartScreen,
+  timeline: TimelineScreen
 }
 
 const comp = computed(() => MAP[f.screen.type])

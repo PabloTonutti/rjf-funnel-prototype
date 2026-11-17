@@ -742,3 +742,26 @@ main.pwmode{overflow:visible}
 /* Eyebrow más grande en las slides de dato/ilustración del HOW WE HELP nuevo (bigVis) */
 .eyebrow.eb-lg{font-size:14px;letter-spacing:.12em;margin-bottom:12px}
 @media (min-width:700px){.eyebrow.eb-lg{font-size:15px}}
+
+/* PALLIN2: tarjetas en 2 columnas (también en móvil) con icono arriba + ilustración all-in-one */
+.ai-illo{margin:0 0 8px}
+.ai-list.ai-cols2{grid-template-columns:1fr 1fr;gap:10px;max-width:520px}
+.ai-list.ai-cols2 .ai-row{flex-direction:column;align-items:flex-start;gap:10px;padding:14px}
+.ai-list.ai-cols2 .ai-row b{font-size:14px;line-height:1.35}
+.ai-list.ai-cols2 .ai-ic{width:42px;height:42px}
+/* PHOWTL: timeline vertical */
+.tl2{justify-content:flex-start;padding-top:4px}
+.tl2-list{list-style:none;margin:16px auto 0;padding:0;width:100%;max-width:460px;text-align:left;position:relative}
+.tl2-list::before{content:'';position:absolute;left:23px;top:20px;bottom:30px;width:2px;background:repeating-linear-gradient(180deg,#CFE2FB 0 6px,transparent 6px 11px)}
+.tl2-step{display:flex;align-items:center;gap:14px;padding:6px 0;position:relative;opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s cubic-bezier(.2,.8,.3,1)}
+.tl2-step.show{opacity:1;transform:none}
+.tl2-ic{flex:none;width:48px;height:48px;border-radius:50%;background:#fff;border:2px solid #CFE2FB;display:grid;place-items:center;position:relative;z-index:1}
+.tl2-ic svg{width:60%;height:60%}
+.tl2-tx{display:grid;gap:1px;min-width:0}
+.tl2-n{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--jw-blue)}
+.tl2-tx b{font-size:15px;font-weight:700;line-height:1.35;color:var(--jw-ink);text-wrap:pretty}
+.tl2-tx b em{font-style:normal;color:var(--jw-blue)}
+.tl2-step.last .tl2-ic{background:var(--jw-success-bg);border-color:#88AB75;box-shadow:0 0 0 4px #EEF6EA}
+.tl2-step.last .tl2-n{color:#4E7A3A}
+@media (prefers-reduced-motion:reduce){.tl2-step{transition:none}}
+@media (min-width:700px){.tl2-list{max-width:520px}.tl2-tx b{font-size:17px}.tl2-ic{width:54px;height:54px}.tl2-list::before{left:26px}.ai-list.ai-cols2 .ai-row b{font-size:16px}}

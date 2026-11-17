@@ -1,9 +1,10 @@
 <template>
   <div class="wrap"><div class="screen"><div class="inter ai-ben">
-    <span class="ai-chip">✨ {{ f.T(screen.chip) }}</span>
+    <div v-if="screen.illo" class="illo ai-illo" v-html="ILLO[screen.illo]" />
+    <span v-if="screen.chip" class="ai-chip">✨ {{ f.T(screen.chip) }}</span>
     <h1>{{ f.T(screen.title) }}</h1>
-    <!-- Las tarjetas aparecen una a una (como en RJF); con movimiento reducido salen todas a la vez -->
-    <div class="ai-list">
+    <!-- Las tarjetas aparecen una a una (como en RJF); con movimiento reducido salen todas a la vez. cols2: 2 columnas también en móvil, icono arriba -->
+    <div class="ai-list" :class="{ 'ai-cols2': screen.cols2 }">
       <div v-for="(it, k) in screen.items" :key="k" class="ai-row" :class="{ show: shown > k }">
         <span class="ai-ic" :class="it.c" v-html="duo(it.i)" />
         <b v-html="f.T(it.t)" />
@@ -16,7 +17,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
-import { duo } from 'assets/graphics'
+import { duo, ILLO } from 'assets/graphics'
 import FootContinue from './FootContinue.vue'
 
 const props = defineProps({ screen: { type: Object, required: true } })
