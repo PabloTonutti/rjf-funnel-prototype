@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','HOW WE HELP','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','heart','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -292,7 +292,32 @@ const S = [
 {id:'PPROFB',phase:13,type:'profiledone',variant:'pill',fillDesk:true,
  title:['Thanks for sharing your details','Gracias por compartir tus datos'],
  body:['We now have a good understanding of your <b>profile</b> and <b>goals</b>.','Ya entendemos bien tu <b>perfil</b> y tus <b>objetivos</b>.']},
-{id:'PPLAN3',phase:14,type:'plansteps',
+/* HOW WE HELP (phase 14) — paso nuevo (2026-11-17): pre-suasión recortada a 13 pantallas (copias de las de la fase 5, que se mantienen). Textos nuevos en P25H, P30H, P42H y P47H */
+{id:'P46H',phase:14,type:'multi',title:['What stops you from applying to more jobs?','¿Qué te impide aplicar a más empleos?'],
+ opts:[{i:'hourglass',t:["I don't have enough time",'No tengo suficiente tiempo']},{i:'meh',t:['Forms are exhausting','Los formularios agotan']},{i:'eye',t:['Too many options to track','Demasiadas opciones que seguir']},{i:'clockfull',t:['Deadlines pass too quickly','Los plazos pasan demasiado rápido']},{i:'docdash',t:['Lose track of applications','Pierdo el hilo de mis candidaturas']},{i:'compass',t:['Get distracted from applying','Me distraigo y no aplico']}]},
+{id:'P23H',phase:14,type:'relate',quote:['Every job I like on LinkedIn already has 200+ applications','Cada empleo que me gusta en LinkedIn ya tiene 200+ candidaturas']},
+{id:'P24H',phase:14,type:'stat',pct:57,eyebrow:['Bad news','Malas noticias'],
+ title:["It's easy to feel invisible",'Es fácil sentirse invisible'],
+ body:['57% of remote jobs get 300+ applications within 24 hours. No wonder it’s easy to feel invisible.','El 57% de los empleos remotos reciben 300+ candidaturas en 24 horas. No es de extrañar que sea fácil sentirse invisible.']},
+{id:'P25H',phase:14,type:'inter',illo:'radar',eyebrow:['Good news for you','Buenas noticias para ti'],
+ title:['New jobs appear on JobWinner first','Las ofertas nuevas aparecen antes en JobWinner'],
+ body:['We scan 1,000+ job sources every day. New jobs appear here first. Apply before others see these listings.','Escaneamos 1.000+ fuentes de empleo cada día. Los nuevos empleos aparecen aquí primero. Aplica antes de que otros vean estas ofertas.']},
+{id:'P26H',phase:14,type:'relate',quote:["I'm afraid my resume disappears into a black hole",'Me da miedo que mi CV desaparezca en un agujero negro']},
+{id:'P35H',phase:14,type:'relate',quote:['I worry ATS filters out my resume before a recruiter sees it','Me preocupa que el ATS filtre mi CV antes de que lo vea un reclutador']},
+{id:'P29H',phase:14,type:'stat',pct:75,eyebrow:['What really happens','Lo que realmente pasa'],
+ title:['Most resumes never reach a human','La mayoría de CV nunca llegan a un humano'],
+ body:['75% of resumes never reach a human recruiter. ATS systems auto-reject them, often by mistake.','El 75% de los CV nunca llegan a un reclutador humano. Los sistemas ATS los rechazan automáticamente, a menudo por error.']},
+{id:'P30H',phase:14,type:'inter',illo:'mailflow',title:['From black holes to responses','De agujeros negros a respuestas'],
+ body:['JobWinner optimizes your resume for ATS so it reaches the humans who actually decide.','JobWinner optimiza tu CV para el ATS para que llegue a las personas que deciden.']},
+{id:'P41H',phase:14,type:'relate',quote:['I rarely find job listings that match my background','Rara vez encuentro ofertas que encajen con mi perfil']},
+{id:'P40H',phase:14,type:'relate',quote:['Sometimes I see job listings that feel like fake or scam','A veces veo ofertas que parecen falsas o estafa']},
+{id:'P42H',phase:14,type:'compare',title:['A smarter way to search','Una forma más inteligente de buscar'],
+ body:["80% of listings aren't actively hiring. JobWinner only shows you verified jobs that are, and that fit you.",'El 80% de las ofertas no están contratando. JobWinner solo te muestra ofertas verificadas que sí lo están y que encajan contigo.']},
+{id:'P43H',phase:14,type:'relate',quote:["I'm sick of filling out the same job application forms over and over again",'Estoy harto de rellenar los mismos formularios de solicitud una y otra vez']},
+{id:'P47H',phase:14,type:'inter',illo:'x3',
+ title:['JobWinner prepares a tailored application for every matching job','JobWinner prepara una solicitud a medida para cada oferta que encaja contigo'],
+ body:['Resume and cover letter tailored to each listing in minutes, not hours. Get 3X more quality applications without the repetitive forms.','CV y carta adaptados a cada oferta en minutos, no en horas. Consigue 3X más candidaturas de calidad sin formularios repetitivos.']},
+{id:'PPLAN3',phase:15,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -303,10 +328,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:15,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:15,type:'result'},
-{id:'P50',phase:15,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:15,type:'success'}
+{id:'P48',phase:16,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:16,type:'result'},
+{id:'P50',phase:16,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:16,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
