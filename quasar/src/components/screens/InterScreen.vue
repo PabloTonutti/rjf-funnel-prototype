@@ -4,8 +4,8 @@
     <div v-if="screen.eyebrow" class="eyebrow">{{ f.T(screen.eyebrow) }}</div>
     <h1 :class="{ 'h1-xl': screen.big }">{{ f.T(screen.title) }}</h1>
     <p v-if="body" class="subtitle" :class="{ 'body-strong': screen.id.startsWith('PTHANKS') }" style="margin-bottom:0">{{ body }}</p>
-    <div v-if="screen.list" class="icon-list">
-      <div v-for="(r, k) in screen.list" :key="k" class="row">
+    <div v-if="screen.list" class="icon-list" :class="{ 'il-v2': screen.listV2 }">
+      <div v-for="(r, k) in screen.list" :key="k" class="row" :class="[screen.listV2 ? 'c' + (k % 4) : '', { hide: screen.listV2 && shown <= k }]">
         <span class="ic" v-html="iconFor(r.i)" />
         <p>{{ f.T(r.t) }}</p>
       </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useFunnel } from 'stores/funnel'
 import { ILLO, DUO, duo, ic } from 'assets/graphics'
 import FootContinue from './FootContinue.vue'
@@ -29,4 +29,15 @@ const body = computed(() => {
   return typeof b === 'function' ? b(f, f.lang) : f.T(b)
 })
 const iconFor = n => (DUO[n] ? duo(n) : ic(n))
+
+// listV2: las filas aparecen una a una (como PAIBEN); con movimiento reducido salen todas a la vez
+const shown = ref(props.screen.listV2 ? 0 : 99)
+let timers = []
+onMounted(() => {
+  if (!props.screen.listV2) return
+  const n = (props.screen.list || []).length
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { shown.value = n; return }
+  for (let k = 0; k < n; k++) timers.push(setTimeout(() => { shown.value = k + 1 }, 400 + k * 450))
+})
+onUnmounted(() => timers.forEach(clearTimeout))
 </script>

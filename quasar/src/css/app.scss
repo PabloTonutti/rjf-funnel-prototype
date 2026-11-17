@@ -598,6 +598,9 @@ main.pwmode{overflow:visible}
   #shell.fill .pd-row{padding:16px 20px;font-size:17px}
   #shell.fill .pd-box{max-width:520px;font-size:18px;padding:20px 26px}
   #shell.fill .pd-pill{font-size:14px;padding:7px 16px}
+  #shell.fill .il-v2{max-width:520px;margin:10px auto 0;width:100%}
+  #shell.fill .il-v2 .row{padding:12px 18px}
+  #shell.fill .il-v2 .row p{font-size:16.5px}
   header{padding:16px 40px 0}
   .logo-wrap img{height:31px}
   #progWrap{max-width:600px;margin:0 auto}
@@ -681,3 +684,14 @@ main.pwmode{overflow:visible}
 .pd-next i{width:22px;height:22px;border-radius:50%;border:2px dashed var(--jw-blue);flex:none}
 .pd-box{margin:12px auto 0;max-width:440px;background:var(--jw-cloud);border-radius:14px;padding:16px 20px;font-size:16px;line-height:1.5;color:var(--jw-ink);text-wrap:balance}
 .pd-box b{color:var(--jw-blue);font-weight:700}
+
+/* icon-list v2 (P21H «The job market got brutal»): filas que entran una a una, texto centrado con el icono, fondo de icono por color */
+.icon-list.il-v2 .row{background:#fff;box-shadow:var(--shadow);border-radius:14px;padding:12px 14px;transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.3,1)}
+.icon-list.il-v2 .row.hide{opacity:0;transform:translateY(12px)}
+.icon-list.il-v2 .row p{margin:0}
+.icon-list.il-v2 .row .ic{width:44px;height:44px;border:0;border-radius:12px}
+.icon-list.il-v2 .row.c0 .ic{background:var(--jw-tint);color:var(--jw-blue)}
+.icon-list.il-v2 .row.c1 .ic{background:var(--jw-success-bg);color:#4E7A3A}
+.icon-list.il-v2 .row.c2 .ic{background:#FDF3D6;color:#A87700}
+.icon-list.il-v2 .row.c3 .ic{background:#FBEDE6;color:#C2643E}
+@media (prefers-reduced-motion:reduce){.icon-list.il-v2 .row{transition:none}}
