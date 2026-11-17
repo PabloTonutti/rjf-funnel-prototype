@@ -292,9 +292,9 @@ const S = [
 {id:'PPROFB',phase:13,type:'profiledone',variant:'pill',fillDesk:true,
  title:['Thanks for sharing your details','Gracias por compartir tus datos'],
  body:['We now have a good understanding of your <b>profile</b> and <b>goals</b>.','Ya entendemos bien tu <b>perfil</b> y tus <b>objetivos</b>.']},
-/* HOW WE HELP (phase 14) — paso nuevo (2026-11-17): pre-suasión recortada a 13 pantallas (copias de las de la fase 5, que se mantienen). Textos nuevos en P25H, P30H, P42H y P47H */
-{id:'P46H',phase:14,type:'multi',title:['What stops you from applying to more jobs?','¿Qué te impide aplicar a más empleos?'],
- opts:[{i:'hourglass',t:["I don't have enough time",'No tengo suficiente tiempo']},{i:'meh',t:['Forms are exhausting','Los formularios agotan']},{i:'eye',t:['Too many options to track','Demasiadas opciones que seguir']},{i:'clockfull',t:['Deadlines pass too quickly','Los plazos pasan demasiado rápido']},{i:'docdash',t:['Lose track of applications','Pierdo el hilo de mis candidaturas']},{i:'compass',t:['Get distracted from applying','Me distraigo y no aplico']}]},
+/* HOW WE HELP (phase 14) — paso nuevo (2026-11-17): pre-suasión recortada a 13 pantallas (copias de las de la fase 5, que se mantienen). Textos nuevos en P25H, P30H, P42H y P47H. La primera slide es PSTRATH (estrategias probadas) en lugar de P46 */
+{id:'PSTRATH',phase:14,type:'multi',title:['Which job search strategies have you tried before?','¿Qué estrategias de búsqueda de empleo has probado antes?'],
+ opts:[{i:'laptop',t:['Job boards / direct applications (LinkedIn, Indeed, etc.)','Portales de empleo / candidaturas directas (LinkedIn, Indeed, etc.)']},{i:'family',t:['Employee referral (friend or colleague)','Recomendación de un empleado (amigo o compañero)']},{i:'building',t:['Recruitment agencies','Agencias de reclutamiento']},{i:'globe',t:['Networking (events, communities)','Networking (eventos, comunidades)']},{i:'pen',t:['Personal blog / social media','Blog personal / redes sociales']},{i:'notsure',t:['Other','Otra']}]},
 {id:'P23H',phase:14,type:'relate',quote:['Every job I like on LinkedIn already has 200+ applications','Cada empleo que me gusta en LinkedIn ya tiene 200+ candidaturas']},
 {id:'P24H',phase:14,type:'stat',pct:57,eyebrow:['Bad news','Malas noticias'],
  title:["It's easy to feel invisible",'Es fácil sentirse invisible'],
