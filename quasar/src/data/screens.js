@@ -315,7 +315,7 @@ const S = [
 {id:'P30H',phase:14,fillDesk:true,bigVis:true,type:'inter',illo:'mailflow',title:['From black holes to responses','De agujeros negros a respuestas'],
  body:['JobWinner optimizes your resume for ATS so it reaches the humans who actually decide.','JobWinner optimiza tu CV para el ATS para que llegue a las personas que deciden.']},
 {id:'P41H',phase:14,type:'relate',v2:true,quote:['I rarely find job listings that match my background','Rara vez encuentro ofertas que encajen con mi perfil']},
-{id:'P40H',phase:14,type:'relate',v2:true,quote:['Sometimes I see job listings that feel like fake or scam','A veces veo ofertas que parecen falsas o estafa']},
+{id:'P39H',phase:14,type:'relate',v2:true,quote:["I'm exhausted jumping between different job sites, checking the same positions",'Estoy agotado de saltar entre distintos portales revisando los mismos puestos']},
 {id:'P42H',phase:14,type:'compare',v2:true,title:['A smarter way to search with JobWinner','Una forma más inteligente de buscar con JobWinner'],
  body:["80% of listings aren't actively hiring. JobWinner only shows you verified jobs that are, and that fit you.",'El 80% de las ofertas no están contratando. JobWinner solo te muestra ofertas verificadas que sí lo están y que encajan contigo.']},
 {id:'P43H',phase:14,type:'relate',v2:true,quote:["I'm sick of filling out the same job application forms over and over again",'Estoy harto de rellenar los mismos formularios de solicitud una y otra vez']},
