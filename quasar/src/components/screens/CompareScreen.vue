@@ -5,7 +5,7 @@
     <p class="subtitle cmp2-sub" v-html="f.T(screen.body)" />
     <div class="cmp2-box">
       <div class="cmp2-col">
-        <div class="cmp2-hd">{{ f.T(['Typical job boards', 'Portales habituales']) }}</div>
+        <div class="cmp2-hd cmp2-brands" :aria-label="'LinkedIn · Indeed'"><span class="li-mark">Linked<i>in</i></span><span class="in-mark">indeed</span></div>
         <div v-for="(p, i) in trad" :key="i" class="cmp2-job" :class="tone(p)">
           <span class="cmp2-logo" /><span class="cmp2-lines"><i /><i /></span><b>{{ p }}%<small>match</small></b>
         </div>

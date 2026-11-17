@@ -724,7 +724,12 @@ main.pwmode{overflow:visible}
 .bc-bar.high.grow{height:92%}
 .bc-bar.high b{font-family:var(--pjs);font-size:48px;line-height:1;font-weight:800}
 .bc-bar.high small{font-size:14px;font-weight:700;margin-top:4px;text-align:center;line-height:1.25;padding:0 6px}
-.bc-lbl{position:absolute;bottom:-34px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--jw-slate)}
-.bc-note{margin-top:48px}
+.bc-lbl{position:absolute;bottom:-46px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--jw-slate)}
+.bc-note{margin-top:62px}
 @media (prefers-reduced-motion:reduce){.bc-bar.high{transition:none}}
 @media (min-width:700px){.rel2-card p{font-size:27px}.rel2-card{max-width:560px;padding:26px 36px 40px}.cmp2-box{max-width:560px}.cmp2-job{padding:10px}.bc-chart{height:340px}}
+
+.cmp2-brands{gap:10px !important}
+.li-mark{font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:15px;color:#0A66C2;letter-spacing:-.2px;display:inline-flex;align-items:center}
+.li-mark i{font-style:normal;background:#0A66C2;color:#fff;border-radius:3px;padding:0 3px;margin-left:2px;font-size:13px;line-height:17px}
+.in-mark{font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:16px;color:#003A9B;letter-spacing:-.3px}
