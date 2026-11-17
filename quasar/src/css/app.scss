@@ -738,3 +738,7 @@ main.pwmode{overflow:visible}
 .li-mark{font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:15px;color:#0A66C2;letter-spacing:-.2px;display:inline-flex;align-items:center}
 .li-mark i{font-style:normal;background:#0A66C2;color:#fff;border-radius:3px;padding:0 3px;margin-left:2px;font-size:13px;line-height:17px}
 .in-mark{font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:16px;color:#003A9B;letter-spacing:-.3px}
+
+/* Eyebrow más grande en las slides de dato/ilustración del HOW WE HELP nuevo (bigVis) */
+.eyebrow.eb-lg{font-size:14px;letter-spacing:.12em;margin-bottom:12px}
+@media (min-width:700px){.eyebrow.eb-lg{font-size:15px}}

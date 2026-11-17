@@ -2,8 +2,8 @@
 // Every text is an [en, es] pair. Branch conditions receive the funnel store.
 // The previous flow is preserved at /old (git tag: pre-restructure).
 /* eslint-disable */
-const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','HOW WE HELP','YOUR PLAN','YOUR RESULTS'];
-const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','heart','map','award'];
+const PHASES = ['CURRENT STATUS','AI EXPERIENCE','YOUR RESUME','YOUR GOALS','JOB PREFERENCES','HOW WE HELP','GET STARTED','SALARY','YOUR MATCHES','WELCOME','AI EXPERIENCE','YOUR GOALS','JOB PREFERENCES','JOB PREFERENCES','HOW WE HELP','ALL IN ONE','YOUR PLAN','YOUR RESULTS'];
+const PHASE_ICONS = ['user','zap','file-text','target','sliders','heart','user','coins','search','heart','zap','target','sliders','sliders','heart','grid','map','award'];
 const EU = ['Spain','France','Germany','Italy','Portugal','Netherlands','Belgium','Austria','Ireland','Sweden','Denmark','Finland','Poland','Czechia','Romania','Hungary','Greece','Bulgaria','Croatia','Slovakia','Slovenia','Lithuania','Latvia','Estonia','Luxembourg','Malta','Cyprus'];
 const CDATA = [['Spain','🇪🇸'],['France','🇫🇷'],['Germany','🇩🇪'],['Italy','🇮🇹'],['Portugal','🇵🇹'],['Netherlands','🇳🇱'],['Belgium','🇧🇪'],['Austria','🇦🇹'],['Ireland','🇮🇪'],['Sweden','🇸🇪'],['Denmark','🇩🇰'],['Finland','🇫🇮'],['Poland','🇵🇱'],['Czechia','🇨🇿'],['Romania','🇷🇴'],['Hungary','🇭🇺'],['Greece','🇬🇷'],['Bulgaria','🇧🇬'],['Croatia','🇭🇷'],['Slovakia','🇸🇰'],['Slovenia','🇸🇮'],['Lithuania','🇱🇹'],['Latvia','🇱🇻'],['Estonia','🇪🇪'],['Luxembourg','🇱🇺'],['Malta','🇲🇹'],['Cyprus','🇨🇾'],['United States','🇺🇸'],['United Kingdom','🇬🇧'],['Switzerland','🇨🇭'],['Norway','🇳🇴'],['Mexico','🇲🇽'],['Argentina','🇦🇷'],['Colombia','🇨🇴'],['Chile','🇨🇱'],['Peru','🇵🇪'],['Uruguay','🇺🇾'],['Ecuador','🇪🇨'],['Venezuela','🇻🇪'],['Brazil','🇧🇷'],['Canada','🇨🇦'],['Australia','🇦🇺'],['New Zealand','🇳🇿'],['Japan','🇯🇵'],['India','🇮🇳'],['Morocco','🇲🇦'],['Turkey','🇹🇷'],['United Arab Emirates','🇦🇪'],['South Africa','🇿🇦'],['Philippines','🇵🇭'],['Dominican Republic','🇩🇴'],['Other','🌍']].sort((a,b)=>a[0].localeCompare(b[0]));
 const COUNTRIES = CDATA.map(c=>c[0]);
@@ -298,7 +298,7 @@ const S = [
 {id:'P21H',phase:14,type:'inter',illo:'crowd',listV2:true,fillDesk:true,title:['The job market got brutal','El mercado se ha vuelto brutal'],
  list:[{i:'users',t:['Way more people competing for the same jobs','Mucha más gente compitiendo por los mismos empleos']},{i:'code',t:['Companies now use complex software to filter applications','Las empresas usan software complejo para filtrar candidaturas']},{i:'copy',t:['Most job boards show the same expired listings','La mayoría de portales muestran las mismas ofertas caducadas']},{i:'alerttri',t:['Fake listings are everywhere','Las ofertas falsas están por todas partes']}]},
 {id:'P23H',phase:14,type:'relate',v2:true,quote:['Every job I like on LinkedIn already has 200+ applications','Cada empleo que me gusta en LinkedIn ya tiene 200+ candidaturas']},
-{id:'P24H',phase:14,fillDesk:true,bigVis:true,type:'stat',pct:57,eyebrow:['Bad news','Malas noticias'],
+{id:'P24H',phase:14,fillDesk:true,bigVis:true,color:'#DE8F6E',type:'stat',pct:57,eyebrow:['Bad news','Malas noticias'],
  title:["It's easy to feel invisible",'Es fácil sentirse invisible'],
  body:['57% of remote jobs get 300+ applications within 24 hours. No wonder it’s easy to feel invisible.','El 57% de los empleos remotos reciben 300+ candidaturas en 24 horas. No es de extrañar que sea fácil sentirse invisible.']},
 {id:'P25H',phase:14,fillDesk:true,bigVis:true,type:'inter',illo:'radar',eyebrow:['Good news for you','Buenas noticias para ti'],
@@ -322,7 +322,16 @@ const S = [
 {id:'PCHARTH',phase:14,type:'barchart',mult:'10X',
  title:['Apply to 10X more jobs with AI','Aplica a 10X más ofertas con IA'],
  body:['JobWinner prepares each application for you. You review it and send it.','JobWinner te prepara cada candidatura. Tú la revisas y la envías.']},
-{id:'PPLAN3',phase:15,type:'plansteps',
+/* ALL IN ONE (phase 15) — paso nuevo (2026-11-17): resumen de todo lo que hace JobWinner (CV, ofertas, candidaturas, entrevistas), mismo diseño que PAIBEN */
+{id:'PALLIN',phase:15,type:'aibenefits',fillDesk:true,
+ chip:['All-in-one job search','Búsqueda de empleo todo en uno'],
+ title:['Everything you need to land your next job, in one\u00A0place','Todo lo que necesitas para conseguir tu próximo empleo, en un solo\u00A0sitio'],
+ items:[
+  {i:'doccheck',c:'b',t:['<em>Optimize your resume</em> to get past ATS filters','<em>Optimiza tu CV</em> para superar los filtros ATS']},
+  {i:'search',c:'g',t:['<em>Find jobs</em> that truly match you','<em>Encuentra ofertas</em> que de verdad encajan contigo']},
+  {i:'pen',c:'y',t:['<em>Tailor every application</em> with AI','<em>Personaliza cada candidatura</em> con IA']},
+  {i:'mic',c:'t',t:['<em>Prepare for interviews</em> with AI','<em>Prepárate las entrevistas</em> con IA']}]},
+{id:'PPLAN3',phase:16,type:'plansteps',
  title:['Build your perfect remote work plan','Crea tu plan de trabajo remoto perfecto'],
  sub:["Answer a few questions — we'll find the remote jobs that match you",'Responde unas preguntas: encontraremos los empleos remotos que encajan contigo'],
  badge:['4M+ remote jobs waiting','4M+ empleos remotos esperando'],
@@ -333,10 +342,10 @@ const S = [
  cta:['FIND REMOTE JOBS','ENCONTRAR EMPLEOS REMOTOS']},
 
 /* ---------------- PHASE 10 · RESULTS ---------------- */
-{id:'P48',phase:16,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
-{id:'P49',phase:16,type:'result'},
-{id:'P50',phase:16,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
-{id:'P52',phase:16,type:'success'}
+{id:'P48',phase:17,type:'loader',title:['Generating a personalized plan to land your next role','Generando un plan personalizado para conseguir tu próximo empleo']},
+{id:'P49',phase:17,type:'result'},
+{id:'P50',phase:17,type:'signup'}, // el pricing/countdown vive dentro del result (P49)
+{id:'P52',phase:17,type:'success'}
 ];
 
 // Precios REALES de los Stripe Payment Links (el checkout cobra en EUR).
