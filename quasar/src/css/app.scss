@@ -685,13 +685,8 @@ main.pwmode{overflow:visible}
 .pd-box{margin:12px auto 0;max-width:440px;background:var(--jw-cloud);border-radius:14px;padding:16px 20px;font-size:16px;line-height:1.5;color:var(--jw-ink);text-wrap:balance}
 .pd-box b{color:var(--jw-blue);font-weight:700}
 
-/* icon-list v2 (P21H «The job market got brutal»): filas que entran una a una, texto centrado con el icono, fondo de icono por color */
+/* icon-list v2 (P21H «The job market got brutal»): filas que entran una a una, texto centrado con el icono, mismo icono que el resto de listas */
 .icon-list.il-v2 .row{background:#fff;box-shadow:var(--shadow);border-radius:14px;padding:12px 14px;transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.3,1)}
 .icon-list.il-v2 .row.hide{opacity:0;transform:translateY(12px)}
 .icon-list.il-v2 .row p{margin:0}
-.icon-list.il-v2 .row .ic{width:44px;height:44px;border:0;border-radius:12px}
-.icon-list.il-v2 .row.c0 .ic{background:var(--jw-tint);color:var(--jw-blue)}
-.icon-list.il-v2 .row.c1 .ic{background:var(--jw-success-bg);color:#4E7A3A}
-.icon-list.il-v2 .row.c2 .ic{background:#FDF3D6;color:#A87700}
-.icon-list.il-v2 .row.c3 .ic{background:#FBEDE6;color:#C2643E}
 @media (prefers-reduced-motion:reduce){.icon-list.il-v2 .row{transition:none}}
